@@ -34,6 +34,6 @@ if user modify attribute values in undesirable way,
 # 6. save file #
 user can save mind map data as __json__ format.
 
-#7. hello#
+# 7. hello #
 
 
