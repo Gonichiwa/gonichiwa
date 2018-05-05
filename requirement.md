@@ -47,9 +47,9 @@ The loaded data will be displayed exactly same as before even if there were erro
 # 8. Select Menu Bar #
 Menu bar has three components __File__, __Edit__, __View__
 
-__File__ >> New, Open, Save, Save As.., Export To..
+__File__ >> New, Open, Save, Save As.., Close, Export To..
 
-__Edit__ >> Undo, Redo, Delete
+__Edit__ >> Undo, Redo, Delete, Adapt, Change
 
 __View__ >> Zoom In, Zoom Out, Fit Map, Hide Editor Pane, Hide Attribute Pane
 
