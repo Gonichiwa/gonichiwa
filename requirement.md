@@ -49,7 +49,9 @@ If chosen data has errors, program will throw the error messages.
 Menu bar has three components __File__, __Edit__, __View__
 
 __File__ >> New, Open, Save, Save As.., Export To..
+
 __Edit__ >> Undo, Redo, Delete
+
 __View__ >> Zoom In, Zoom Out, Fit Map, Hide Editor Pane, Hide Attribute Pane
 
 
