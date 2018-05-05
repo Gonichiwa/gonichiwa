@@ -38,6 +38,23 @@ After user got an error message from __change__ button, program changes labels w
  
 # 6. Save file #
 User can save mind map data as __json__ format.
+User can save mind map data no matter what errors there are.
+
+# 7. Load file #
+User can load mind map data which is chosen by finder.
+The loaded data will be displayed exactly same as before.
+If chosen data has errors, program will throw the error messages.
+
+# 8. Select Menu Bar #
+Menu bar has three components __File__, __Edit__, __View__
+
+__File__ >> New, Open, Save, Save As.., Export To..
+
+__Edit__ >> Undo, Redo, Delete
+
+__View__ >> Zoom In, Zoom Out, Fit Map, Hide Editor Pane, Hide Attribute Pane
+
+
 
 
 
