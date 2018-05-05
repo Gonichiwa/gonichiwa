@@ -10,7 +10,7 @@ User can have empty node.
 
 # 2. Press adapt Button in text editor pane #
 User can draw new mind map into mind map pane when user press __adapt__ button in text editor pane.
-If there are some errors in text area, program throws an error message box.
+If there are some errors in text area, program only throws an error message box.
 After user got an error message from __adapt__ button, program draws boxes next to every line of the text and fill red inside boxes which are next to the problem lines. So user can recognize and fix it.
 
 # 3. Select nodes in mind map pane #
@@ -23,6 +23,7 @@ User can change the position of the __selected__ node by dragging the body of it
 During changing the position of the node, user may see dotted line dynamically, according to its new position with other nodes.
 User can delete a __selected__ node pressing delete button. 
 If user delete a parent node, then its children will delete as well.
+If User delete __selected__ node, program automatically updates the Text Area properly.
 If user move mouse over the node, its boundary will change for user to recognize it. we call this state as __pointed__ state of the node.
 
 # 4. Adjust attributes in attribute pane #
@@ -33,8 +34,7 @@ User can change __COLOR__ using either color picker or text field.
 
 # 5. Press change Button in attribute pane #
 User can adapt all modifications to mindmap pane pressing __change__ button after modification in attribute pane.
-If user modify attribute values in undesirable way, change doesn't work and program throws a message. 
-After user got an error message from __change__ button, program changes labels which cause errors to a red label, so user can recognize and fix it.
+If user modify attribute values overrange, they will be constraint values. 
  
 # 6. Save file #
 User can save mind map data as __json__ format.
@@ -42,8 +42,7 @@ User can save mind map data no matter what errors there are.
 
 # 7. Load file #
 User can load mind map data which is chosen by finder.
-The loaded data will be displayed exactly same as before.
-If chosen data has errors, program will throw the error messages.
+The loaded data will be displayed exactly same as before even if there were errors in Text Pane.
 
 # 8. Select Menu Bar #
 Menu bar has three components __File__, __Edit__, __View__
