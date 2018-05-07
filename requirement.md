@@ -62,7 +62,23 @@ User can shut down this program.
 If there is any work in progress, program throws select box that is asking user want to save.
 
 # 11. Tool Bar #
-Tool Bar has functioin buttons.
+Tool Bar has function buttons.
 
 New, Open, Save, Save As.., Close, Apply text pane,  Apply attribute pane, Zoom In, Zoom Out,Fit Map, Undo, Redo
+
+# 12. Fit Map #
+User can fit mind map, according to current Mind Map Pane size, using __Fit Map__.
+If there is no map, then nothing happen.
+if pane is not square, map will fit into one of which small height or width.
+
+# 13. Undo #
+User can restore the very previous state of the mind map using Undo.
+it will only work based on mind map data hence,
+Undo won't work for text Area and attribute pane unless User change the mind map data.
+
+# 14. Redo #
+User can come back from Undo state using Redo. 
+it will only work based on mind map data hence,
+Redo won't work for textArea and attribute pane unless User change the mind map data.
+
 
