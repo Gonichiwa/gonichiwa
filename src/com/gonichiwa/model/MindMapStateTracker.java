@@ -24,7 +24,8 @@ class MindMapStateTracker {
 	}
 	
 	public MindMapTree getBackwardState() {
-		current--;
+		if(--current < 0) 
+			current = 0;
 		return stateStack.get(current);
 	}
 	
