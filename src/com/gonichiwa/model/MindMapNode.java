@@ -1,6 +1,8 @@
 package com.gonichiwa.model;
 
-class MindMapNode {
+import com.gonichiwa.mindmapinterface.NodeDataDeliver;
+
+class MindMapNode implements NodeDataDeliver {
 	private static int idGenerator = 0;
 	private final int id;
 	private int x, y, width, height;
@@ -11,10 +13,20 @@ class MindMapNode {
 	
 	/**
 	 * constructor
+	 * please do not think the way to initialize x, y ,width, height values at this point OK?
 	 */
-	public MindMapNode() {
-		id = ++idGenerator;
+	MindMapNode(String name) {
+		this(name, 0, 0, 0, 0); 
 		// 2. node initailize implementation
+	}
+	
+	MindMapNode(String name, int x, int y, int width, int height) {
+		id = ++idGenerator;
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 	
 	// 3. node method implementation
@@ -83,39 +95,43 @@ class MindMapNode {
 	}
 	
 	public void setRed(int redValue) {
-		if(redValue > 255)
+		if (redValue > 255)
 			red = 255;
-		else if(redValue < 0) 
+		else if (redValue < 0) 
 			red = 0;
 		else
 			red = redValue;
 	}
 	
 	public void setGreen(int greenValue) {
-		if(greenValue > 255)
+		if (greenValue > 255)
 			green = 255;
-		else if(greenValue < 0) 
+		else if (greenValue < 0) 
 			green = 0;
 		else
 			green = greenValue;
 	}
 	
 	public void setBlue(int blueValue) {
-		if(blueValue > 255)
+		if (blueValue > 255)
 			blue = 255;
-		else if(blueValue < 0) 
+		else if (blueValue < 0) 
 			blue = 0;
 		else
 			blue = blueValue;
 	}
 	
 	public void setAlpha(int alphaValue) {
-		if(alphaValue > 255)
+		if (alphaValue > 255)
 			alpha = 255;
-		else if(alphaValue < 0) 
+		else if (alphaValue < 0) 
 			alpha = 0;
 		else
 			alpha = alphaValue;
+	}
+	
+	public static void initIDGenerator() {
+		idGenerator = 0;
 	}
 }
 
