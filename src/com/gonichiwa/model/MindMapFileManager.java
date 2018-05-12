@@ -1,5 +1,6 @@
 package com.gonichiwa.model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,15 +12,14 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
 class MindMapFileManager {
+	@Expose(serialize = true, deserialize = true)
 	private String path;
+	@Expose(serialize = true, deserialize = true)
 	private String fileName;
-	@Expose(serialize = false, deserialize = false)
-	Gson gson;
 	
 	MindMapFileManager() {
-		path = null;
-		fileName = null;
-		gson = new Gson();
+		path = "";
+		fileName = "";
 	}
 	
 	void setFileName(String name) {
@@ -40,9 +40,13 @@ class MindMapFileManager {
 	}
 	
 	void save(MindMapModel model) {
+		Gson gson = new Gson();
 		String result = gson.toJson(model);
 		try {
-			FileWriter fileWriter = new FileWriter(path+fileName);
+			File file = new File(path+fileName);
+			if(!file.exists()) 
+				file.createNewFile();
+			FileWriter fileWriter = new FileWriter(file);
 			fileWriter.write(result);
 			fileWriter.close();
 		} catch (IOException e) {
@@ -53,6 +57,7 @@ class MindMapFileManager {
 	}
 	
 	MindMapModel load() {
+		Gson gson = new Gson();
 		MindMapModel loadedModelData = null;
 		try {
 			loadedModelData = gson.fromJson(new FileReader(path+fileName), MindMapModel.class);

@@ -48,12 +48,10 @@ public class MindMapModel extends Observable{
 	}
 	
 	public void backward() {
-		// TODO:modify tree for Joon
 		tree = stateTracker.getBackwardState();
 	}
 	
 	public void forward() {
-		// TODO:modify tree for Joon
 		tree = stateTracker.getForwardState();
 	}
 	
