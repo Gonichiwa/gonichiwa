@@ -49,10 +49,12 @@ public class MindMapModel extends Observable{
 	
 	public void backward() {
 		// TODO:modify tree for Joon
+		tree = stateTracker.getBackwardState();
 	}
 	
 	public void forward() {
 		// TODO:modify tree for Joon
+		tree = stateTracker.getForwardState();
 	}
 	
 	public void save() {
@@ -64,22 +66,32 @@ public class MindMapModel extends Observable{
 	}
 	
 	public void setNodeLocation(int nodeID, int x, int y) {
+		try {
 		MindMapNode node = tree.getNode(nodeID);
 		node.setX(x);
 		node.setY(y);
 		setChanged();
 		notifyObservers((NodeDataDeliver) node);
+		} catch (NullPointerException e) {
+			System.out.println(e.getClass() + "setNodeLocation NullPointerException");
+		}
+
 	}
 	
 	public void setNodeSize(int nodeID, int width, int height) {
+		try {
 		MindMapNode node = tree.getNode(nodeID);
 		node.setWidth(width);
 		node.setHeight(height);
 		setChanged();
 		notifyObservers((NodeDataDeliver) node);
+		} catch (NullPointerException e) {
+			System.out.println(e.getClass() + "setNodeSize NullPointerException");
+		}
 	}
 	
 	public void setNodeColor(int nodeID, int red, int green, int blue, int alpha) {
+		try {
 		MindMapNode node = tree.getNode(nodeID);
 		node.setRed(red);
 		node.setGreen(green);
@@ -87,6 +99,9 @@ public class MindMapModel extends Observable{
 		node.setAlpha(alpha);
 		setChanged();
 		notifyObservers((NodeDataDeliver) node);
+		} catch (NullPointerException e) {
+			System.out.println(e.getClass() + "setNodeColor NullPointerException");
+		}
 	}
 	
 	public void setNodeColor(int nodeID, int red, int green, int blue) {
