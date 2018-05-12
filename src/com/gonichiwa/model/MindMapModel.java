@@ -57,12 +57,24 @@ public class MindMapModel extends Observable{
 		tree = stateTracker.getForwardState();
 	}
 	
-	public void save() {
+	public void saveTo(String path, String name) {
 		// TODO: save data for Joon
+		fileManager.setPath(path);
+		fileManager.setFileName(name);
+		fileManager.save(this);
 	}
 	
-	public void load() {
+	public void load(String path, String name) {
 		// TODO: load data for Joon
+		fileManager.setPath(path);
+		fileManager.setFileName(name);
+		MindMapModel loadedModel = fileManager.load();
+		if(loadedModel != null) {
+			// if there is a actual loadedModel than update model.
+			this.tree = loadedModel.tree;
+			this.stateTracker = loadedModel.stateTracker;
+			this.fileManager = loadedModel.fileManager;
+		}
 	}
 	
 	public void setNodeLocation(int nodeID, int x, int y) {
