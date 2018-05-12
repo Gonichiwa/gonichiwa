@@ -10,6 +10,10 @@ class MindMapTree {
 		root = null;
 	}
 	
+	public MindMapNode getRoot() {
+		return root;
+	}
+	
 	/**
 	 * Modifier
 	 * 

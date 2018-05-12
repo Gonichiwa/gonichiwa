@@ -1,5 +1,7 @@
 package com.gonichiwa.model;
 
+import java.util.ArrayList;
+
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 
 class MindMapNode implements NodeDataDeliver {
@@ -8,6 +10,9 @@ class MindMapNode implements NodeDataDeliver {
 	private int x, y, width, height;
 	private int red, green, blue, alpha;
 	private String name;
+	
+	private MindMapNode parent;
+	private ArrayList<MindMapNode> children;
 	
 	// 1. node field implementation
 	
