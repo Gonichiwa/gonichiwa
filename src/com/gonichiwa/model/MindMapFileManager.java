@@ -39,6 +39,10 @@ class MindMapFileManager {
 		return path;
 	}
 	
+	/**
+	 * save model
+	 * @param model
+	 */
 	void save(MindMapModel model) {
 		Gson gson = new Gson();
 		String result = gson.toJson(model);
