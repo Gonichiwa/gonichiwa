@@ -53,6 +53,10 @@ class MindMapNode implements NodeDataDeliver {
 		children.remove(nodeToBeRemoved);
 	}
 	
+	public void removeAllChildren() {
+		children.clear();
+	}
+	
 	public void setParent(MindMapNode parent) {
 		this.parent = parent;
 	}

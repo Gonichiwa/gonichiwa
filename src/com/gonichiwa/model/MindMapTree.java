@@ -47,7 +47,8 @@ class MindMapTree {
 			
 		} else {
 			nodeToBeRemoved.getParent().removeChild(nodeID);
-			nodeToBeRemoved.getChildren().clear();
+			nodeToBeRemoved.removeAllChildren();;
+			nodeToBeRemoved.setParent(null);
 		}
 	}
 	
