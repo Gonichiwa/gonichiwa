@@ -1,5 +1,7 @@
 package com.gonichiwa.model;
 
+import java.util.ArrayList;
+
 class MindMapTree {
 	private MindMapNode root;
 	
@@ -31,7 +33,16 @@ class MindMapTree {
 	 * 		id of the node which we want to modify.
 	 */
 	public void removeNode(int nodeID) {
-		//TODO: cheer up~!
+		
+		MindMapNode tempNode = getNode(nodeID,root);
+		
+		for(int i= 0;i<tempNode.getParent().getChildren().size();i++) {
+			if(tempNode.getParent().getChildren().get(i).getID()== nodeID) {
+				tempNode.getParent().getChildren().remove(i);
+				break;
+			}
+		}
+		
 	}
 	
 	/**
@@ -42,10 +53,22 @@ class MindMapTree {
 	 * 		the number of nodes in the tree.
 	 */
 	public int size() {
-		//TODO: good luck!
-		return 0;
+		int num=0;	
+		num += returnArraySize(root);
+		return num+1;
 	}
-	
+	public int returnArraySize(MindMapNode Node) {
+		
+		int num=0;
+		
+		for(int i=0;i<Node.getChildren().size();i++) {
+			if(Node.getChildren().get(i).getChildren().size()!=0) {
+				num += returnArraySize(Node.getChildren().get(i));
+			}
+		}
+		return num;
+		
+	}
 	/**
 	 * Accessor
 	 * 
@@ -55,9 +78,34 @@ class MindMapTree {
 	 * @return
 	 * 		the node which has given id in the tree.
 	 */
-	public MindMapNode getNode(int nodeID) {
-		//TODO: Thank you!~
-		return null;
+	public MindMapNode getNode(int nodeID, MindMapNode StartNode) {
+		
+		ArrayList<MindMapNode> tempArray;
+		MindMapNode NodePointer;
+		NodePointer = StartNode;
+		MindMapNode TempNode;
+		
+		if(NodePointer.getID()==nodeID) {
+			return NodePointer;
+		}
+
+			tempArray = NodePointer.getChildren();
+			if(tempArray.size()!=0) {
+				for(int i=0;i<tempArray.size();i++)
+				{
+					if(tempArray.get(i).getID()==nodeID) {
+						return tempArray.get(i);
+					}
+					if(tempArray.get(i).getChildren().size() !=0) {
+						TempNode =getNode(nodeID,tempArray.get(i));
+						if(TempNode != null) {
+							return TempNode;
+						}
+					}
+				}
+			}
+			return null;
+	
 	}
 	
 	
@@ -75,8 +123,7 @@ class MindMapTree {
 	 * 
 	 * 
 	 */
-	public String toString() {
-		//TODO: for Joon
+	public String toString(MindMapNode Node) {
 		return null;
 	}
 	
