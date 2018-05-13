@@ -20,8 +20,10 @@ class MindMapNode implements NodeDataDeliver {
 	 * constructor
 	 * please do not think the way to initialize x, y ,width, height values at this point OK?
 	 */
-	MindMapNode(String name) {
+	MindMapNode(String name, MindMapNode parent) {
 		this(name, 0, 0, 0, 0); 
+		this.parent = parent;
+		this.children = new ArrayList<MindMapNode>();
 		// 2. node initailize implementation
 	}
 	
@@ -36,12 +38,33 @@ class MindMapNode implements NodeDataDeliver {
 	
 	// 3. node method implementation
 	
+	public void addChild(MindMapNode child) {
+		children.add(child);
+	}
+	
+	public void removeChild(int nodeID) {
+		MindMapNode nodeToBeRemoved = null;
+		for(MindMapNode child : children) {
+			if(child.getID() == nodeID) {
+				nodeToBeRemoved = child;
+				break;
+			}
+		}
+		children.remove(nodeToBeRemoved);
+	}
+	
+	public void setParent(MindMapNode parent) {
+		this.parent = parent;
+	}
 	/*
 	 * getter method
 	 * 
 	 */
 	public ArrayList<MindMapNode> getChildren() {
 		return children;
+	}
+	public MindMapNode getParent() {
+		return parent;
 	}
 	public int getID() {
 		return id;

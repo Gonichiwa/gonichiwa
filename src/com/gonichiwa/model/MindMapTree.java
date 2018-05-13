@@ -1,6 +1,7 @@
 package com.gonichiwa.model;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 class MindMapTree {
 	private MindMapNode root;
@@ -33,16 +34,21 @@ class MindMapTree {
 	 * 		id of the node which we want to modify.
 	 */
 	public void removeNode(int nodeID) {
+		MindMapNode nodeToBeRemoved = null;
 		
-		MindMapNode tempNode = getNode(nodeID,root);
-		
-		for(int i= 0;i<tempNode.getParent().getChildren().size();i++) {
-			if(tempNode.getParent().getChildren().get(i).getID()== nodeID) {
-				tempNode.getParent().getChildren().remove(i);
-				break;
-			}
+		try {
+			nodeToBeRemoved = getNode(nodeID);
+		} catch(NoSuchElementException e) {
+			return;
 		}
 		
+		if(nodeToBeRemoved == root) {
+			removeAllNodes();
+			
+		} else {
+			nodeToBeRemoved.getParent().removeChild(nodeID);
+			nodeToBeRemoved.getChildren().clear();
+		}
 	}
 	
 	/**
@@ -52,60 +58,69 @@ class MindMapTree {
 	 * @return
 	 * 		the number of nodes in the tree.
 	 */
+	
 	public int size() {
-		int num=0;	
-		num += returnArraySize(root);
-		return num+1;
+		return recGetSize(root);
 	}
-	public int returnArraySize(MindMapNode Node) {
+	 /**
+	  * Helper Method
+	  * get size of the tree recursively
+	  * @param node
+	  * 	the node to be counted in the tree.
+	  * @return
+	  * 	the size of the tree
+	  */
+	private int recGetSize(MindMapNode node) {
+		int count = 1;
 		
-		int num=0;
+		if(node == null) 
+			return 0;
 		
-		for(int i=0;i<Node.getChildren().size();i++) {
-			if(Node.getChildren().get(i).getChildren().size()!=0) {
-				num += returnArraySize(Node.getChildren().get(i));
-			}
-		}
-		return num;
-		
+		for(MindMapNode child : node.getChildren()) 
+			count += recGetSize(child);
+
+		return count;
 	}
+	
 	/**
 	 * Accessor
 	 * 
 	 * find the certain node by it's id.
 	 * @param nodeID
-	 * 		id of the node which we want to modify.
+	 * 		id of the node which we want to find.
 	 * @return
 	 * 		the node which has given id in the tree.
 	 */
-	public MindMapNode getNode(int nodeID, MindMapNode StartNode) {
-		
-		ArrayList<MindMapNode> tempArray;
-		MindMapNode NodePointer;
-		NodePointer = StartNode;
-		MindMapNode TempNode;
-		
-		if(NodePointer.getID()==nodeID) {
-			return NodePointer;
-		}
-
-			tempArray = NodePointer.getChildren();
-			if(tempArray.size()!=0) {
-				for(int i=0;i<tempArray.size();i++)
-				{
-					if(tempArray.get(i).getID()==nodeID) {
-						return tempArray.get(i);
-					}
-					if(tempArray.get(i).getChildren().size() !=0) {
-						TempNode =getNode(nodeID,tempArray.get(i));
-						if(TempNode != null) {
-							return TempNode;
-						}
-					}
-				}
-			}
-			return null;
+	public MindMapNode getNode(int nodeID) {
+		MindMapNode foundNode = recGetNode(nodeID, root);
+		if(foundNode == null)
+			throw new NoSuchElementException("MindMapTree.getNode() -> there is no such node");
+		return recGetNode(nodeID, root);
+	}
 	
+	/**
+	 * Helper Method
+	 * find the certain node recursively.
+	 * @param nodeID
+	 * 		id of the node which we want to find.
+	 * @param target
+	 * 		the node to be examined.
+	 * @return
+	 * 		the node which has given id in the tree.
+	 */
+	private MindMapNode recGetNode(int nodeID, MindMapNode target) {
+		MindMapNode foundNode = null;
+		
+		if(target.getID() == nodeID) {
+			return target;
+		} else {
+			for(MindMapNode child : target.getChildren()) {
+				foundNode = recGetNode(nodeID, child);
+				if(foundNode != null) 
+					return foundNode;
+			}
+		}
+		return foundNode;
 	}
 	
 	
