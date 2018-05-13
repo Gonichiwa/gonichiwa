@@ -40,6 +40,9 @@ class MindMapNode implements NodeDataDeliver {
 	 * getter method
 	 * 
 	 */
+	public ArrayList<MindMapNode> getChildren() {
+		return children;
+	}
 	public int getID() {
 		return id;
 	}
