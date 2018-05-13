@@ -32,9 +32,9 @@ public class MindMapModel extends Observable{
 	 * 		the text which is given from TextAreaPane.
 	 */
 	public void buildNewTree(String text) {
-		tree.removeAllNodes();
-		//TODO: build new tree
+		tree = MindMapTreeFactory.build(text);
 	}
+	
 	
 	/**
 	 * remove the certain node which has given Id.

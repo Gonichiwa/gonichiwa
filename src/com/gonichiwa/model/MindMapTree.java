@@ -17,6 +17,10 @@ class MindMapTree {
 		return root;
 	}
 	
+	public void setRoot(MindMapNode node) {
+		root = node;
+	}
+	
 	/**
 	 * Modifier
 	 * 
@@ -140,6 +144,7 @@ class MindMapTree {
 	 * 
 	 */
 	public String toString(MindMapNode Node) {
+		//TODO: wow
 		return null;
 	}
 	
