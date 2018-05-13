@@ -64,31 +64,29 @@ class MindMapTreeFactory {
 	 * 		e.g. "\tSun\n" is level one.
 	 */
 	private static void recMakeNode(MindMapNode parent, ArrayList<String> lines, int level) {
-		MindMapNode newNode = null;
-		
-		if(lines.isEmpty())
-			return;
-		
+		MindMapNode newChildNode = null;
+
 		// if line has same level add them up to parent node.
-		while(numberOfTabsIn(lines.get(0)) == level){
-			String name = lines.remove(0).replaceAll("\t", "");     // remove tab in the line.
-			newNode = new MindMapNode(name, parent);				// make new node.
-			parent.addChild(newNode);								// add node to parent.
-			if(lines.isEmpty())										// if stack is empty then return;
+		while(!lines.isEmpty()) {
+			
+			// if line has same level add them up to parent node.
+			if(numberOfTabsIn(lines.get(0)) == level) {
+				String name = lines.remove(0).replaceAll("\t", "");     // remove tab in the line.
+				newChildNode = new MindMapNode(name, parent);				// make new node.
+				parent.addChild(newChildNode);
+				
+			// when nextLine has more big level.
+			} else if(numberOfTabsIn(lines.get(0)) > level) {
+				if(newChildNode == null)		// exception for child node which doesn't have its own parent node.
+					throw new IllegalArgumentException("invalid format text: child node must have its parent");
+				recMakeNode(newChildNode, lines, level+1);
+				
+			// when nextLine has more small level.
+			} else if(numberOfTabsIn(lines.get(0)) < level) {
+				if(parent.getParent() == null)    // exception for multiple root node.
+					throw new IllegalArgumentException("invalid format text: root node must be one");
 				return;
-		}
-		
-		// when nextLine has more big level.
-		if(numberOfTabsIn(lines.get(0)) > level) {
-			if(newNode == null)		// exception for child node which doesn't have its own parent node.
-				throw new IllegalArgumentException("invalid format text: child node must have its parent");
-			recMakeNode(newNode, lines, ++level);
-		
-		// when nextLine has more small level.
-		} else if (numberOfTabsIn(lines.get(0)) < level) {
-			if(parent.getParent() == null)    // exception for multiple root node.
-				throw new IllegalArgumentException("invalid format text: root node must be one");
-			recMakeNode(parent.getParent(), lines, --level);
+			}
 		}
 	}
 	
