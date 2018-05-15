@@ -47,6 +47,10 @@ public class MindMapModel extends Observable{
 		notifyObservers(null);
 	}
 	
+	public int getTreeSize() {
+		return tree.size();
+	}
+	
 	public void backward() {
 		tree = stateTracker.getBackwardState();
 	}
