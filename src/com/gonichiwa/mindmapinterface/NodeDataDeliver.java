@@ -2,6 +2,8 @@ package com.gonichiwa.mindmapinterface;
 
 public interface NodeDataDeliver {
 	
+	public static final String[] attributes = {"NAME", "X", "Y", "WIDTH", "HEIGHT", "COLOR"};
+	
 	public int getID();
 	
 	public String getName();
