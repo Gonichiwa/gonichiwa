@@ -21,7 +21,7 @@ public class MindMapAttributeContainerTest extends JFrame {
 		attributeContainer1.setEditable("NAME", false);
 		scrollPane1 = new JScrollPane(attributeContainer1);
 		
-		attributeContainer1.setValue("X", "255");	 	// setValue test with String
+		attributeContainer1.setValue("X", "25");	 	// setValue test with String
 		
 //		attributeContainer1.setValue("abc", 255);  -> throw NoSuchElementException
 		
