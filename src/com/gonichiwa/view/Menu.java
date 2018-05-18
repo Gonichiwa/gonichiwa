@@ -24,7 +24,7 @@ public class Menu extends JFrame {
 	//private Container contentPane;
 	
 	public Menu() {
-		setTitle("hello");
+		setTitle("helloo");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createMenu();
 		//contentPane = getContentPane();
