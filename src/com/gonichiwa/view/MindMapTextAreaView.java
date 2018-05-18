@@ -17,7 +17,6 @@ public class MindMapTextAreaView extends JPanel {
 	
 	public MindMapTextAreaView() {
 		this.setLayout(new BorderLayout());
-		
 		initSubViews();
 		this.add(textAreaScrollPane, BorderLayout.CENTER);
 		this.add(textApplyToModelButton, BorderLayout.SOUTH);
