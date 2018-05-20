@@ -50,7 +50,6 @@ public class MindMapAttributeController {
 				int y = Integer.parseInt(view.getValue("Y"));
 				int width = validateSizeValue(view.getValue("WIDTH"));
 				int height = validateSizeValue(view.getValue("HEIGHT"));
-				System.out.println(Integer.parseInt(view.getValue("COLOR"), 16)); //error here
 				Color color = new Color(validateColorValue(view.getValue("COLOR")));
 				int red = color.getRed();
 				int green = color.getGreen();
