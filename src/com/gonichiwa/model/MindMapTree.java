@@ -3,7 +3,7 @@ package com.gonichiwa.model;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-class MindMapTree {
+public class MindMapTree {
 	private MindMapNode root;
 	
 	/**
@@ -143,9 +143,23 @@ class MindMapTree {
 	 * 
 	 * 
 	 */
-	public String toString(MindMapNode Node) {
-		//TODO: wow
-		return null;
+	public String toString() {		
+		return recToString(root, 0);
+	}
+	
+	private String recToString(MindMapNode node, int level) {
+		String string = "";
+		
+		for(int i = 0; i < level; i++) 
+			string += '\t';
+		string += node.getName();
+		string += '\n';
+		
+		for(MindMapNode child : node.getChildren()) {
+			string += recToString(child, level+1);
+		}
+		
+		return string;
 	}
 	
 }
