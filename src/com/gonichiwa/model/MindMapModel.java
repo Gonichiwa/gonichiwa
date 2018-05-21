@@ -33,6 +33,8 @@ public class MindMapModel extends Observable{
 	 */
 	public void buildNewTree(String text) {
 		tree = MindMapTreeFactory.build(text);
+		setChanged();
+		notifyObservers();
 	}
 	
 	
@@ -122,7 +124,10 @@ public class MindMapModel extends Observable{
 		setNodeColor(nodeID, red, green, blue, 255);
 	}
 	
-
+	public String toString() {
+		return tree.toString();
+	}
+	
 }
 
 

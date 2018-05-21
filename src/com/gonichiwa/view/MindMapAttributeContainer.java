@@ -6,9 +6,10 @@ import java.util.NoSuchElementException;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-public class MindMapAttributeContainer extends JPanel {
+import com.gonichiwa.mindmapinterface.NodeDataDeliver;
+
+class MindMapAttributeContainer extends JPanel {
 	
-	 
 	private LinkedHashMap<String, MindMapAttributeTextField> attributePanelDict; // preserve order
 	private BoxLayout layout;
 	
@@ -31,8 +32,26 @@ public class MindMapAttributeContainer extends JPanel {
 		for(MindMapAttributeTextField attributeComponent : attributePanelDict.values()) {
 			add(attributeComponent);
 		}
+		setVisible(false);
 	}
 	
+	public void displayNode(NodeDataDeliver node) {
+		if(node == null) {
+			setVisible(false);
+			return;
+		}
+		setValue("NAME", node.getName());
+		setValue("X", node.getX());
+		setValue("Y", node.getY());
+		setValue("WIDTH", node.getWidth());
+		setValue("HEIGHT", node.getHeight());
+		String red = toHexString(node.getRedColor()).toUpperCase();
+		String green = toHexString(node.getGreenColor()).toUpperCase();
+		String blue = toHexString(node.getBlueColor()).toUpperCase();
+		setValue("COLOR", red+green+blue);
+		setVisible(true);
+	}
+
 	public void addAttributePanel(String key) {
 		if(attributePanelDict.containsKey(key)) 
 			return;
@@ -47,14 +66,18 @@ public class MindMapAttributeContainer extends JPanel {
 		return attributePanelDict.get(key).getValue();
 	}
 	
-	public void setValue(String key, String value) {
+	public void setEditable(String key, boolean editable) {
+		validateKey(key);
+		attributePanelDict.get(key).setEditableOfTheAttributeTextField(editable);
+	}
+	
+	private void setValue(String key, String value) {
 		validateKey(key);
 		attributePanelDict.get(key).setValue(value);	
 	}
 	
-	public void setEditable(String key, boolean editable) {
-		validateKey(key);
-		attributePanelDict.get(key).setEditableOfTheAttributeTextField(editable);
+	private void setValue(String key, int value) {
+		setValue(key, String.valueOf(value));
 	}
 	
 	private void validateKey(String key) {
@@ -62,4 +85,10 @@ public class MindMapAttributeContainer extends JPanel {
 			throw new NoSuchElementException("there is no such attribute");
 	}
 	
+	private String toHexString(int value) {
+		String answer = Integer.toHexString(value);
+		if(answer.length() == 1) 
+			answer = "0"+answer;
+		return answer;
+	}
 }

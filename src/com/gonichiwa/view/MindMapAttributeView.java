@@ -27,6 +27,7 @@ public class MindMapAttributeView extends JPanel {
 	private MindMapAttributeContainer attributePane;
 	private JButton changeButton;
 	private BoxLayout layout;
+	private NodeDataDeliver node;
 
 	/**
 	 * Constructor
@@ -57,31 +58,13 @@ public class MindMapAttributeView extends JPanel {
 		changeButton.addActionListener(l);
 	}
 	
-	/**
-	 * Modifier
-	 * 
-	 * Set the given attribute value to the given key.
-	 * if there isn't attribute value for the given key, then throw NoSuchElementException.
-	 * 
-	 * @param key
-	 * 		the given key which is specific attribute name.
-	 * @param value
-	 * 		the given value which is going to be set.
-	 * @exception NoSuchElementException.
-	 * 		if there isn't a value for the given key.
-	 */
-	public void setValue(String key, String value) {
-		attributePane.setValue(key, value);
+	public NodeDataDeliver getNode() {
+		return node;
 	}
-	/**
-	 * Overloading method
-	 * 
-	 * if user send int value, then change it to String and set it.
-	 * @param key
-	 * @param value
-	 */
-	public void setValue(String key, int value) {
-		setValue(key, String.valueOf(value));
+	
+	public void setNode(NodeDataDeliver node) {
+		this.node = node;
+		attributePane.displayNode(node);
 	}
 	
 	/**
