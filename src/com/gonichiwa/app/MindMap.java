@@ -31,7 +31,7 @@ public class MindMap extends JFrame implements Runnable {
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
 		graphController = new MindMapGraphController(model);
-		
+
 //		menuBar = new MindMapMenuBar();
 //		toolBar = new MindMapToolBar();
 		

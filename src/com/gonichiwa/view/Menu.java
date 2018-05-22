@@ -21,13 +21,14 @@ class MenuActionListener implements ActionListener{
 
 public class Menu extends JFrame {
 
-	//private Container contentPane;
+	private Container contentPane;
 	
 	public Menu() {
 		setTitle("helloo");
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		contentPane = this.getContentPane();
+
 		createMenu();
-		//contentPane = getContentPane();
 		setSize(250,200);
 		setVisible(true);
 		
@@ -42,13 +43,13 @@ public class Menu extends JFrame {
 		String[] ItemTitle = {"Open","Save","ABC","DEF"};
 		MenuActionListener listener =new MenuActionListener();
 		
-		/*
+		
 		JToolBar toolBar = new JToolBar("ToolBarTest");
 		toolBar.setBackground(Color.LIGHT_GRAY);
 		toolBar.add(new JButton("Open"));
 		JComboBox<String> combo = new JComboBox<String>();
 		combo.addItem("OPENEN");
-		*/
+		
 		
 		for(int i=0;i<menuItem.length;i++) {
 			menuItem[i] = new JMenuItem(ItemTitle[i]);
@@ -63,10 +64,8 @@ public class Menu extends JFrame {
 		
 		setJMenuBar(menubar);
 		
-		/*
 		toolBar.add(combo);
 		contentPane.add(toolBar,BorderLayout.NORTH);
-		*/
 	}
 	
 	
