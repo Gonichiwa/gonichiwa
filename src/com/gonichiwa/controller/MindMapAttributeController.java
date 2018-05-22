@@ -23,13 +23,43 @@ import com.gonichiwa.view.MindMapAttributeView;
 public class MindMapAttributeController {
 	private MindMapAttributeView view;
 	private MindMapModel model;
+	private ChangeActionListener listener;
+	
+	public MindMapAttributeController(MindMapModel model) {
+		this(model, new MindMapAttributeView());
+	}
 	
 	public MindMapAttributeController(MindMapModel model, MindMapAttributeView view) {
+		listener = new ChangeActionListener();
 		this.model = model;
 		this.view  = view;
-		this.view.addChangeButtonActionListener(new ChangeActionListener());
+		this.view.addChangeButtonActionListener(listener);
 	}
 
+	/**
+	 * Accessor
+	 * 
+	 * return the ChangeActionListener instance.
+	 * 
+	 * @return
+	 * 		the listener which handles change action on AttributeView.
+	 */
+	public ChangeActionListener getListener() {
+		return listener;
+	}
+	
+	/**
+	 * Accessor
+	 * 
+	 * return the MindMapAttributeView
+	 * 
+	 * @return
+	 * 		the attribute pane view.
+	 */
+	public MindMapAttributeView getView() {
+		return view;
+	}
+	
 	/**
 	 * EventListener class for Change Action which is supposed to be happened in MindMapAttributeView.
 	 * 

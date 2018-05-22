@@ -26,6 +26,7 @@ import com.gonichiwa.view.MindMapTextAreaView;
 public class MindMapTextAreaController implements Observer {
 	private MindMapTextAreaView view;
 	private MindMapModel model;
+	private ApplyActionListener listener;
 	
 	public MindMapTextAreaController(MindMapModel model) {
 		this(model, new MindMapTextAreaView());
@@ -40,10 +41,35 @@ public class MindMapTextAreaController implements Observer {
 	 * 		the MindMapTextAreaView which is boundary class for TextArea.
 	 */
 	public MindMapTextAreaController(MindMapModel model, MindMapTextAreaView view) {
+		listener = new ApplyActionListener();
 		this.model = model;
 		this.view  = view;
 		this.model.addObserver(this);
-		this.view.addApplyButtonListener(new ApplyActionListener());
+		this.view.addApplyButtonListener(listener);
+	}
+	
+	/**
+	 * Accessor
+	 * 
+	 * return the ApplyActionListener instance.
+	 * 
+	 * @return
+	 * 		the listener which handles apply action on TextAreaView.
+	 */
+	public ApplyActionListener getListener() {
+		return listener;
+	}
+	
+	/**
+	 * Accessor
+	 * 
+	 * return the MindMapTextAreaView.
+	 * 
+	 * @return
+	 * 		the text area pane view.
+	 */
+	public MindMapTextAreaView getView() {
+		return view;
 	}
 	
 	/**
