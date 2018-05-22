@@ -44,6 +44,9 @@ public class MindMap extends JFrame implements Runnable {
 		centerPane = new JSplitPane();
 		graphPane = new JSplitPane();
 		
+		centerPane.setResizeWeight(0.2);
+		graphPane.setResizeWeight(0.9);
+		
 		graphPane.setLeftComponent(graphController.getView());
 		graphPane.setRightComponent(attributeController.getView());
 		centerPane.setLeftComponent(textAreaController.getView());
