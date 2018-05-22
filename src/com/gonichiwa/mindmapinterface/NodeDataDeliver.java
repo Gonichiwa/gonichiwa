@@ -6,6 +6,8 @@ public interface NodeDataDeliver {
 	
 	public int getID();
 	
+	public NodeDataDeliver getParent();
+	
 	public String getName();
 	
 	public int getX();
