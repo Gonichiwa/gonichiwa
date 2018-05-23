@@ -49,6 +49,8 @@ public class MindMapGraphView extends JPanel {
 		QuadCurve2D q2 = new QuadCurve2D.Float();
 		g2d.setStroke(new BasicStroke(4));
 		
+		// is that ok for each NodeView to have parent information? 
+		// isn't that domain logic? or is it view logic?
 		for(MindMapNodeView node : nodes) {
 			if(node.hasParent()) {
 				q2.setCurve(node.getLocation(), new Point(400, 0), node.getParentLocation());

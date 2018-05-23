@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 
-class MindMapNode implements NodeDataDeliver {
+public class MindMapNode implements NodeDataDeliver {
 	private static int idGenerator = 0;
 	private final int id;
 	private int x, y, width, height;
@@ -67,6 +67,7 @@ class MindMapNode implements NodeDataDeliver {
 	public ArrayList<MindMapNode> getChildren() {
 		return children;
 	}
+
 	public MindMapNode getParent() {
 		return parent;
 	}
@@ -168,6 +169,7 @@ class MindMapNode implements NodeDataDeliver {
 	public static void initIDGenerator() {
 		idGenerator = 0;
 	}
+
 }
 
 

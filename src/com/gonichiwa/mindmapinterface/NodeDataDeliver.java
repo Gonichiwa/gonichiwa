@@ -1,5 +1,9 @@
 package com.gonichiwa.mindmapinterface;
 
+import java.util.ArrayList;
+
+import com.gonichiwa.model.MindMapNode;
+
 public interface NodeDataDeliver {
 	
 	public static final String[] attributes = {"NAME", "X", "Y", "WIDTH", "HEIGHT", "COLOR"};
@@ -7,6 +11,8 @@ public interface NodeDataDeliver {
 	public int getID();
 	
 	public NodeDataDeliver getParent();
+	
+	public ArrayList<MindMapNode> getChildren();
 	
 	public String getName();
 	
