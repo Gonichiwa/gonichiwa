@@ -1,14 +1,14 @@
 package com.gonichiwa.util;
 
 public class MindMapVector {
-	double x, y;
+	private double x, y;
 	
 	public MindMapVector(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 	
-	public void mult(int value) {
+	public void mult(double value) {
 		x *= value;
 		y *= value;
 	}
@@ -17,18 +17,29 @@ public class MindMapVector {
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 	
-	public void normalize() {
+	public MindMapVector normalize() {
 		x /= mag();
 		y /= mag();
+		return this;
 	}
 	
-	public void rotate(double angle) {
-		x = Math.cos(angle) * x - Math.sin(angle) * y;
-		y = Math.sin(angle) * x + Math.cos(angle) * y;
+	public MindMapVector rotate(double angle) {
+		double prevX = x;
+		double prevY = y;
+		x = Math.cos(angle) * prevX - Math.sin(angle) * prevY;
+		y = Math.sin(angle) * prevX + Math.cos(angle) * prevY;
+		return this;
 	}
 	
 	public MindMapVector copy() {
 		return new MindMapVector(x, y);
 	}
 	
+	public double getX() {
+		return x;
+	}
+	
+	public double getY() {
+		return y;
+	}
 }

@@ -7,7 +7,7 @@ import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 public class MindMapNode implements NodeDataDeliver {
 	private static int idGenerator = 0;
 	private final int id;
-	private int x, y, width, height;
+	private int x, y, width, height; 
 	private int red, green, blue, alpha;
 	private String name;
 	

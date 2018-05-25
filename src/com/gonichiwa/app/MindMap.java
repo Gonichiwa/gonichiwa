@@ -19,6 +19,7 @@ public class MindMap extends JFrame implements Runnable {
 	MindMapGraphController graphController;
 //	MindMapMenuBar menuBar;
 //	MindMapToolBar toolBar;
+	// MindMapUtilController utilController;
 	
 	JSplitPane centerPane;
 	JSplitPane graphPane;
@@ -31,9 +32,12 @@ public class MindMap extends JFrame implements Runnable {
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
 		graphController = new MindMapGraphController(model);
+		//utilController = new MindMapUtilController(model);
 
 //		menuBar = new MindMapMenuBar();
 //		toolBar = new MindMapToolBar();
+		
+		// utilController.addApplyListener(textAreaControoler.getListener());
 		
 //		menuBar.addApplyListener(textAreaController.getLister());
 //		toolBar.addApplyListener(textAreaController.getListener());
@@ -52,7 +56,9 @@ public class MindMap extends JFrame implements Runnable {
 		centerPane.setLeftComponent(textAreaController.getView());
 		centerPane.setRightComponent(graphPane);
 		
-		add(centerPane);
+		add(centerPane, BorderLayout.CENTER);
+		//setMenuBar(utilController.getMenubar());
+		//add(utilController.getToolBar(), BorderLayout.NORTH);
 		setSize(800, 600);
 		setVisible(true);
 	}

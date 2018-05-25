@@ -84,7 +84,7 @@ public class MindMapTextAreaController implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-			model.buildNewTree(view.getText());
+				model.buildNewTree(view.getText());
 			} catch (IllegalArgumentException formatErr) {
 				JOptionPane.showMessageDialog(view, formatErr.getMessage(), "Invalid format", 2);
 			}
