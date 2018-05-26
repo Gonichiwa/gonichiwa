@@ -2,8 +2,9 @@ package com.gonichiwa.model;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Observable;
 
-public class MindMapTree {
+public class MindMapTree extends Observable {
 	private MindMapNode root;
 	
 	/**
@@ -11,6 +12,19 @@ public class MindMapTree {
 	 */
 	MindMapTree() {
 		root = null;
+	}
+
+	/**
+	 * Modifier
+	 * build tree with a given text.
+	 * @param text
+	 * 		the text which is given from TextAreaPane.
+	 */
+
+	public void buildTree(String text) {
+		root = MindMapTreeFactory.build(text);
+		setChanged();
+		notifyObservers();
 	}
 	
 	public MindMapNode getRoot() {

@@ -8,18 +8,27 @@ public class MindMapVector {
 		this.y = y;
 	}
 	
-	public void mult(double value) {
+	public MindMapVector mult(double value) {
 		x *= value;
 		y *= value;
+		return this;
 	}
 	
 	public double mag() {
-		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+		return Math.sqrt(x*x + y*y);
+	}
+	
+	public MindMapVector div(double value) {
+		x /= value;
+		y /= value;
+		return this;
 	}
 	
 	public MindMapVector normalize() {
-		x /= mag();
-		y /= mag();
+		double m = mag();
+		if(m != 0 && m != 1) {
+			div(m);
+		}
 		return this;
 	}
 	

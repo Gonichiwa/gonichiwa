@@ -1,6 +1,7 @@
 package com.gonichiwa.view;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -14,16 +15,13 @@ import javax.swing.JPanel;
 
 public class MindMapGraphView extends JPanel {
 	private ArrayList<MindMapNodeView> nodes;
-//	private ArrayList<MindMapEdge> edges;
-	public MindMapGraphView() {
+	public MindMapGraphView(int width, int height) {
 		this.setLayout(null);
-		this.setSize(400, 400);
+		this.setPreferredSize(new Dimension(width, height));
 		nodes = new ArrayList<MindMapNodeView>();
 	}
 	
 	public void addNode(MindMapNodeView node) {
-		node.setBounds(node.getX(), node.getY(), node.getWidth(), node.getHeight());
-		System.out.println(""+node.getX() + node.getY());
 		nodes.add(node);
 		add(node);
 		this.repaint();

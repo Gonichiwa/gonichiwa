@@ -20,7 +20,7 @@ public class MindMapTextAreaControllerTest extends JFrame {
 		controller = new MindMapTextAreaController(model, view);
 		
 		// set model and test update method in controller.
-		model.buildNewTree("kim\n\tjoon\n\thello\n\t\thi");   
+		model.tree.buildTree("kim\n\tjoon\n\thello\n\t\thi");   
 		
 		this.add(view);
 		

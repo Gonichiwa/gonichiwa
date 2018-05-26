@@ -1,5 +1,7 @@
 package test.controller;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -12,23 +14,20 @@ public class MindMapGraphControllerTest extends JFrame {
 	MindMapGraphView view;
 	MindMapGraphController controller; 
 	
+	final int INITIAL_WIDTH = 400;
+	final int INITIAL_HEIGHT = 400;
+	
 	public MindMapGraphControllerTest() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		model = new MindMapModel();
-		view = new MindMapGraphView();
+		view = new MindMapGraphView(INITIAL_WIDTH, INITIAL_HEIGHT);
 		controller = new MindMapGraphController(model, view);
-		model.buildNewTree("hi\n\tkim\n");
-		controller.drawGraph();
-		
-		JButton button = new JButton("test");
-		button.setLocation(10, 10);
-		view.add(button);
-
-		System.out.println(view.getComponentCount());
 		this.add(view);
-		
 		this.setSize(400, 400);
 		this.setVisible(true);
+
+		
+		model.tree.buildTree("hi\n\tnice\n");
 	}
 	
 	

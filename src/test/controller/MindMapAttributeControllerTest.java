@@ -19,7 +19,7 @@ public class MindMapAttributeControllerTest extends JFrame {
 		view = new MindMapAttributeView();
 		controller = new MindMapAttributeController(model, view);
 		
-		model.buildNewTree("hi\n\tkim");		// build small tree
+		model.tree.buildTree("hi\n\tkim");		// build small tree
 		model.setNodeColor(1, 255, 255, 0);		// modify one node here
 		model.setNodeLocation(1, 120, 120);		// modify one node here
 		model.setNodeSize(1, 50, 50);			// modify one node here

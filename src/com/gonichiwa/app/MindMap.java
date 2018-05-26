@@ -2,6 +2,8 @@ package com.gonichiwa.app;
 
 import java.awt.BorderLayout;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
@@ -9,11 +11,16 @@ import com.gonichiwa.controller.MindMapAttributeController;
 import com.gonichiwa.controller.MindMapGraphController;
 import com.gonichiwa.controller.MindMapTextAreaController;
 import com.gonichiwa.model.MindMapModel;
+import com.gonichiwa.view.MindMapGraphView;
 import com.gonichiwa.view.MindMapMenuBar;
 import com.gonichiwa.view.MindMapToolBar;
 
 public class MindMap extends JFrame implements Runnable {
 	MindMapModel model;
+	
+	MindMapGraphView graphView;
+	
+	
 	MindMapTextAreaController textAreaController;
 	MindMapAttributeController attributeController;
 	MindMapGraphController graphController;
@@ -24,14 +31,18 @@ public class MindMap extends JFrame implements Runnable {
 	JSplitPane centerPane;
 	JSplitPane graphPane;
 	
+	private static final int INITIAL_WIDTH = 400;
+	private static final int INITIAL_HEIGHT = 400;
 	
 	public MindMap() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		model = new MindMapModel();
+		
+		graphView = new MindMapGraphView(INITIAL_WIDTH, INITIAL_HEIGHT);
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
-		graphController = new MindMapGraphController(model);
+		graphController = new MindMapGraphController(model, graphView);
 		//utilController = new MindMapUtilController(model);
 
 //		menuBar = new MindMapMenuBar();
