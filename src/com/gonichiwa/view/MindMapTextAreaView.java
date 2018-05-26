@@ -3,23 +3,30 @@ package com.gonichiwa.view;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class MindMapTextAreaView extends JPanel {
+import com.gonichiwa.model.MindMapModel;
+
+public class MindMapTextAreaView extends JPanel implements Observer {
 	
 	JScrollPane textAreaScrollPane;
 	JTextArea mindMapBuildingTextArea;
 	JButton textApplyToModelButton;
+	MindMapModel model;
 	
-	public MindMapTextAreaView() {
+	public MindMapTextAreaView(MindMapModel model) {
 		this.setLayout(new BorderLayout());
 		initSubViews();
 		this.add(textAreaScrollPane, BorderLayout.CENTER);
 		this.add(textApplyToModelButton, BorderLayout.SOUTH);
+		this.model = model;
+		this.model.tree.addObserver(this);
 	}
 	
 	public void initSubViews() {
@@ -48,6 +55,12 @@ public class MindMapTextAreaView extends JPanel {
 	
 	public void addApplyButtonListener(ActionListener l) {
 		textApplyToModelButton.addActionListener(l);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		setText(model.tree.toString());
 	}
 	
 }

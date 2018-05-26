@@ -16,7 +16,7 @@ public class MindMapTextAreaControllerTest extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		model = new MindMapModel();
-		view = new MindMapTextAreaView();
+		view = new MindMapTextAreaView(model);
 		controller = new MindMapTextAreaController(model, view);
 		
 		// set model and test update method in controller.

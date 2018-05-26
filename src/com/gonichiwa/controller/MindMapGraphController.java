@@ -58,7 +58,6 @@ public class MindMapGraphController implements Observer {
 		node.setX(centerX - MindMapNodeView.MIN_SIZE);
 		node.setY(centerY - MindMapNodeView.MIN_SIZE);
 		MindMapNodeView nodeView = new MindMapNodeView(node);
-		System.out.println("size is" + nodeView.preferredSize());
 		node.setWidth(nodeView.getPreferredSize().width);
 		node.setHeight(nodeView.getPreferredSize().height);
 		view.addNode(nodeView);
@@ -75,7 +74,6 @@ public class MindMapGraphController implements Observer {
 		// get distance.
 		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_SIZE/Math.sin(theta/2) + 10 : 40; // 10 is debug offset.
 		
-		
 		direction.normalize();
 		System.out.println(node.getName() + "'s direction is " + direction.getX() +", "+ direction.getY());
 		direction.mult(distance);
@@ -84,10 +82,10 @@ public class MindMapGraphController implements Observer {
 		for(MindMapNode child : node.getChildren()) {
 		
 			makeNodeView(child,
-					centerX+(int)direction.getX(),
-					centerY+(int)direction.getY(),
-					theta, 
-					direction.copy().normalize().rotate(-theta/2));
+						 centerX+(int)direction.getX(),
+						 centerY+(int)direction.getY(),
+						 theta, 
+						 direction.copy().normalize().rotate(-theta/2));
 			
 			direction.rotate(theta);
 		}

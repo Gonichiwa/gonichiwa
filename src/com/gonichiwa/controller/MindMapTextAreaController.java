@@ -23,13 +23,13 @@ import com.gonichiwa.view.MindMapTextAreaView;
  * @author YONG_JOON_KIM
  *
  */
-public class MindMapTextAreaController implements Observer {
+public class MindMapTextAreaController {
 	private MindMapTextAreaView view;
 	private MindMapModel model;
 	private ApplyActionListener listener;
 	
 	public MindMapTextAreaController(MindMapModel model) {
-		this(model, new MindMapTextAreaView());
+		this(model, new MindMapTextAreaView(model));
 	}
 	
 	/**
@@ -44,7 +44,6 @@ public class MindMapTextAreaController implements Observer {
 		listener = new ApplyActionListener();
 		this.model = model;
 		this.view  = view;
-		this.model.addObserver(this);
 		this.view.addApplyButtonListener(listener);
 	}
 	
@@ -89,20 +88,5 @@ public class MindMapTextAreaController implements Observer {
 				JOptionPane.showMessageDialog(view, formatErr.getMessage(), "Invalid format", 2);
 			}
 		}
-	}
-
-	/**
-	 * Observer method
-	 * 
-	 * when model has changed, it will perform.
-	 * 
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		view.setText(model.toString());
-		// debugging code
-		System.out.println("new tree has been set");
-		System.out.println(model);
 	}
 }

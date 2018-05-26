@@ -26,7 +26,7 @@ public class MindMapTextAreaViewTest extends JFrame {
 	}
 	
 	public void initSubView() {
-		view = new MindMapTextAreaView();
+		view = new MindMapTextAreaView(model);
 	}
 	
 	public static void main(String[] args) {
