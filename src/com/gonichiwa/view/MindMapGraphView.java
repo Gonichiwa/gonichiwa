@@ -23,6 +23,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 	
 	private MindMapModel model;
 	private ArrayList<MindMapNodeView> nodes;
+	private ArrayList<MindMapEdge> edges;
+	private MouseListener nodeMouseListener;
 	
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
@@ -30,6 +32,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(width, height));
 		nodes = new ArrayList<MindMapNodeView>();
+		edges = new ArrayList<MindMapEdge>();
+	}
+	
+	public void addNodeMouseListener(MouseListener l) {
+		nodeMouseListener = l;
 	}
 	
 	public void addNode(MindMapNodeView node) {
@@ -45,6 +52,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	
 	public void clearNodes() {
 		nodes.clear();
+		edges.clear();
 		this.removeAll();
 	}
 	
@@ -61,12 +69,15 @@ public class MindMapGraphView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		this.clearNodes();
-		this.removeAll();
-		drawGraph();
+		if(o instanceof MindMapNode) {
+			this.repaint();
+		} else {
+			this.clearNodes();
+			this.removeAll();
+			drawGraph();
+		}
 	}
 	
-
 	public void drawGraph() {
 		System.out.println("pane size is" + this.getPreferredSize());
 		makeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
@@ -85,12 +96,14 @@ public class MindMapGraphView extends JPanel implements Observer {
 		double distance = 0;
 		
 		// make NodeView
+		
 		System.out.println(node.getName() + " is making...");
-		node.setX(centerX - MindMapNodeView.MIN_SIZE);
-		node.setY(centerY - MindMapNodeView.MIN_SIZE);
-		MindMapNodeView nodeView = new MindMapNodeView(node);
-		node.setWidth(nodeView.getPreferredSize().width);
-		node.setHeight(nodeView.getPreferredSize().height);
+		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY);
+		nodeView.addMouseListener(nodeMouseListener);
+		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
+		node.initViewAttribute(nodeView.getX(), nodeView.getY(), nodeView.getPreferredSize().width, nodeView.getPreferredSize().height);
+		node.addObserver(this);
+		// node.setColor()
 		this.addNode(nodeView);
 				
 		// get number of children
@@ -117,25 +130,50 @@ public class MindMapGraphView extends JPanel implements Observer {
 						 centerY+(int)direction.getY(),
 						 theta, 
 						 direction.copy().normalize().rotate(-theta/2));
-			
+			edges.add(new MindMapEdge(node, child));
 			direction.rotate(theta);
 		}
 	}
 	
-//	public void paint(Graphics g) {
-//		Graphics2D g2d = (Graphics2D) g;
-//		QuadCurve2D q2 = new QuadCurve2D.Float();
-//		g2d.setStroke(new BasicStroke(4));
-//		
-//		// is that ok for each NodeView to have parent information? 
-//		// isn't that domain logic? or is it view logic?
-//		for(MindMapNodeView node : nodes) {
-//			if(node.hasParent()) {
-//				q2.setCurve(node.getLocation(), new Point(400, 0), node.getParentLocation());
-//				g2d.draw(q2);
-//			}
-//		}
-//	}
+	public void paint(Graphics g) {
+		super.paint(g);
+		Graphics2D g2d = (Graphics2D) g;
+		QuadCurve2D q2 = new QuadCurve2D.Float();
+		g2d.setStroke(new BasicStroke(1));
+		
+		// is that ok for each NodeView to have parent information? 
+		// isn't that domain logic? or is it view logic?
+		for(MindMapEdge edge : edges) {
+			g2d.drawLine(edge.getX1(), edge.getY1(), edge.getX2(), edge.getY2());
+//			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
+//			g2d.draw(q2);
+		}
+	}
+	
+	private class MindMapEdge {
+		private MindMapNode from;
+		private MindMapNode to;
+		public MindMapEdge(MindMapNode from, MindMapNode to) {
+			this.from = from;
+			this.to = to;
+		}
+		
+		public int getX1() {
+			return from.getX() + (from.getWidth()/2); 
+		}
+		
+		public int getX2() {
+			return to.getX() + (to.getWidth()/2); 
+		}
+		
+		public int getY1() {
+			return from.getY() + (from.getHeight()/2); 
+		}
+		
+		public int getY2() {
+			return to.getY() + (to.getHeight()/2); 
+		}
+	}
 }
 
 

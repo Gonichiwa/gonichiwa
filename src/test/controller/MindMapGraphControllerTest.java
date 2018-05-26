@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import com.gonichiwa.controller.MindMapGraphController;
 import com.gonichiwa.model.MindMapModel;
+import com.gonichiwa.view.MindMapAttributeView;
 import com.gonichiwa.view.MindMapGraphView;
 
 public class MindMapGraphControllerTest extends JFrame {
@@ -21,7 +22,7 @@ public class MindMapGraphControllerTest extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		model = new MindMapModel();
 		view = new MindMapGraphView(model, INITIAL_WIDTH, INITIAL_HEIGHT);
-		controller = new MindMapGraphController(model, view);
+		controller = new MindMapGraphController(model, view, new MindMapAttributeView());
 		this.add(view);
 		this.setSize(400, 400);
 		this.setVisible(true);

@@ -65,6 +65,7 @@ public class MindMapAttributeView extends JPanel {
 	public void setNode(NodeDataDeliver node) {
 		this.node = node;
 		attributePane.displayNode(node);
+		this.revalidate();
 	}
 	
 	/**
