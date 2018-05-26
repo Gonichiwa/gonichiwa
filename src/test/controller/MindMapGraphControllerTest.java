@@ -20,7 +20,7 @@ public class MindMapGraphControllerTest extends JFrame {
 	public MindMapGraphControllerTest() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		model = new MindMapModel();
-		view = new MindMapGraphView(INITIAL_WIDTH, INITIAL_HEIGHT);
+		view = new MindMapGraphView(model, INITIAL_WIDTH, INITIAL_HEIGHT);
 		controller = new MindMapGraphController(model, view);
 		this.add(view);
 		this.setSize(400, 400);

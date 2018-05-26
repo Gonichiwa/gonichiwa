@@ -5,7 +5,10 @@ import java.awt.BorderLayout;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 
 import com.gonichiwa.controller.MindMapAttributeController;
 import com.gonichiwa.controller.MindMapGraphController;
@@ -30,16 +33,16 @@ public class MindMap extends JFrame implements Runnable {
 	
 	JSplitPane centerPane;
 	JSplitPane graphPane;
-	
-	private static final int INITIAL_WIDTH = 400;
-	private static final int INITIAL_HEIGHT = 400;
+
+	private static final int GRAPH_WIDTH = 600;
+	private static final int GRAPH_HEIGHT = 600;
 	
 	public MindMap() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		model = new MindMapModel();
 		
-		graphView = new MindMapGraphView(INITIAL_WIDTH, INITIAL_HEIGHT);
+		graphView = new MindMapGraphView(model, GRAPH_WIDTH, GRAPH_HEIGHT);
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
 		graphController = new MindMapGraphController(model, graphView);
@@ -61,7 +64,6 @@ public class MindMap extends JFrame implements Runnable {
 		
 		centerPane.setResizeWeight(0.2);
 		graphPane.setResizeWeight(0.9);
-		
 		graphPane.setLeftComponent(graphController.getView());
 		graphPane.setRightComponent(attributeController.getView());
 		centerPane.setLeftComponent(textAreaController.getView());
@@ -70,7 +72,8 @@ public class MindMap extends JFrame implements Runnable {
 		add(centerPane, BorderLayout.CENTER);
 		//setMenuBar(utilController.getMenubar());
 		//add(utilController.getToolBar(), BorderLayout.NORTH);
-		setSize(800, 600);
+//		setSize(800, 600);      may be we don't need this.
+		pack();
 		setVisible(true);
 	}
 	
