@@ -2,6 +2,8 @@ package com.gonichiwa.view;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.EventListener;
+import java.util.HashMap;
 import java.awt.*;
 import javax.swing.filechooser.*;
 
@@ -80,6 +82,7 @@ public class MindMapMenuBar {
 		JMenu fileMenu = new JMenu("File");
 		String[] fileItemTitle = {"New", "Open", "Save", "Save As..", "Close", "Export To.."};
 
+
 		neww = new JMenuItem(fileItemTitle[0]);
 		open = new JMenuItem(fileItemTitle[1]);
 		save = new JMenuItem(fileItemTitle[2]);
@@ -99,6 +102,7 @@ public class MindMapMenuBar {
 		JMenuItem[] editItem = new JMenuItem[5];
 		String[] editItemTitle = { "Undo", "Redo", "Delete", "Apply", "Change"};
 
+
 		undo = new JMenuItem(editItemTitle[0]);
 		redo = new JMenuItem(editItemTitle[1]);
 		delete = new JMenuItem(editItemTitle[2]);
@@ -115,6 +119,7 @@ public class MindMapMenuBar {
 		JMenu viewMenu = new JMenu("View");
 		JMenuItem[] viewItem = new JMenuItem[5];
 		String[] viewItemTitle = {"Zoom In", "Zoom Out", "Fit Map", "Hide Editor Pane", "Hide Attribute Pane"};
+
 		
 		zoomin = new JMenuItem(viewItemTitle[0]);
 		zoomout = new JMenuItem(viewItemTitle[1]);
@@ -136,8 +141,5 @@ public class MindMapMenuBar {
 		/*
 		setJMenuBar(menuBar);
 		*/
-	}
-	
-	
-	
+
 }

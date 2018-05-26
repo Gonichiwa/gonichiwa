@@ -26,7 +26,7 @@ public class MindMapTextAreaViewTest extends JFrame {
 	}
 	
 	public void initSubView() {
-		view = new MindMapTextAreaView();
+		view = new MindMapTextAreaView(model);
 	}
 	
 	public static void main(String[] args) {
@@ -44,7 +44,7 @@ public class MindMapTextAreaViewTest extends JFrame {
 			// TODO Auto-generated method stub
 			resultText = view.getText();
 			try {
-				model.buildNewTree(resultText);
+				model.tree.buildTree(resultText);
 			} catch(IllegalArgumentException modelerr) {
 				System.out.println(modelerr.getMessage());
 			}

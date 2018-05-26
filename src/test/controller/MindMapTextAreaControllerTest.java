@@ -16,11 +16,11 @@ public class MindMapTextAreaControllerTest extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		model = new MindMapModel();
-		view = new MindMapTextAreaView();
+		view = new MindMapTextAreaView(model);
 		controller = new MindMapTextAreaController(model, view);
 		
 		// set model and test update method in controller.
-		model.buildNewTree("kim\n\tjoon\n\thello\n\t\thi");   
+		model.tree.buildTree("kim\n\tjoon\n\thello\n\t\thi");   
 		
 		this.add(view);
 		

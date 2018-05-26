@@ -1,13 +1,14 @@
 package com.gonichiwa.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 
-class MindMapNode implements NodeDataDeliver {
+public class MindMapNode extends Observable implements NodeDataDeliver {
 	private static int idGenerator = 0;
 	private final int id;
-	private int x, y, width, height;
+	private int x, y, width, height; 
 	private int red, green, blue, alpha;
 	private String name;
 	
@@ -37,6 +38,12 @@ class MindMapNode implements NodeDataDeliver {
 	}
 	
 	// 3. node method implementation
+	public void initViewAttribute(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
 	
 	public void addChild(MindMapNode child) {
 		children.add(child);
@@ -67,6 +74,7 @@ class MindMapNode implements NodeDataDeliver {
 	public ArrayList<MindMapNode> getChildren() {
 		return children;
 	}
+
 	public MindMapNode getParent() {
 		return parent;
 	}
@@ -115,18 +123,26 @@ class MindMapNode implements NodeDataDeliver {
 	 */
 	public void setX(int x) {
 		this.x = x;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setY(int y) {
 		this.y = y;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setWidth(int width) {
 		this.width = width;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setHeight(int height) {
 		this.height = height;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setRed(int redValue) {
@@ -136,6 +152,8 @@ class MindMapNode implements NodeDataDeliver {
 			red = 0;
 		else
 			red = redValue;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setGreen(int greenValue) {
@@ -145,6 +163,8 @@ class MindMapNode implements NodeDataDeliver {
 			green = 0;
 		else
 			green = greenValue;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setBlue(int blueValue) {
@@ -154,6 +174,8 @@ class MindMapNode implements NodeDataDeliver {
 			blue = 0;
 		else
 			blue = blueValue;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setAlpha(int alphaValue) {
@@ -163,11 +185,14 @@ class MindMapNode implements NodeDataDeliver {
 			alpha = 0;
 		else
 			alpha = alphaValue;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public static void initIDGenerator() {
 		idGenerator = 0;
 	}
+
 }
 
 

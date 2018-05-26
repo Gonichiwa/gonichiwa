@@ -21,7 +21,7 @@ class MindMapTreeFactory {
 	 * @return
 	 * 		the tree made by the given text.
 	 */
-	static MindMapTree build(String text) {
+	static MindMapNode build(String text) {
 		MindMapTree tree = new MindMapTree();   // tree to be return
 		Scanner scanner = new Scanner(text);	// scanner 
 		ArrayList<String> lines = new ArrayList<String>();   // line stack
@@ -42,7 +42,7 @@ class MindMapTreeFactory {
 		// build tree recursively
 		recMakeNode(tree.getRoot(), lines, 1);
 		
-		return tree;
+		return tree.getRoot();
 	}
 	
 	

@@ -25,18 +25,6 @@ public class MindMapModel extends Observable{
 		fileManager = new MindMapFileManager();
 	}
 
-	/**
-	 * Modifier
-	 * build tree with a given text.
-	 * @param text
-	 * 		the text which is given from TextAreaPane.
-	 */
-	public void buildNewTree(String text) {
-		tree = MindMapTreeFactory.build(text);
-		setChanged();
-		notifyObservers();
-	}
-	
 	
 	/**
 	 * remove the certain node which has given Id.

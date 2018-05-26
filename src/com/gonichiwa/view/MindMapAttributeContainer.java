@@ -80,6 +80,10 @@ class MindMapAttributeContainer extends JPanel {
 		setValue(key, String.valueOf(value));
 	}
 	
+	private void setValue(String key, double value) {
+		setValue(key, String.valueOf(value));
+	}
+	
 	private void validateKey(String key) {
 		if(!attributePanelDict.containsKey(key)) 
 			throw new NoSuchElementException("there is no such attribute");
