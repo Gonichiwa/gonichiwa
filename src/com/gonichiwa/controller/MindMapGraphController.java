@@ -1,5 +1,6 @@
 package com.gonichiwa.controller;
 
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,44 +22,35 @@ import com.gonichiwa.util.MindMapVector;
 
 public class MindMapGraphController {
 	private MindMapModel model;
-	private MindMapGraphView view;
+	private MindMapGraphView graphView;
 	private MindMapAttributeView attributeView;
+	private Cursor cursor;
 	
-	public MindMapGraphController(MindMapModel model, MindMapGraphView view, MindMapAttributeView attributeView) {
+	public MindMapGraphController(MindMapModel model, MindMapGraphView graphView, MindMapAttributeView attributeView) {
 		this.model = model;
-		this.view = view;
+		this.graphView = graphView;
 		this.attributeView = attributeView;
-		this.view.addMouseListener(new GraphViewPaneMouseListener());
-		this.view.addMouseMotionListener(new GraphViewPaneMouseListener());
-		this.view.addNodeMouseAdapter(new NodeMouseListener());
+		this.graphView.addMouseListener(new GraphViewPaneMouseListener());
+		this.graphView.addMouseMotionListener(new GraphViewPaneMouseListener());
+		this.graphView.addNodeMouseAdapter(new NodeMouseListener());
 	}
 	
 	public MindMapGraphView getView() {
-		return view;
+		return graphView;
 	}
 	
 	private class GraphViewPaneMouseListener extends MouseAdapter { 
 		
+		//TODO: moving pane.
+		//TODO: zooming pane.
 		private int x, y;
 
 		public void mousePressed(MouseEvent e) {
 			attributeView.dismissNode();
-//			x = e.getX();
-//			y = e.getY();
-//			System.out.println("hi");
 		}
 		
 		public void mouseDragged(MouseEvent e) {
-			
-//			int dx = e.getX() - x;
-//			int dy = e.getY() - y;
-//
-//			if (view.getBounds().contains(x, y)) {
-//				view.setLocation(view.getX() + dx, view.getY() + dy);
-//				view.repaint();
-//			}
-//			x += dx;
-//			y += dy;
+
 		}
 	}
 	
@@ -69,8 +61,6 @@ public class MindMapGraphController {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
-			System.out.println("clicked");
 		}
 
 		@Override
@@ -93,30 +83,30 @@ public class MindMapGraphController {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+			graphView.setCursor(cursor);
 			System.out.println("enter");
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+			cursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+			graphView.setCursor(cursor);
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			
 			System.out.println("hi");
 			int dx = e.getLocationOnScreen().x - x;
 			int dy = e.getLocationOnScreen().y - y;
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
-			
-//			if (node.getBounds().contains(x, y)) {
-				int newX = node.getX() + dx;
-				int newY = node.getY() + dy;
-				model.setNodeLocation(node.getID(), newX, newY);
-//				node.setLocation(node.getX() + dx, node.getY() + dy);
-//				node.repaint();
-//			}
+
+			int newX = node.getX() + dx;
+			int newY = node.getY() + dy;
+			model.setNodeLocation(node.getID(), newX, newY);
+
 			x += dx;
 			y += dy;
 		}
