@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.QuadCurve2D;
@@ -24,7 +25,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private MindMapModel model;
 	private ArrayList<MindMapNodeView> nodes;
 	private ArrayList<MindMapEdge> edges;
-	private MouseListener nodeMouseListener;
+	private MouseAdapter nodeMouseListener;
 	
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
@@ -35,7 +36,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		edges = new ArrayList<MindMapEdge>();
 	}
 	
-	public void addNodeMouseListener(MouseListener l) {
+	public void addNodeMouseAdapter(MouseAdapter l) {
 		nodeMouseListener = l;
 	}
 	
@@ -100,6 +101,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		System.out.println(node.getName() + " is making...");
 		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY);
 		nodeView.addMouseListener(nodeMouseListener);
+		nodeView.addMouseMotionListener(nodeMouseListener);
 		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
 		node.initViewAttribute(nodeView.getX(), nodeView.getY(), nodeView.getPreferredSize().width, nodeView.getPreferredSize().height);
 		node.addObserver(this);

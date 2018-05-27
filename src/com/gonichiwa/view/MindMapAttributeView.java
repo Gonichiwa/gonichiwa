@@ -1,6 +1,8 @@
 package com.gonichiwa.view;
 
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -8,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
+import com.gonichiwa.model.MindMapNode;
 
 /**
  * MindMapAttributeView
@@ -22,12 +25,13 @@ import com.gonichiwa.mindmapinterface.NodeDataDeliver;
  * 
  *
  */
-public class MindMapAttributeView extends JPanel {
+public class MindMapAttributeView extends JPanel implements Observer {
 	
 	private MindMapAttributeContainer attributePane;
 	private JButton changeButton;
 	private BoxLayout layout;
-	private NodeDataDeliver node;
+	private MindMapNode node;
+	
 
 	/**
 	 * Constructor
@@ -62,8 +66,20 @@ public class MindMapAttributeView extends JPanel {
 		return node;
 	}
 	
-	public void setNode(NodeDataDeliver node) {
+	public boolean hasNodeToDisplay() {
+		return node != null;
+	}
+	
+	public void dismissNode() {
+		node.deleteObserver(this);
+		node = null;
+		attributePane.displayNode(node);
+		this.revalidate();
+	}
+	
+	public void setNode(MindMapNode node) {
 		this.node = node;
+		node.addObserver(this);
 		attributePane.displayNode(node);
 		this.revalidate();
 	}
@@ -80,5 +96,16 @@ public class MindMapAttributeView extends JPanel {
 	 */
 	public String getValue(String key) {
 		return attributePane.getValue(key);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		if(!hasNodeToDisplay())
+			setNode((MindMapNode)o);
+		else {
+			attributePane.displayNode(node);
+			this.revalidate();
+		}
 	}
 }

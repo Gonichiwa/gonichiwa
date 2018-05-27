@@ -28,9 +28,9 @@ public class MindMapGraphController {
 		this.model = model;
 		this.view = view;
 		this.attributeView = attributeView;
-//		this.view.addMouseListener(new GraphViewPaneMouseListener());
-//		this.view.addMouseMotionListener(new GraphViewPaneMouseListener());
-		this.view.addNodeMouseListener(new NodeMouseListener());
+		this.view.addMouseListener(new GraphViewPaneMouseListener());
+		this.view.addMouseMotionListener(new GraphViewPaneMouseListener());
+		this.view.addNodeMouseAdapter(new NodeMouseListener());
 	}
 	
 	public MindMapGraphView getView() {
@@ -42,41 +42,46 @@ public class MindMapGraphController {
 		private int x, y;
 
 		public void mousePressed(MouseEvent e) {
-			x = e.getX();
-			y = e.getY();
-			System.out.println("hi");
+			attributeView.dismissNode();
+//			x = e.getX();
+//			y = e.getY();
+//			System.out.println("hi");
 		}
 		
 		public void mouseDragged(MouseEvent e) {
 			
-			int dx = e.getX() - x;
-			int dy = e.getY() - y;
-
-			if (view.getBounds().contains(x, y)) {
-				view.setLocation(view.getX() + dx, view.getY() + dy);
-				view.repaint();
-			}
-			x += dx;
-			y += dy;
+//			int dx = e.getX() - x;
+//			int dy = e.getY() - y;
+//
+//			if (view.getBounds().contains(x, y)) {
+//				view.setLocation(view.getX() + dx, view.getY() + dy);
+//				view.repaint();
+//			}
+//			x += dx;
+//			y += dy;
 		}
 	}
 	
-	private class NodeMouseListener implements MouseListener {
-
+	private class NodeMouseListener extends MouseAdapter {
+		int x;
+		int y;
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			MindMapNodeView node = (MindMapNodeView) e.getSource();
-			System.out.println(node);
-			attributeView.setNode(node.getNode());
+			
 			System.out.println("clicked");
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
+			MindMapNodeView node = (MindMapNodeView) e.getSource();
+			System.out.println(node);
+			attributeView.setNode(node.getNode());
 			System.out.println("pressed");
-
+			x = e.getLocationOnScreen().x;
+			y = e.getLocationOnScreen().y;
 		}
 
 		@Override
@@ -88,6 +93,7 @@ public class MindMapGraphController {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
+			
 			System.out.println("enter");
 		}
 
@@ -95,6 +101,24 @@ public class MindMapGraphController {
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			System.out.println("hi");
+			int dx = e.getLocationOnScreen().x - x;
+			int dy = e.getLocationOnScreen().y - y;
+			MindMapNodeView node = (MindMapNodeView) e.getSource();
+			
+//			if (node.getBounds().contains(x, y)) {
+				int newX = node.getX() + dx;
+				int newY = node.getY() + dy;
+				model.setNodeLocation(node.getID(), newX, newY);
+//				node.setLocation(node.getX() + dx, node.getY() + dy);
+//				node.repaint();
+//			}
+			x += dx;
+			y += dy;
 		}
 		
 	}
