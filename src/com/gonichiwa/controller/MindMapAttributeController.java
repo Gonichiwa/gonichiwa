@@ -73,6 +73,8 @@ public class MindMapAttributeController {
 	private class ChangeActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(!view.hasNodeToDisplay())
+				return;
 			
 			try {
 				// get All the value from MindMapAttributeView

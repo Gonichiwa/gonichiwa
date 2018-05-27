@@ -28,8 +28,8 @@ public class MindMapGraphController {
 		this.model = model;
 		this.view = view;
 		this.attributeView = attributeView;
-//		this.view.addMouseListener(new GraphViewPaneMouseListener());
-//		this.view.addMouseMotionListener(new GraphViewPaneMouseListener());
+		this.view.addMouseListener(new GraphViewPaneMouseListener());
+		this.view.addMouseMotionListener(new GraphViewPaneMouseListener());
 		this.view.addNodeMouseListener(new NodeMouseListener());
 	}
 	
@@ -42,22 +42,23 @@ public class MindMapGraphController {
 		private int x, y;
 
 		public void mousePressed(MouseEvent e) {
-			x = e.getX();
-			y = e.getY();
-			System.out.println("hi");
+			attributeView.dismissNode();
+//			x = e.getX();
+//			y = e.getY();
+//			System.out.println("hi");
 		}
 		
 		public void mouseDragged(MouseEvent e) {
 			
-			int dx = e.getX() - x;
-			int dy = e.getY() - y;
-
-			if (view.getBounds().contains(x, y)) {
-				view.setLocation(view.getX() + dx, view.getY() + dy);
-				view.repaint();
-			}
-			x += dx;
-			y += dy;
+//			int dx = e.getX() - x;
+//			int dy = e.getY() - y;
+//
+//			if (view.getBounds().contains(x, y)) {
+//				view.setLocation(view.getX() + dx, view.getY() + dy);
+//				view.repaint();
+//			}
+//			x += dx;
+//			y += dy;
 		}
 	}
 	
