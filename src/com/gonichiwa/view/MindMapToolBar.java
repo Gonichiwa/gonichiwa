@@ -55,20 +55,20 @@ public class MindMapToolBar{
 		ImageIcon icon;
 		JButton[] btItem= new JButton[12];
 		String[] btName = {"New","Open", "Save", "Save As..", "Close", "Apply", "Change", "Zoom In", "Zoom Out","Fit Map", "Undo", "Redo"};
-		String[] btImages = {""}; //Image Directory
+		String[] btImages = {"images/dummy.png"}; //Image Directory
 
-		neww = new JButton(btImages[0]);
-		open = new JButton(btImages[0]);
-		save = new JButton(btImages[0]);
-		saveas = new JButton(btImages[0]);
-		close= new JButton(btImages[0]);
-		apply = new JButton(btImages[0]);
-		change = new JButton(btImages[0]);
-		zoomin = new JButton(btImages[0]);
-		zoomout = new JButton(btImages[0]);
-		fitmap = new JButton(btImages[0]);
-		undo = new JButton(btImages[0]);
-		redo = new JButton(btImages[0]);
+		neww = new JButton(new ImageIcon("images/setsize/newicon.png"));
+		open = new JButton(new ImageIcon("images/setsize/openicon.png"));
+		save = new JButton(new ImageIcon("images/setsize/saveicon.png"));
+		saveas = new JButton(new ImageIcon("images/setsize/saveasicon.png"));
+		close= new JButton(new ImageIcon("images/setsize/exiticon.png"));
+		apply = new JButton(new ImageIcon("images/setsize/applyicon.png"));
+		change = new JButton(new ImageIcon("images/setsize/changeicon.png"));
+		zoomin = new JButton(new ImageIcon(btImages[0]));
+		zoomout = new JButton(new ImageIcon(btImages[0]));
+		fitmap = new JButton(new ImageIcon(btImages[0]));
+		undo = new JButton(new ImageIcon(btImages[0]));
+		redo = new JButton(new ImageIcon(btImages[0]));
 		
 		neww.setToolTipText(btName[0]);
 		open.setToolTipText(btName[1]);

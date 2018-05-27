@@ -12,12 +12,10 @@ public class MindMapMenuBarTest extends JFrame {
 	
 		//MenuBar
 		MindMapMenuBar menuTest = new MindMapMenuBar();
-		menuTest.createMenu();
 		setJMenuBar(menuTest.getMenu());
 		//ToolBar
 		Container contentPane = getContentPane();
 		MindMapToolBar toolTest = new MindMapToolBar();
-		toolTest.createToolBar();
 		contentPane.add(toolTest.getToolBar(),BorderLayout.NORTH);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,5 +1,6 @@
 package com.gonichiwa.controller;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.gonichiwa.model.MindMapModel;
@@ -8,6 +9,7 @@ import com.gonichiwa.view.MindMapToolBar;
 
 public class MindMapMenuController {
 
+	private MenuActionListener actionListener;
 	
 	private MindMapMenuBar menuBar;
 	private MindMapToolBar toolBar;
@@ -18,6 +20,11 @@ public class MindMapMenuController {
 		this.menuBar = menuBar;
 		this.toolBar = toolBar;
 		this.model = model;
+		
+		
+		menuBar.addNewwListener(getActionListener());
+		menuBar.addOpenListener(getActionListener());
+		menuBar.addCloseListener(getActionListener());
 		
 	}
 	
@@ -44,5 +51,64 @@ public class MindMapMenuController {
 	}
 	
 	//make action listener later;
+	
+	public MenuActionListener getActionListener() {
+		return actionListener;
+	}
+	class MenuActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class newwActionListener implements ActionListener{
+				
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class openActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class saveActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class saveasActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class closeActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class exportActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class undoActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	class redoActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
 	
 }
