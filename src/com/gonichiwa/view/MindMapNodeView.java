@@ -32,6 +32,10 @@ public class MindMapNodeView extends JPanel implements Observer {
 		node.addObserver(this);
 	}
 	
+	public int getID() {
+		return id;
+	}
+	
 	public boolean hasParent() {
 		return false;
 	}
@@ -49,7 +53,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.revalidate();
 	}
 	
-	public NodeDataDeliver getNode() {
-		return (NodeDataDeliver) node;
+	public MindMapNode getNode() {
+		return node;
 	}
 }

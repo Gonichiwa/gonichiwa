@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
+import com.gonichiwa.model.MindMapNode;
 
 /**
  * MindMapAttributeView
@@ -29,7 +30,8 @@ public class MindMapAttributeView extends JPanel implements Observer {
 	private MindMapAttributeContainer attributePane;
 	private JButton changeButton;
 	private BoxLayout layout;
-	private NodeDataDeliver node;
+	private MindMapNode node;
+	
 
 	/**
 	 * Constructor
@@ -69,13 +71,15 @@ public class MindMapAttributeView extends JPanel implements Observer {
 	}
 	
 	public void dismissNode() {
+		node.deleteObserver(this);
 		node = null;
 		attributePane.displayNode(node);
 		this.revalidate();
 	}
 	
-	public void setNode(NodeDataDeliver node) {
+	public void setNode(MindMapNode node) {
 		this.node = node;
+		node.addObserver(this);
 		attributePane.displayNode(node);
 		this.revalidate();
 	}
@@ -97,5 +101,11 @@ public class MindMapAttributeView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
+		if(!hasNodeToDisplay())
+			setNode((MindMapNode)o);
+		else {
+			attributePane.displayNode(node);
+			this.revalidate();
+		}
 	}
 }
