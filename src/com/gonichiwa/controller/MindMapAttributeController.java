@@ -131,7 +131,7 @@ public class MindMapAttributeController {
 		int answer = Integer.parseInt(sizeValue);
 		if(answer < 0)
 			throw new IllegalArgumentException("negative size doesn't make sense.");
-		if(answer > 100) 	//TODO: must change this to constant value from MindMapNodeView
+		if(answer > 400) 	//TODO: must change this to constant value from MindMapNodeView
 			throw new IllegalArgumentException("size can not exceed 100");
 		return answer;
 	}
