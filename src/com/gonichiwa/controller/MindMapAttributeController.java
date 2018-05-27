@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 import com.gonichiwa.model.MindMapModel;
+import com.gonichiwa.model.MindMapNode;
 import com.gonichiwa.view.MindMapAttributeView;
 
 /**
@@ -73,6 +74,8 @@ public class MindMapAttributeController {
 	private class ChangeActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(!view.hasNodeToDisplay())
+				return;
 			
 			try {
 				// get All the value from MindMapAttributeView
@@ -105,7 +108,7 @@ public class MindMapAttributeController {
 	 * @param node
 	 * 		the given node to display attributes.
 	 */
-	public void setNode(NodeDataDeliver node) {
+	public void setNode(MindMapNode node) {
 		view.setNode(node);
 	}
 	
