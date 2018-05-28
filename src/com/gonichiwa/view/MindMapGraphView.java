@@ -79,6 +79,12 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 	
+	public void repaintAllNodes() {
+		for(MindMapNodeView node: nodes) {
+			node.repaint();
+		}
+	}
+	
 	public void drawGraph() {
 		System.out.println("pane size is" + this.getPreferredSize());
 		makeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
@@ -176,6 +182,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 			return to.getY() + (to.getHeight()/2); 
 		}
 	}
+	
+	
 }
 
 

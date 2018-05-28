@@ -1,6 +1,7 @@
 package com.gonichiwa.app;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
