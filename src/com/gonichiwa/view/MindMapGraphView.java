@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -26,6 +27,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private ArrayList<MindMapNodeView> nodes;
 	private ArrayList<MindMapEdge> edges;
 	private MouseAdapter nodeMouseListener;
+	private KeyListener nodeKeyListener;
 	
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
@@ -38,6 +40,10 @@ public class MindMapGraphView extends JPanel implements Observer {
 	
 	public void addNodeMouseAdapter(MouseAdapter l) {
 		nodeMouseListener = l;
+	}
+	
+	public void addNodeKeyListener(KeyListener l) {
+		nodeKeyListener = l;
 	}
 	
 	public void addNode(MindMapNodeView node) {
@@ -66,33 +72,78 @@ public class MindMapGraphView extends JPanel implements Observer {
 		for(MindMapNodeView node : nodes) 
 			node.addMouseMotionListener(l);
 	}
+	
+//	@Override 
+//	public void repaint() {
+//		super.repaint();
+//		revalidate();
+//		repaintAllNodes();
+//	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		if(o instanceof MindMapNode) {
 			this.repaint();
-		} else {
-			this.clearNodes();
-			this.removeAll();
+			return;
+		}
+
+		switch((String) arg) {
+		case "NEW":
+			
 			drawGraph();
+			break;
+		case "LOAD":
+		
+			loadGraph();
+			break;
+		default:
+			break;
 		}
 	}
-	
+
 	public void repaintAllNodes() {
 		for(MindMapNodeView node: nodes) {
 			node.repaint();
+			node.revalidate();
 		}
 	}
 	
 	public void drawGraph() {
+		this.clearNodes();
+		this.removeAll();
 		System.out.println("pane size is" + this.getPreferredSize());
-		makeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
+		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
 		this.repaint();
 		this.revalidate();
 	}
 	
-	private void makeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction) {
+	/**
+	 * load Graph from already built tree.
+	 */
+	public void loadGraph() {
+		this.clearNodes();
+		this.removeAll();
+		recLoadNode(model.tree.getRoot());
+		this.repaint();
+		this.revalidate();
+	}
+
+	private void recLoadNode(MindMapNode node) {
+		
+		MindMapNodeView nodeView = new MindMapNodeView(node);
+		nodeView.addMouseListener(nodeMouseListener);
+		nodeView.addMouseMotionListener(nodeMouseListener);
+		nodeView.addKeyListener(nodeKeyListener);
+		addNode(nodeView);
+		node.addObserver(this);
+		for(MindMapNode child : node.getChildren()) {
+			recLoadNode(child);
+			edges.add(new MindMapEdge(node, child));
+		}
+	}
+	
+	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction) {
 		// make node first
 		// TODO: we might need more better algorithm here. 
 		// TODO: using node size not constant.
@@ -108,6 +159,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY);
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
+		nodeView.addKeyListener(nodeKeyListener);
 		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
 		node.initViewAttribute(nodeView.getX(), nodeView.getY(), nodeView.getPreferredSize().width, nodeView.getPreferredSize().height);
 		node.addObserver(this);
@@ -129,11 +181,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 		direction.normalize();
 		System.out.println(node.getName() + "'s direction is " + direction.getX() +", "+ direction.getY());
 		direction.mult(distance);
+		
 		if(theta > Math.PI)
 			theta = Math.PI/2;
+		
 		for(MindMapNode child : node.getChildren()) {
 		
-			makeNodeView(child,
+			recMakeNodeView(child,
 						 centerX+(int)direction.getX(),
 						 centerY+(int)direction.getY(),
 						 theta, 

@@ -72,7 +72,7 @@ public class ResizableBorder implements Border {
                 g2d.setColor(Color.BLACK);
                 g2d.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
             }
-        }
+        } 
     }
 
     private Rectangle getRectangle(int x, int y, int w, int h, int location) {
