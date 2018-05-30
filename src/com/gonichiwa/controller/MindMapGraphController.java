@@ -84,21 +84,17 @@ public class MindMapGraphController {
 		//TODO: zooming pane.
 		
 		public void mouseClicked(MouseEvent e) {
-		
-			graphView.requestFocus();
-			graphView.repaintAllNodes();
-			graphView.revalidate();
-			graphView.repaint();
+
 		}
 		
 		public void mousePressed(MouseEvent e) {
 			attributeView.dismissNode();
-			// why here isn't work???
-//			graphView.requestFocus();
-//			graphView.repaint();
-//			graphView.revalidate();
-//			graphView.repaintAllNodes();
-			
+		}
+		
+		public void mouseReleased(MouseEvent e) {
+			graphView.requestFocus();
+			graphView.repaint();
+			graphView.repaintAllNodes();
 		}
 		
 		public void mouseDragged(MouseEvent e) {
@@ -133,6 +129,9 @@ public class MindMapGraphController {
 			// maybe we can fix here later on.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			attributeView.setNode(node.getNode());
+			node.requestFocus();
+			node.repaint();
+			graphView.repaint();
 			ResizableBorder border = (ResizableBorder) node.getBorder();          
 			cursor = border.getCursor(e);
             startPos = e.getPoint();
