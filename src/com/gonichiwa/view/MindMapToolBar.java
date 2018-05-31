@@ -46,6 +46,12 @@ public class MindMapToolBar{
 	public void addFitmapListener(ActionListener l) {
 		fitmap.addActionListener(l);
 	}
+	public void addUndoListener(ActionListener l) {
+		undo.addActionListener(l);
+	}
+	public void addRedoListener(ActionListener l) {
+		redo.addActionListener(l);
+	}
 	
 	public void createToolBar() {
 	
