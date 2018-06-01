@@ -51,7 +51,6 @@ public class ResizableBorder implements Border {
     @Override
     public void paintBorder(Component component, Graphics g, int x, int y,
             int w, int h) {
-        
     	if (highlighted && !component.hasFocus()) {
     		Graphics2D g2d = (Graphics2D) g;
     		g2d.setColor(Color.GREEN);
@@ -60,6 +59,7 @@ public class ResizableBorder implements Border {
     	}
       
         if (component.hasFocus()) {
+
         	Graphics2D g2d = (Graphics2D) g;
         	g2d.setColor(Color.black);
         	g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

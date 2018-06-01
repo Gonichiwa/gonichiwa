@@ -36,6 +36,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.setPreferredSize(new Dimension(width, height));
 		nodes = new ArrayList<MindMapNodeView>();
 		edges = new ArrayList<MindMapEdge>();
+		this.setFocusable(true);
+		this.setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
 	
 	public void addNodeMouseAdapter(MouseAdapter l) {

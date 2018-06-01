@@ -3,6 +3,8 @@ package com.gonichiwa.controller;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -39,6 +41,13 @@ public class MindMapGraphController {
 		this.graphView.addMouseMotionListener(new GraphViewPaneMouseListener());
 		this.graphView.addNodeMouseAdapter(new NodeMouseListener());
 		this.graphView.addNodeKeyListener(new NodeKeyListener());
+		
+		this.graphView.addFocusListener(new FocusAdapter () {
+
+			public void focusGained(FocusEvent e) {
+				graphView.repaint();
+			}
+		});
 	}
 	
 	public MindMapGraphView getView() {
@@ -88,13 +97,12 @@ public class MindMapGraphController {
 		}
 		
 		public void mousePressed(MouseEvent e) {
-			attributeView.dismissNode();
+			
 		}
 		
 		public void mouseReleased(MouseEvent e) {
+			attributeView.dismissNode();
 			graphView.requestFocus();
-			graphView.repaint();
-			graphView.repaintAllNodes();
 		}
 		
 		public void mouseDragged(MouseEvent e) {
