@@ -75,7 +75,7 @@ public class MindMapAttributeView extends JPanel implements Observer {
 			node.deleteObserver(this);
 			node = null;
 			attributePane.displayNode(node);
-			this.revalidate();
+//			this.repaint();
 		}
 	}
 	

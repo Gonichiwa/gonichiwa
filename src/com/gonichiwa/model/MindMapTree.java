@@ -24,7 +24,13 @@ public class MindMapTree extends Observable {
 	public void buildTree(String text) {
 		root = MindMapTreeFactory.build(text);
 		setChanged();
-		notifyObservers();
+		notifyObservers("NEW");
+	}
+	
+	public void loadTree(MindMapTree tree) {
+		root = tree.root;
+		setChanged();
+		notifyObservers("LOAD");
 	}
 	
 	public MindMapNode getRoot() {
@@ -61,13 +67,15 @@ public class MindMapTree extends Observable {
 		}
 		
 		if(nodeToBeRemoved == root) {
-			removeAllNodes();
+			throw new IllegalArgumentException("can not remove root node");
 			
 		} else {
 			nodeToBeRemoved.getParent().removeChild(nodeID);
 			nodeToBeRemoved.removeAllChildren();;
 			nodeToBeRemoved.setParent(null);
 		}
+		setChanged();
+		notifyObservers("LOAD");
 	}
 	
 	/**

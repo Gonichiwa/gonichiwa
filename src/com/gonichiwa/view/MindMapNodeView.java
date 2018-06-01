@@ -28,21 +28,39 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private MindMapNode node;
 	
 	public MindMapNodeView(MindMapNode node, int centerX, int centerY) {
+		if(node == null) 
+			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
+		
+		// make label center
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    constraints.fill = GridBagConstraints.CENTER;
 	    gridbag.setConstraints(this, constraints);
 	    this.setLayout(gridbag);
+	    
+	    // set custom border
 		setBorder(new ResizableBorder(6));
+		
+		// make label.
 		this.node = node;
 		this.id = node.getID();
 		label = new JLabel(node.getName());
 		label.setAlignmentX(JLabel.CENTER);
 		label.setAlignmentY(JLabel.CENTER);
 		this.add(label);
+		
+		// set geometry.
 		this.setLocation(centerX-(this.getPreferredSize().width/2), centerY-(this.getPreferredSize().height/2));
 		this.setSize(this.getPreferredSize());
+		
+		// add observer.
 		node.addObserver(this);
+	}
+	
+	public MindMapNodeView(MindMapNode node) {
+		this(node, node.getX(), node.getY());
+		setLocation(node.getX(), node.getY());
+		setSize(node.getWidth(), node.getHeight());
 	}
 	
 	public int getID() {

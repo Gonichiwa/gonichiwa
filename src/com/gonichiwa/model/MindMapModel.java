@@ -63,7 +63,7 @@ public class MindMapModel extends Observable{
 		MindMapModel loadedModel = fileManager.load();
 		if(loadedModel != null) {
 			// if there is a actual loadedModel than update model.
-			this.tree = loadedModel.tree;
+			tree.loadTree(loadedModel.tree);
 			this.stateTracker = loadedModel.stateTracker;
 			this.fileManager = loadedModel.fileManager;
 		}

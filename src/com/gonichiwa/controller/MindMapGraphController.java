@@ -3,6 +3,10 @@ package com.gonichiwa.controller;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,6 +17,7 @@ import java.util.Observer;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import com.gonichiwa.model.MindMapModel;
@@ -35,35 +40,69 @@ public class MindMapGraphController {
 		this.graphView.addMouseListener(new GraphViewPaneMouseListener());
 		this.graphView.addMouseMotionListener(new GraphViewPaneMouseListener());
 		this.graphView.addNodeMouseAdapter(new NodeMouseListener());
+		this.graphView.addNodeKeyListener(new NodeKeyListener());
+		
+		this.graphView.addFocusListener(new FocusAdapter () {
+
+			public void focusGained(FocusEvent e) {
+				graphView.repaint();
+			}
+		});
 	}
 	
 	public MindMapGraphView getView() {
 		return graphView;
 	}
 	
+	private class NodeKeyListener implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			switch(e.getKeyCode()) {
+			case KeyEvent.VK_DELETE:
+				try {
+					MindMapNodeView node = (MindMapNodeView) e.getSource();
+					model.remove(node.getID());
+					attributeView.dismissNode();
+				} catch (Exception err) {
+					JOptionPane.showMessageDialog(graphView, err.getMessage(), "can not remove", 2);
+				}
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
 	private class GraphViewPaneMouseListener extends MouseAdapter { 
 		
 		//TODO: moving pane.
 		//TODO: zooming pane.
-		private int x, y;
-
 		
 		public void mouseClicked(MouseEvent e) {
-		
-			graphView.requestFocus();
-			graphView.repaintAllNodes();
-			graphView.revalidate();
-			graphView.repaint();
 
 		}
 		
 		public void mousePressed(MouseEvent e) {
+			
+		}
+		
+		public void mouseReleased(MouseEvent e) {
 			attributeView.dismissNode();
-			graphView.setCursor(Cursor.getDefaultCursor());
 			graphView.requestFocus();
-			graphView.repaintAllNodes();
-			graphView.repaint();
-			graphView.revalidate();
 		}
 		
 		public void mouseDragged(MouseEvent e) {
@@ -72,19 +111,15 @@ public class MindMapGraphController {
 	}
 	
 	private class NodeMouseListener extends MouseAdapter {
-		int xPressed;
-		int yPressed;
-		
+
 		private int cursor;
         private Point startPos = null;
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
-//			ResizableBorder border = (ResizableBorder) node.getBorder();          
+            node.requestFocus();
             node.repaint();
-			graphView.repaintAllNodes();
-			graphView.revalidate();
 			graphView.repaint();
 		}
 		
@@ -102,16 +137,12 @@ public class MindMapGraphController {
 			// maybe we can fix here later on.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			attributeView.setNode(node.getNode());
-//			xPressed = e.getLocationOnScreen().x;
-//			yPressed = e.getLocationOnScreen().y;
-//			MindMapNodeView node = (MindMapNodeView) e.getSource();
+			node.requestFocus();
+			node.repaint();
+			graphView.repaint();
 			ResizableBorder border = (ResizableBorder) node.getBorder();          
 			cursor = border.getCursor(e);
             startPos = e.getPoint();
-            node.requestFocus();
-            node.repaint();
-			graphView.repaintAllNodes();
-			graphView.revalidate();
 			graphView.repaint();
 		}
 
@@ -125,7 +156,7 @@ public class MindMapGraphController {
 			// set cursor to HAND shape.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			ResizableBorder border = (ResizableBorder) node.getBorder();
-			border.setHighlighted(true);
+			border.setHighlighted(true);	// border could be highlighted.
 			node.repaint();
 			graphView.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			graphView.repaint();
@@ -136,7 +167,7 @@ public class MindMapGraphController {
 			// set cursur back to normal.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			ResizableBorder border = (ResizableBorder) node.getBorder();
-    		border.setHighlighted(false);
+    		border.setHighlighted(false);	// border no longer highlighted
     		node.repaint();
 			graphView.setCursor(Cursor.getDefaultCursor());
 			graphView.repaint();
@@ -145,17 +176,8 @@ public class MindMapGraphController {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
-			// moving node
-//			int dx = e.getLocationOnScreen().x - xPressed;
-//			int dy = e.getLocationOnScreen().y - yPressed;
-//			
-//			int newX = node.getX() + dx;
-//			int newY = node.getY() + dy;
-//			model.setNodeLocation(node.getID(), newX, newY);
-//			xPressed += dx;
-//			yPressed += dy;
-			
-			if (startPos != null) {
+		
+			if (startPos != null && node.hasFocus()) {
 
                 int x = node.getX();
                 int y = node.getY();
@@ -170,9 +192,7 @@ public class MindMapGraphController {
                         if (!(h - dy < 30)) {
                         	model.setNodeLocation(node.getID(), x, y+dy);
                         	model.setNodeSize(node.getID(), w, h-dy);
-//                            setBounds(x, y + dy, w, h - dy);
-//                            resize();
-                        	graphView.revalidate();
+                        	graphView.repaint();
                         }
                         break;
 
@@ -180,10 +200,8 @@ public class MindMapGraphController {
                         if (!(h + dy < 30)) {
                         	model.setNodeLocation(node.getID(), x, y);
                         	model.setNodeSize(node.getID(), w, h+dy);
-//                            setBounds(x, y, w, h + dy);
                             startPos = e.getPoint();
-//                            resize();
-                            graphView.revalidate();
+                            graphView.repaint();
                         }
                         break;
 
@@ -191,9 +209,7 @@ public class MindMapGraphController {
                         if (!(w - dx < 30)) {
                         	model.setNodeLocation(node.getID(), x+dx, y);
                         	model.setNodeSize(node.getID(), w-dx, h);
-//                            setBounds(x + dx, y, w - dx, h);
-//                            resize();
-                        	graphView.revalidate();
+                        	graphView.repaint();
                         }
                         break;
 
@@ -201,10 +217,8 @@ public class MindMapGraphController {
                         if (!(w + dx < 30)) {
                         	model.setNodeLocation(node.getID(), x, y);
                         	model.setNodeSize(node.getID(), w+dx, h);
-//                            setBounds(x, y, w + dx, h);
                             startPos = e.getPoint();
-//                            resize();
-                            graphView.revalidate();
+                            graphView.repaint();
                         }
                         break;
 
@@ -212,9 +226,7 @@ public class MindMapGraphController {
                         if (!(w - dx < 30) && !(h - dy < 30)) {
                         	model.setNodeLocation(node.getID(), x+dx, y+dy);
                         	model.setNodeSize(node.getID(), w-dx, h-dy);
-                        	graphView.revalidate();
-//                            setBounds(x + dx, y + dy, w - dx, h - dy);
-//                            resize();
+                        	graphView.repaint();
                         }
                         break;
 
@@ -222,10 +234,8 @@ public class MindMapGraphController {
                         if (!(w + dx < 30) && !(h - dy < 30)) {
                         	model.setNodeLocation(node.getID(), x, y+dy);
                         	model.setNodeSize(node.getID(), w+dx, h-dy);
-                        	graphView.revalidate();
-//                            setBounds(x, y + dy, w + dx, h - dy);
+                        	graphView.repaint();
                             startPos = new Point(e.getX(), startPos.y);
-//                            resize();
                         }
                         break;
 
@@ -233,10 +243,8 @@ public class MindMapGraphController {
                         if (!(w - dx < 30) && !(h + dy < 30)) {
                         	model.setNodeLocation(node.getID(), x+dx, y);
                         	model.setNodeSize(node.getID(), w-dx, h+dy);
-                        	graphView.revalidate();
-//                            setBounds(x + dx, y, w - dx, h + dy);
+                        	graphView.repaint();
                             startPos = new Point(startPos.x, e.getY());
-//                            resize();
                         }
                         break;
 
@@ -244,31 +252,19 @@ public class MindMapGraphController {
                         if (!(w + dx < 30) && !(h + dy < 30)) {
                         	model.setNodeLocation(node.getID(), x, y);
                         	model.setNodeSize(node.getID(), w+dx, h+dy);
-                        	graphView.revalidate();
-//                            setBounds(x, y, w + dx, h + dy);
+                        	graphView.repaint();
                             startPos = e.getPoint();
-//                            resize();
                         }
                         break;
 
                     case Cursor.HAND_CURSOR:
                     	model.setNodeLocation(node.getID(), x + dx, y + dy);
-//                    	model.setNodeSize(node.getID(), w, h);
-                    	graphView.revalidate();
-//                        Rectangle bounds = getBounds();
-//                        bounds.translate(dx, dy);
-//                        setBounds(bounds);
-//                        resize();
+                    	graphView.repaint();
                 }
 
                 graphView.setCursor(Cursor.getPredefinedCursor(cursor));
             }
-			
-			
 		}
-		
-		
-		
 	}
 }
 
