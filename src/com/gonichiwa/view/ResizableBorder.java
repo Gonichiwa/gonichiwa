@@ -45,14 +45,19 @@ public class ResizableBorder implements Border {
 
     @Override
     public boolean isBorderOpaque() {
-        return false;
+        return true;
     }
 
     @Override
     public void paintBorder(Component component, Graphics g, int x, int y,
             int w, int h) {
-    	if (highlighted && !component.hasFocus()) {
-    		Graphics2D g2d = (Graphics2D) g;
+    	
+    	Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(Color.blue);
+		g2d.fillOval(x+ dist / 2, y+ dist / 2, w- dist, h- dist);
+    	
+		if (highlighted && !component.hasFocus()) {
+    		g2d = (Graphics2D) g;
     		g2d.setColor(Color.GREEN);
     		g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         	g2d.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
@@ -60,7 +65,7 @@ public class ResizableBorder implements Border {
       
         if (component.hasFocus()) {
 
-        	Graphics2D g2d = (Graphics2D) g;
+        	g2d = (Graphics2D) g;
         	g2d.setColor(Color.black);
         	g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         	g2d.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
@@ -73,6 +78,9 @@ public class ResizableBorder implements Border {
                 g2d.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
             }
         } 
+        
+		
+        
     }
 
     private Rectangle getRectangle(int x, int y, int w, int h, int location) {

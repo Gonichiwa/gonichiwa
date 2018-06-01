@@ -90,12 +90,14 @@ public class MindMapMenuController {
 	class saveActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			model.saveTo("/Users/penubo/Developer/Java/", "hello");
 			System.out.println("save");
 		}
 	}
 	class saveasActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			
 			System.out.println("saveas");
 		}
 	}

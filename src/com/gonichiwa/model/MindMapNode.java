@@ -1,8 +1,11 @@
 package com.gonichiwa.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 
 public class MindMapNode extends Observable implements NodeDataDeliver {
@@ -12,8 +15,7 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	private int red, green, blue, alpha;
 	private String name;
 	
-	private MindMapNode parent;
-	private ArrayList<MindMapNode> children;
+	private List<MindMapNode> children = new ArrayList<MindMapNode>();;
 	
 	// 1. node field implementation
 	
@@ -21,14 +23,14 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	 * constructor
 	 * please do not think the way to initialize x, y ,width, height values at this point OK?
 	 */
-	MindMapNode(String name, MindMapNode parent) {
+	@JsonCreator
+	MindMapNode(@JsonProperty("name") String name) {
 		this(name, 0, 0, 0, 0); 
-		this.parent = parent;
-		this.children = new ArrayList<MindMapNode>();
 		// 2. node initailize implementation
 	}
 	
-	MindMapNode(String name, int x, int y, int width, int height) {
+	@JsonCreator
+	MindMapNode(@JsonProperty("name")String name, @JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("width") int width, @JsonProperty("height") int height) {
 		id = ++idGenerator;
 		this.name = name;
 		this.x = x;
@@ -64,20 +66,20 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		children.clear();
 	}
 	
-	public void setParent(MindMapNode parent) {
-		this.parent = parent;
-	}
+//	public void setParent(MindMapNode parent) {
+//		this.parent = parent;
+//	}
 	/*
 	 * getter method
 	 * 
 	 */
-	public ArrayList<MindMapNode> getChildren() {
+	public List<MindMapNode> getChildren() {
 		return children;
 	}
 
-	public MindMapNode getParent() {
-		return parent;
-	}
+//	public MindMapNode getParent() {
+//		return parent;
+//	}
 	public int getID() {
 		return id;
 	}

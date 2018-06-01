@@ -104,20 +104,20 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
-	public void repaintAllNodes() {
-		for(MindMapNodeView node: nodes) {
-			node.repaint();
-			node.revalidate();
-		}
-	}
+//	public void repaintAllNodes() {
+//		for(MindMapNodeView node: nodes) {
+//			node.repaint();
+//			node.revalidate();
+//		}
+//	}
 	
 	public void drawGraph() {
 		this.clearNodes();
 		this.removeAll();
-		System.out.println("pane size is" + this.getPreferredSize());
-		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
 		this.repaint();
 		this.revalidate();
+		System.out.println("pane size is" + this.getPreferredSize());
+		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
 	}
 	
 	/**
@@ -167,6 +167,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		node.addObserver(this);
 		// node.setColor()
 		this.addNode(nodeView);
+
 				
 		// get number of children
 		numberOfChildren = node.getChildren().size();
@@ -212,6 +213,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 //			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
 //			g2d.draw(q2);
 		}
+	
 	}
 	
 	private class MindMapEdge {
