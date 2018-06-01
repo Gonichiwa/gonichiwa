@@ -142,4 +142,5 @@ public class MindMapMenuBar {
 		setJMenuBar(menuBar);
 		*/
 	}
+
 }
