@@ -16,11 +16,11 @@ public class MindMapMenuBarTest extends JFrame {
 	public MindMapMenuBarTest() {
 		//MenuBar
 		MindMapMenuBar menuTest = new MindMapMenuBar();
-		setJMenuBar(menuTest.getMenu());
+		setJMenuBar(menuTest);
 		//ToolBar
 		Container contentPane = getContentPane();
 		MindMapToolBar toolTest = new MindMapToolBar();
-		contentPane.add(toolTest.getToolBar(),BorderLayout.NORTH);
+		contentPane.add(toolTest,BorderLayout.NORTH);
 		
 		MindMapMenuController ctrl = new MindMapMenuController(model,menuTest,toolTest);
 		
