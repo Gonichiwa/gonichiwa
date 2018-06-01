@@ -47,7 +47,7 @@ class MindMapFileManager {
 		Gson gson = new Gson();
 		String result = gson.toJson(model);
 		try {
-			File file = new File(path+fileName);
+			File file = new File(path);
 			if(!file.exists()) 
 				file.createNewFile();
 			FileWriter fileWriter = new FileWriter(file);
