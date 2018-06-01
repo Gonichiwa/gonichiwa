@@ -43,7 +43,8 @@ public class MindMapMenuBar extends JMenuBar {
 	//editmenu
 	public void addUndoListener(ActionListener l) {
 		undo.addActionListener(l);
-	}public void addRedoListener(ActionListener l) {
+	}
+	public void addRedoListener(ActionListener l) {
 		redo.addActionListener(l);
 	}
 	public void addDeleteListener(ActionListener l) {

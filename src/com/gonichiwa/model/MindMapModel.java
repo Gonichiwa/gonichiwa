@@ -23,10 +23,22 @@ public class MindMapModel extends Observable{
 		tree = new MindMapTree();
 		stateTracker = new MindMapStateTracker();
 		fileManager = new MindMapFileManager();
+		stateTracker.pushNewState(tree);
+	}
+	
+	public void buildNewTree(String text) {
+		System.out.println("build!!");
+		tree.buildTree(text);
+		pushNewState();
 	}
 
 	public void pushNewState() {
-		stateTracker.pushNewState(tree);
+		try {
+			stateTracker.pushNewState(tree.clone());
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**

@@ -114,7 +114,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void drawGraph() {
 		this.clearNodes();
 		this.removeAll();
-		System.out.println("pane size is" + this.getPreferredSize());
 		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
 		this.repaint();
 		this.revalidate();
@@ -157,12 +156,10 @@ public class MindMapGraphView extends JPanel implements Observer {
 		
 		// make NodeView
 		
-		System.out.println(node.getName() + " is making...");
 		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY);
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
-		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
 		node.initViewAttribute(nodeView.getX(), nodeView.getY(), nodeView.getPreferredSize().width, nodeView.getPreferredSize().height);
 		node.addObserver(this);
 		// node.setColor()
@@ -181,7 +178,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_SIZE/Math.sin(theta/2) + 10 : 40; // 10 is debug offset.
 		
 		direction.normalize();
-		System.out.println(node.getName() + "'s direction is " + direction.getX() +", "+ direction.getY());
 		direction.mult(distance);
 		
 		if(theta > Math.PI)
