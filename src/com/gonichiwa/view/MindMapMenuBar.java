@@ -8,7 +8,7 @@ import java.awt.*;
 import javax.swing.filechooser.*;
 
 
-public class MindMapMenuBar {
+public class MindMapMenuBar extends JMenuBar {
 
 	
 	
@@ -16,10 +16,7 @@ public class MindMapMenuBar {
 	private JMenuItem neww,open,save,saveas,close,export,undo,redo,delete,apply,change;
 	private JMenuItem zoomin,zoomout,fitmap,hideeditorpane,hideattributepane;
 	
-	public JMenuBar menuBar = new JMenuBar();
-	public JMenuBar getMenu() {
-		return menuBar;
-	}
+	
 	public MindMapMenuBar() {
 		createMenu();
 	}
@@ -134,9 +131,9 @@ public class MindMapMenuBar {
 		viewMenu.add(hideattributepane);
 		
 		
-		menuBar.add(fileMenu);
-		menuBar.add(editMenu);
-		menuBar.add(viewMenu);
+		this.add(fileMenu);
+		this.add(editMenu);
+		this.add(viewMenu);
 		
 		/*
 		setJMenuBar(menuBar);

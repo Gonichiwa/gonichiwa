@@ -114,6 +114,7 @@ public class MindMapMenuController {
 	class undoActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			model.backward();
 			System.out.println("undo");
 		}
 	}

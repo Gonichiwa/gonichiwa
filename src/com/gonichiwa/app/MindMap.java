@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 
 import com.gonichiwa.controller.MindMapAttributeController;
 import com.gonichiwa.controller.MindMapGraphController;
+import com.gonichiwa.controller.MindMapMenuController;
 import com.gonichiwa.controller.MindMapTextAreaController;
 import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.view.MindMapGraphView;
@@ -28,9 +29,10 @@ public class MindMap extends JFrame implements Runnable {
 	MindMapTextAreaController textAreaController;
 	MindMapAttributeController attributeController;
 	MindMapGraphController graphController;
-//	MindMapMenuBar menuBar;
-//	MindMapToolBar toolBar;
-	// MindMapUtilController utilController;
+	MindMapMenuController menuController;
+	
+	MindMapMenuBar menuBar;
+	MindMapToolBar toolBar;
 	
 	JSplitPane centerPane;
 	JSplitPane graphPane;
@@ -43,14 +45,16 @@ public class MindMap extends JFrame implements Runnable {
 		
 		model = new MindMapModel();
 		
+		menuBar = new MindMapMenuBar();
+		toolBar = new MindMapToolBar();
 		graphView = new MindMapGraphView(model, GRAPH_WIDTH, GRAPH_HEIGHT);
+		
+		
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
 		graphController = new MindMapGraphController(model, graphView, attributeController.getView());
-		//utilController = new MindMapUtilController(model);
-
-//		menuBar = new MindMapMenuBar();
-//		toolBar = new MindMapToolBar();
+		menuController = new MindMapMenuController(model, menuBar, toolBar);
+		
 		
 		// utilController.addApplyListener(textAreaControoler.getListener());
 		
@@ -71,7 +75,9 @@ public class MindMap extends JFrame implements Runnable {
 		centerPane.setRightComponent(graphPane);
 		
 		add(centerPane, BorderLayout.CENTER);
-		//setMenuBar(utilController.getMenubar());
+		
+		add(menuController.getToolBar(), BorderLayout.NORTH);
+		setJMenuBar(menuController.getMenuBar());
 		//add(utilController.getToolBar(), BorderLayout.NORTH);
 //		setSize(800, 600);      may be we don't need this.
 		pack();
