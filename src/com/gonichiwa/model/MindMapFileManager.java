@@ -65,6 +65,7 @@ class MindMapFileManager {
 			// TODO Auto-generated catch block
 			System.out.println("error");
 //			e1.printStackTrace();
+
 		}
 //		try {
 //			File file = new File(path+fileName);

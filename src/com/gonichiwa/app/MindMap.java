@@ -43,15 +43,18 @@ public class MindMap extends JFrame implements Runnable {
 		
 		model = new MindMapModel();
 		
+		menuBar = new MindMapMenuBar();
+		toolBar = new MindMapToolBar();
 		graphView = new MindMapGraphView(model, GRAPH_WIDTH, GRAPH_HEIGHT);
 		menuBar = new MindMapMenuBar();
 		toolBar = new MindMapToolBar();
+
 		
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
 		graphController = new MindMapGraphController(model, graphView, attributeController.getView());
 		menuController = new MindMapMenuController(model, menuBar, toolBar);
-		
+
 //		menuBar.addApplyListener(textAreaController.getLister());
 //		toolBar.addApplyListener(textAreaController.getListener());
 		
@@ -71,6 +74,7 @@ public class MindMap extends JFrame implements Runnable {
 		add(centerPane, BorderLayout.CENTER);
 		setJMenuBar(menuController.getMenuBar());
 		add(menuController.getToolBar(), BorderLayout.NORTH);
+
 
 //		setSize(800, 600);      may be we don't need this.
 		pack();
