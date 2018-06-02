@@ -31,7 +31,6 @@ public class MindMapAttributeView extends JPanel implements Observer {
 	private JButton changeButton;
 	private BoxLayout layout;
 	private MindMapNode node;
-	
 
 	/**
 	 * Constructor
@@ -49,6 +48,10 @@ public class MindMapAttributeView extends JPanel implements Observer {
 		//TODO: how to set Alignment something to put attributePane on CENTER.
 		add(new JScrollPane(attributePane));
 		add(changeButton);
+	}
+	
+	public void reset() {
+		dismissNode();
 	}
 	
 	/**
@@ -103,6 +106,7 @@ public class MindMapAttributeView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
+
 		if(!hasNodeToDisplay())
 			setNode((MindMapNode)o);
 		else {

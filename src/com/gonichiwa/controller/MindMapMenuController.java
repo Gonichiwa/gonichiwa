@@ -2,6 +2,11 @@ package com.gonichiwa.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -11,19 +16,31 @@ import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.view.MindMapMenuBar;
 import com.gonichiwa.view.MindMapToolBar;
 
+import javafx.stage.FileChooser;
+
 public class MindMapMenuController {
 
 	private MindMapMenuBar menuBar;
 	private MindMapToolBar toolBar;
 	private MindMapModel model;
 	
+	private JFileChooser fileChooser;
+	
 	public MindMapMenuController(MindMapModel model,MindMapMenuBar menuBar,MindMapToolBar  toolBar){
+		
+		Path currentRelativePath = Paths.get("save");
+		String s = currentRelativePath.toAbsolutePath().toString();
+		System.out.println("Current relative path is: " + s);
 		
 		this.menuBar = menuBar;
 		this.toolBar = toolBar;
 		this.model = model;
 		
-		
+		fileChooser = new JFileChooser(currentRelativePath.toFile());
+
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".json", "json"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".XML", "XML"));
+
 		menuBar.addNewwListener(new newwActionListener());
 		menuBar.addOpenListener(new openActionListener());
 		menuBar.addSaveListener(new saveActionListener());
@@ -78,66 +95,57 @@ public class MindMapMenuController {
 	}
 	
 	//make action listener later;
-	
+	// TODO: unify new, save, save as to one Listener Class. because there are too many copy and paste code.
 	class newwActionListener implements ActionListener{
 				
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("New");
+			if(!model.isSaved()) {
+				int returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getFileFilter());
+					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				}
+			}
+			model.reset();
 		}
 	}
 	class openActionListener implements ActionListener{
 		
-		private JFileChooser chooser;
-		
-		public openActionListener() {
-			chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("json", "json");
-			chooser.setFileFilter(filter);
-		}
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Open");
-		
-			int ret = chooser.showOpenDialog(null);
-			if(ret != JFileChooser.APPROVE_OPTION) {
-				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
-				return;
+			int returnValue = fileChooser.showOpenDialog(null);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				model.load(fileChooser.getSelectedFile().getPath());
 			}
-			
-			String filePath = chooser.getSelectedFile().getPath();
-			String fileName = chooser.getSelectedFile().getName();
 
-			System.out.println(filePath);
-			System.out.println(fileName);
-			
-			model.load(filePath,null);
+			System.out.println("Open");
+
 		}
 	}
 	class saveActionListener implements ActionListener{
 		
-		private JFileChooser chooser;
-		
-		public saveActionListener() {
-			chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("json", "json");
-			chooser.setFileFilter(filter);
-		}
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("save");
-			int ret = chooser.showSaveDialog(null);
-			if(ret != JFileChooser.APPROVE_OPTION) {
-				JOptionPane.showMessageDialog(null, "경로를 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			String filePath = chooser.getSelectedFile().getPath();
 
-			System.out.println(filePath+".json");
-			
-			model.saveTo(filePath+".json", "asdf");
+			if(model.isSaved()) {
+				model.save(); 
+				return;
+			} else {
+				int returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getFileFilter());
+					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				}
+			}
+
 		}
 	}
 	class saveasActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			int returnValue = fileChooser.showSaveDialog(null);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				System.out.println(fileChooser.getFileFilter());
+				model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+			}
 			System.out.println("saveas");
 		}
 	}
@@ -145,6 +153,7 @@ public class MindMapMenuController {
 		
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("close");
+			System.exit(-1);
 		}
 	}
 	class exportActionListener implements ActionListener{

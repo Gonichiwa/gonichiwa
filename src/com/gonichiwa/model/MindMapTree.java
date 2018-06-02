@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 
-public class MindMapTree extends Observable {
+public class MindMapTree extends Observable implements Cloneable {
 	private MindMapNode root;
 	
 	/**
@@ -12,6 +12,11 @@ public class MindMapTree extends Observable {
 	 */
 	MindMapTree() {
 		root = null;
+	}
+	
+	public MindMapTree clone() throws CloneNotSupportedException {
+		return (MindMapTree) super.clone();
+		
 	}
 
 	/**
@@ -27,8 +32,8 @@ public class MindMapTree extends Observable {
 		notifyObservers("NEW");
 	}
 	
-	public void loadTree(MindMapTree tree) {
-		root = tree.root;
+	public void loadTree(MindMapNode root) {
+		this.root = MindMapTreeFactory.loadNewTree(root);
 		setChanged();
 		notifyObservers("LOAD");
 	}
@@ -58,24 +63,21 @@ public class MindMapTree extends Observable {
 	 * 		id of the node which we want to modify.
 	 */
 	public void removeNode(int nodeID) {
-		MindMapNode nodeToBeRemoved = null;
-		
-		try {
-			nodeToBeRemoved = getNode(nodeID);
-		} catch(NoSuchElementException e) {
-			return;
-		}
-		
-		if(nodeToBeRemoved == root) {
-			throw new IllegalArgumentException("can not remove root node");
-			
-		} else {
-			nodeToBeRemoved.getParent().removeChild(nodeID);
-			nodeToBeRemoved.removeAllChildren();;
-			nodeToBeRemoved.setParent(null);
-		}
+		recRemoveNode(root, nodeID);
 		setChanged();
 		notifyObservers("LOAD");
+	}
+	
+	private void recRemoveNode(MindMapNode node, int nodeID) {
+		if(node.getID() == nodeID)
+			throw new IllegalArgumentException("can not remove root node");
+		for(MindMapNode child : node.getChildren()) {
+			if(child.getID() == nodeID) {
+				node.removeChild(nodeID);
+				return;
+			}
+			recRemoveNode(child, nodeID);
+		}
 	}
 	
 	/**
@@ -170,6 +172,8 @@ public class MindMapTree extends Observable {
 	}
 	
 	private String recToString(MindMapNode node, int level) {
+		if(node == null) return null;
+		
 		String string = "";
 		
 		for(int i = 0; i < level; i++) 

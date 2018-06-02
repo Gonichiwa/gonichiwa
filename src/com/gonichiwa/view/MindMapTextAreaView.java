@@ -29,6 +29,10 @@ public class MindMapTextAreaView extends JPanel implements Observer {
 		this.model.tree.addObserver(this);
 	}
 	
+	public void reset() {
+		mindMapBuildingTextArea.setText(null);
+	}
+	
 	public void initSubViews() {
 		mindMapBuildingTextArea = new JTextArea();
 		mindMapBuildingTextArea.setTabSize(1);

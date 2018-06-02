@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class MindMapToolBar extends JToolBar{
+public class MindMapToolBar extends JToolBar {
 
 	private JButton neww,open,save,saveas,close,apply,change,zoomin,zoomout,fitmap,undo,redo;
-	
-	
+
+
 	public MindMapToolBar() {
 		createToolBar();
 	}

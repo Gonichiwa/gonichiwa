@@ -5,6 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -44,31 +52,42 @@ class MindMapFileManager {
 	 * @param model
 	 */
 	void save(MindMapModel model) {
-		Gson gson = new Gson();
-		String result = gson.toJson(model);
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode node = objectMapper.convertValue(model.tree.getRoot(), JsonNode.class);
+		String result;
 		try {
+			result = objectMapper.writeValueAsString(node);
 			File file = new File(path);
 			if(!file.exists()) 
 				file.createNewFile();
 			FileWriter fileWriter = new FileWriter(file);
 			fileWriter.write(result);
 			fileWriter.close();
+			fileName = file.getName();
+		} catch (JsonProcessingException e1) {
+			System.out.println("error");
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			System.out.println("save error");
+			System.out.println("IO save error");
 		}
 	}
 	
-	MindMapModel load() {
+	MindMapNode loadRoot() {
+		ObjectMapper objectMapper = new ObjectMapper();
 		Gson gson = new Gson();
-		MindMapModel loadedModelData = null;
+		MindMapNode newNode = null;
 		try {
-			loadedModelData = gson.fromJson(new FileReader(path), MindMapModel.class);
+
+//			loadedModelData = objectMapper.readValue(new FileReader(path), MindMapModel.class);
+//			newNode = objectMapper.readValue(new FileReader(path), MindMapNode.class);
+			FileReader reader = new FileReader(path);
+			newNode = gson.fromJson(reader, MindMapNode.class);
+			fileName = new File(path).getName();
+
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			e.printStackTrace();
 			System.out.println("load error");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 		}
-		return loadedModelData;
+		return newNode;
 	}
 }

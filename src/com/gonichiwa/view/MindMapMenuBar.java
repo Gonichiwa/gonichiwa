@@ -15,8 +15,7 @@ public class MindMapMenuBar extends JMenuBar {
 	
 	private JMenuItem neww,open,save,saveas,close,export,undo,redo,delete,apply,change;
 	private JMenuItem zoomin,zoomout,fitmap,hideeditorpane,hideattributepane;
-	
-	
+
 	public MindMapMenuBar() {
 		createMenu();
 	}
