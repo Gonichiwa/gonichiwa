@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -32,13 +33,15 @@ public class MindMapGraphController implements Observer {
 	private MindMapModel model;
 	private MindMapGraphView graphView;
 	private MindMapAttributeView attributeView;
+	private MouseAdapter mouseListener = new GraphViewPaneMouseListener();
 	
 	public MindMapGraphController(MindMapModel model, MindMapGraphView graphView, MindMapAttributeView attributeView) {
 		this.model = model;
 		this.graphView = graphView;
 		this.attributeView = attributeView;
-		this.graphView.addMouseListener(new GraphViewPaneMouseListener());
-		this.graphView.addMouseMotionListener(new GraphViewPaneMouseListener());
+		this.graphView.addMouseListener(mouseListener);
+		this.graphView.addMouseMotionListener(mouseListener);
+		this.graphView.addMouseWheelListener(mouseListener);
 		this.graphView.addNodeMouseAdapter(new NodeMouseListener());
 		this.graphView.addNodeKeyListener(new NodeKeyListener());
 		
@@ -94,22 +97,61 @@ public class MindMapGraphController implements Observer {
 		//TODO: moving pane.
 		//TODO: zooming pane.
 		
+		private Point startPos = null;
+		@Override
 		public void mouseClicked(MouseEvent e) {
-
+			// TODO Auto-generated method stub
 		}
-		
+
+		@Override
 		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			System.out.println("pressed");
+			startPos = e.getPoint();
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-g
+		}
 		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if(startPos != null) {			
+				System.out.println(e.getX() + " " + e.getY());
+				System.out.println("relative position " + (e.getX() - graphView.getDX()) + " " + (e.getY() - graphView.getDY()));
+				double dx = e.getX() - startPos.getX();
+				double dy = e.getY() - startPos.getY();
+
+				graphView.move(graphView.getDX() + dx, graphView.getDY() + dy);
+				startPos = e.getPoint();
+			}
+			graphView.repaint();
+		}
+
+		@Override 
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			int rotation = e.getWheelRotation();
+			if(rotation > 0)
+				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*1.1);
+			else if(rotation < 0)
+				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*0.9);
+			graphView.repaint();
+		}
+
 		public void mouseReleased(MouseEvent e) {
 			attributeView.dismissNode();
 			graphView.requestFocus();
-		}
-		
-		public void mouseDragged(MouseEvent e) {
+			startPos = null;
 
 		}
+		
 	}
 	
 	private class NodeMouseListener extends MouseAdapter {
@@ -186,7 +228,6 @@ public class MindMapGraphController implements Observer {
                 int y = node.getY();
                 int w = node.getWidth();
                 int h = node.getHeight();
-
                 int dx = e.getX() - startPos.x;
                 int dy = e.getY() - startPos.y;
 
