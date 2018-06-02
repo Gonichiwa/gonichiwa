@@ -23,20 +23,25 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	 * constructor
 	 * please do not think the way to initialize x, y ,width, height values at this point OK?
 	 */
-	@JsonCreator
-	MindMapNode(@JsonProperty("name") String name) {
+
+	MindMapNode(String name) {
 		this(name, 0, 0, 0, 0); 
 		// 2. node initailize implementation
 	}
 	
 	@JsonCreator
-	MindMapNode(@JsonProperty("name")String name, @JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("width") int width, @JsonProperty("height") int height) {
+	MindMapNode(@JsonProperty("name") String name, @JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("width") int width, @JsonProperty("height") int height) {
+		super();
 		id = ++idGenerator;
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+	}
+	
+	public MindMapNode(MindMapNode node) {
+		this(node.name, node.x, node.y, node.width, node.height);
 	}
 	
 	// 3. node method implementation

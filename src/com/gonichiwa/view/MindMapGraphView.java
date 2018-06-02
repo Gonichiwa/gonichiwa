@@ -116,7 +116,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.removeAll();
 		this.repaint();
 		this.revalidate();
-		System.out.println("pane size is" + this.getPreferredSize());
+		System.out.println("tree size is" + model.tree);
 		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
 	}
 	

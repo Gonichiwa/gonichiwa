@@ -59,7 +59,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.setSize(this.getPreferredSize());
 		
 		// add observer.
-		node.addObserver(this);
+		this.node.addObserver(this);
 	}
 	
 	public MindMapNodeView(MindMapNode node) {

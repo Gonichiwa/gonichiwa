@@ -2,10 +2,17 @@ package com.gonichiwa.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.view.MindMapMenuBar;
 import com.gonichiwa.view.MindMapToolBar;
+
+import javafx.stage.FileChooser;
 
 public class MindMapMenuController {
 
@@ -13,13 +20,23 @@ public class MindMapMenuController {
 	private MindMapToolBar toolBar;
 	private MindMapModel model;
 	
+	private JFileChooser fileChooser;
+	
 	public MindMapMenuController(MindMapModel model,MindMapMenuBar menuBar,MindMapToolBar  toolBar){
+		
+		Path currentRelativePath = Paths.get("save");
+		String s = currentRelativePath.toAbsolutePath().toString();
+		System.out.println("Current relative path is: " + s);
 		
 		this.menuBar = menuBar;
 		this.toolBar = toolBar;
 		this.model = model;
 		
-		
+		fileChooser = new JFileChooser(currentRelativePath.toFile());
+
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".json", "json"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".XML", "XML"));
+
 		menuBar.addNewwListener(new newwActionListener());
 		menuBar.addOpenListener(new openActionListener());
 		menuBar.addSaveListener(new saveActionListener());
@@ -84,20 +101,27 @@ public class MindMapMenuController {
 	class openActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			int returnValue = fileChooser.showOpenDialog(null);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				model.load(fileChooser.getSelectedFile().getPath());
+			}
 			System.out.println("Open");
 		}
 	}
 	class saveActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
-			model.saveTo("/Users/penubo/Developer/Java/", "hello");
 			System.out.println("save");
 		}
 	}
 	class saveasActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
-			
+			int returnValue = fileChooser.showSaveDialog(null);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				System.out.println(fileChooser.getFileFilter());
+				model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+			}
 			System.out.println("saveas");
 		}
 	}

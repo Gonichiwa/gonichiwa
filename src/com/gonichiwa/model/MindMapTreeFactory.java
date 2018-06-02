@@ -90,6 +90,22 @@ class MindMapTreeFactory {
 		}
 	}
 	
+	public static MindMapNode loadNewTree(MindMapNode root) {
+		MindMapNode newRoot = new MindMapNode(root);
+		System.out.println("new Root is " + newRoot);
+		recLoadNode(newRoot, root);
+		return newRoot;
+	}
+	
+	private static void recLoadNode(MindMapNode node, MindMapNode target) {
+		System.out.println("load new node " + node.getName());
+		for(int i = 0; i < target.getChildren().size(); i++) {
+			node.addChild(new MindMapNode(target.getChildren().get(i)));
+			recLoadNode(node.getChildren().get(i), target.getChildren().get(i));
+		}
+		
+	}
+	
 	/**
 	 * Helper Method
 	 * 
