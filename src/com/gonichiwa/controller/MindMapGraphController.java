@@ -149,7 +149,6 @@ public class MindMapGraphController {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			model.pushNewState();
 			startPos = null;
 		}
 
