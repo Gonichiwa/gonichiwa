@@ -67,8 +67,8 @@ public class MindMapToolBar extends JToolBar{
 		close= new JButton(new ImageIcon("images/setsize/exiticon.png"));
 		apply = new JButton(new ImageIcon("images/setsize/applyicon.png"));
 		change = new JButton(new ImageIcon("images/setsize/changeicon.png"));
-		zoomin = new JButton(new ImageIcon(btImages[0]));
-		zoomout = new JButton(new ImageIcon(btImages[0]));
+		zoomin = new JButton(new ImageIcon("images/setsize/zoominicon.png"));
+		zoomout = new JButton(new ImageIcon("images/setsize/zoomouticon.png"));
 		fitmap = new JButton(new ImageIcon(btImages[0]));
 		undo = new JButton(new ImageIcon(btImages[0]));
 		redo = new JButton(new ImageIcon(btImages[0]));

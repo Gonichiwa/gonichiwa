@@ -108,6 +108,8 @@ public class MindMapMenuController {
 
 			System.out.println(filePath);
 			System.out.println(fileName);
+			
+			model.load(filePath,null);
 		}
 	}
 	class saveActionListener implements ActionListener{
@@ -122,11 +124,15 @@ public class MindMapMenuController {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("save");
 			int ret = chooser.showSaveDialog(null);
+			if(ret != JFileChooser.APPROVE_OPTION) {
+				JOptionPane.showMessageDialog(null, "경로를 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			String filePath = chooser.getSelectedFile().getPath();
 
 			System.out.println(filePath+".json");
 			
-			//model.saveTo(filePath+".json", null);
+			model.saveTo(filePath+".json", "asdf");
 		}
 	}
 	class saveasActionListener implements ActionListener{

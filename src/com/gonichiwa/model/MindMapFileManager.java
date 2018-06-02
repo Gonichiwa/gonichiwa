@@ -64,7 +64,7 @@ class MindMapFileManager {
 		Gson gson = new Gson();
 		MindMapModel loadedModelData = null;
 		try {
-			loadedModelData = gson.fromJson(new FileReader(path+fileName), MindMapModel.class);
+			loadedModelData = gson.fromJson(new FileReader(path), MindMapModel.class);
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("load error");
