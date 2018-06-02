@@ -5,6 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -45,30 +53,57 @@ class MindMapFileManager {
 	 */
 	void save(MindMapModel model) {
 		Gson gson = new Gson();
-		String result = gson.toJson(model);
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode node = objectMapper.convertValue(model.tree.getRoot(), JsonNode.class);
+		String result;
 		try {
-			File file = new File(path+fileName);
+//			result = gson.toJson(model);
+			result = objectMapper.writeValueAsString(node);
+			File file = new File(path);
 			if(!file.exists()) 
 				file.createNewFile();
 			FileWriter fileWriter = new FileWriter(file);
 			fileWriter.write(result);
 			fileWriter.close();
+		} catch (JsonProcessingException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("error");
+//			e1.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			System.out.println("save error");
+			System.out.println("IO save error");
 		}
+//		try {
+//			File file = new File(path+fileName);
+//			if(!file.exists()) 
+//				file.createNewFile();
+//			FileWriter fileWriter = new FileWriter(file);
+//			fileWriter.write(result);
+//			fileWriter.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			System.out.println("save error");
+//		}
 	}
 	
-	MindMapModel load() {
+	MindMapNode loadRoot() {
+		ObjectMapper objectMapper = new ObjectMapper();
+
 		Gson gson = new Gson();
-		MindMapModel loadedModelData = null;
+		JsonNode node = null;
+		MindMapNode newNode = null;
+		MindMapTree loadedModelData = new MindMapTree();
 		try {
-			loadedModelData = gson.fromJson(new FileReader(path+fileName), MindMapModel.class);
+//			loadedModelData = objectMapper.readValue(new FileReader(path), MindMapModel.class);
+			newNode = gson.fromJson(new FileReader(path), MindMapNode.class);
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("load error");
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return loadedModelData;
+		return newNode;
 	}
 }

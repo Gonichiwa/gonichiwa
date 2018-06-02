@@ -4,14 +4,10 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
-public class MindMapToolBar{
+public class MindMapToolBar extends JToolBar {
 
 	private JButton neww,open,save,saveas,close,apply,change,zoomin,zoomout,fitmap,undo,redo;
-	
-	JToolBar toolBar = new JToolBar();
-	public JToolBar getToolBar() {
-		return toolBar;
-	}
+
 	public MindMapToolBar() {
 		createToolBar();
 	}
@@ -55,8 +51,8 @@ public class MindMapToolBar{
 	
 	public void createToolBar() {
 	
-		toolBar.setFloatable(false);
-		toolBar.setBackground(Color.LIGHT_GRAY);
+		this.setFloatable(false);
+		this.setBackground(Color.LIGHT_GRAY);
 		
 		ImageIcon icon;
 		JButton[] btItem= new JButton[12];
@@ -89,18 +85,18 @@ public class MindMapToolBar{
 		undo.setToolTipText(btName[10]);
 		redo.setToolTipText(btName[11]);
 		
-		toolBar.add(neww);
-		toolBar.add(open);
-		toolBar.add(save);
-		toolBar.add(saveas);
-		toolBar.add(close);
-		toolBar.add(apply);
-		toolBar.add(change);
-		toolBar.add(zoomin);
-		toolBar.add(zoomout);
-		toolBar.add(fitmap);
-		toolBar.add(undo);
-		toolBar.add(redo);
+		this.add(neww);
+		this.add(open);
+		this.add(save);
+		this.add(saveas);
+		this.add(close);
+		this.add(apply);
+		this.add(change);
+		this.add(zoomin);
+		this.add(zoomout);
+		this.add(fitmap);
+		this.add(undo);
+		this.add(redo);
 		
 		
 		ToolTipManager manageTool = ToolTipManager.sharedInstance();

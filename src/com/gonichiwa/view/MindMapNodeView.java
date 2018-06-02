@@ -1,6 +1,8 @@
 package com.gonichiwa.view;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -31,6 +33,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		if(node == null) 
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
 		
+//		this.setBackground(Color.blue);
 		// make label center
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
@@ -40,13 +43,15 @@ public class MindMapNodeView extends JPanel implements Observer {
 	    
 	    // set custom border
 		setBorder(new ResizableBorder(6));
-		
 		// make label.
 		this.node = node;
 		this.id = node.getID();
 		label = new JLabel(node.getName());
+		label.setOpaque(false);
+//		label.setBackground(Color.blue);
 		label.setAlignmentX(JLabel.CENTER);
 		label.setAlignmentY(JLabel.CENTER);
+		this.setOpaque(true);
 		this.add(label);
 		
 		// set geometry.
@@ -54,7 +59,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.setSize(this.getPreferredSize());
 		
 		// add observer.
-		node.addObserver(this);
+		this.node.addObserver(this);
 	}
 	
 	public MindMapNodeView(MindMapNode node) {
@@ -74,6 +79,14 @@ public class MindMapNodeView extends JPanel implements Observer {
 	public Point getParentLocation() {
 		return parentView.getLocation();
 	}
+	
+	public void paint(Graphics g) {
+		super.paint(g);
+//		g.setColor(Color.BLUE);
+//		System.out.println(this.getX()+" "+ this.getY()+" "+ this.getWidth()+" "+ this.getHeight());
+//		g.fillOval(0+2, 0+2, this.getWidth()-4, this.getHeight()-4);
+		this.paintComponents(g);
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -83,6 +96,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.setSize(node.getWidth(), node.getHeight());
 		this.revalidate();
 	}
+
 	
 	public MindMapNode getNode() {
 		return node;

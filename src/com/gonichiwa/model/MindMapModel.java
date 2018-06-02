@@ -56,17 +56,27 @@ public class MindMapModel extends Observable{
 		fileManager.save(this);
 	}
 	
-	public void load(String path, String name) {
+	public void save(String path) {
+		fileManager.setPath(path);
+		fileManager.save(this);
+	}
+	
+	public void load(String path) {
 		// TODO: load data for Joon
 		fileManager.setPath(path);
-		fileManager.setFileName(name);
-		MindMapModel loadedModel = fileManager.load();
-		if(loadedModel != null) {
-			// if there is a actual loadedModel than update model.
-			tree.loadTree(loadedModel.tree);
-			this.stateTracker = loadedModel.stateTracker;
-			this.fileManager = loadedModel.fileManager;
-		}
+		System.out.println(tree);
+		tree.loadTree(fileManager.loadRoot());
+//		if(tree != null) {
+//			// if there is a actual loadedModel than update model.
+//			System.out.println(loadedModel.stateTracker);
+//			System.out.println(loadedModel.fileManager);
+//
+//			tree.loadTree(loadedModel.tree);
+//			this.stateTracker = loadedModel.stateTracker;
+//			this.fileManager = loadedModel.fileManager;
+//		}
+		setChanged();
+		notifyObservers("LOAD");
 	}
 	
 	public void setNodeLocation(int nodeID, int x, int y) {
