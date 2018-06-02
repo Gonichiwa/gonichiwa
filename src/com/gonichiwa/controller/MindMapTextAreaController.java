@@ -23,7 +23,7 @@ import com.gonichiwa.view.MindMapTextAreaView;
  * @author YONG_JOON_KIM
  *
  */
-public class MindMapTextAreaController {
+public class MindMapTextAreaController implements Observer {
 	private MindMapTextAreaView view;
 	private MindMapModel model;
 	private ApplyActionListener listener;
@@ -45,6 +45,7 @@ public class MindMapTextAreaController {
 		this.model = model;
 		this.view  = view;
 		this.view.addApplyButtonListener(listener);
+		this.model.addObserver(this);
 	}
 	
 	/**
@@ -88,5 +89,12 @@ public class MindMapTextAreaController {
 				JOptionPane.showMessageDialog(view, formatErr.getMessage(), "Invalid format", 2);
 			}
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		if(((String) arg).equals("RESET"))
+			view.reset();
 	}
 }

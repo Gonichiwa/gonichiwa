@@ -40,6 +40,12 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
 	
+	public void reset() {
+		this.clearNodes();
+		this.removeAll();
+		this.repaint();
+	}
+	
 	public void addNodeMouseAdapter(MouseAdapter l) {
 		nodeMouseListener = l;
 	}
@@ -113,7 +119,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	
 	public void drawGraph() {
 		this.clearNodes();
-		this.removeAll();
+//		this.removeAll();
 		this.repaint();
 		this.revalidate();
 		System.out.println("tree size is" + model.tree);
@@ -125,7 +131,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	 */
 	public void loadGraph() {
 		this.clearNodes();
-		this.removeAll();
+//		this.removeAll();
 		recLoadNode(model.tree.getRoot());
 		this.repaint();
 		this.revalidate();

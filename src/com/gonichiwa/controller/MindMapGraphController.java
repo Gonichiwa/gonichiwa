@@ -28,7 +28,7 @@ import com.gonichiwa.view.MindMapNodeView;
 import com.gonichiwa.view.ResizableBorder;
 import com.gonichiwa.util.MindMapVector;
 
-public class MindMapGraphController {
+public class MindMapGraphController implements Observer {
 	private MindMapModel model;
 	private MindMapGraphView graphView;
 	private MindMapAttributeView attributeView;
@@ -48,6 +48,8 @@ public class MindMapGraphController {
 				graphView.repaint();
 			}
 		});
+		
+		this.model.addObserver(this);
 	}
 	
 	public MindMapGraphView getView() {
@@ -266,6 +268,15 @@ public class MindMapGraphController {
                 graphView.setCursor(Cursor.getPredefinedCursor(cursor));
 
             }
+		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		if(((String) arg).equals("RESET")) {
+			graphView.reset();
+			attributeView.reset();
 		}
 	}
 }

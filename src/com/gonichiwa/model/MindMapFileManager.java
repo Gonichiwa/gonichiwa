@@ -52,12 +52,10 @@ class MindMapFileManager {
 	 * @param model
 	 */
 	void save(MindMapModel model) {
-		Gson gson = new Gson();
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode node = objectMapper.convertValue(model.tree.getRoot(), JsonNode.class);
 		String result;
 		try {
-//			result = gson.toJson(model);
 			result = objectMapper.writeValueAsString(node);
 			File file = new File(path);
 			if(!file.exists()) 
@@ -65,46 +63,28 @@ class MindMapFileManager {
 			FileWriter fileWriter = new FileWriter(file);
 			fileWriter.write(result);
 			fileWriter.close();
+			fileName = file.getName();
 		} catch (JsonProcessingException e1) {
-			// TODO Auto-generated catch block
 			System.out.println("error");
-//			e1.printStackTrace();
-
 		} catch (IOException e) {
 			System.out.println("IO save error");
-
 		}
-//		try {
-//			File file = new File(path+fileName);
-//			if(!file.exists()) 
-//				file.createNewFile();
-//			FileWriter fileWriter = new FileWriter(file);
-//			fileWriter.write(result);
-//			fileWriter.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			System.out.println("save error");
-//		}
 	}
 	
 	MindMapNode loadRoot() {
 		ObjectMapper objectMapper = new ObjectMapper();
-
 		Gson gson = new Gson();
-		JsonNode node = null;
 		MindMapNode newNode = null;
-		MindMapTree loadedModelData = new MindMapTree();
 		try {
 //			loadedModelData = objectMapper.readValue(new FileReader(path), MindMapModel.class);
-			newNode = gson.fromJson(new FileReader(path), MindMapNode.class);
+//			newNode = objectMapper.readValue(new FileReader(path), MindMapNode.class);
+			FileReader reader = new FileReader(path);
+			newNode = gson.fromJson(reader, MindMapNode.class);
+			fileName = new File(path).getName();
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			e.printStackTrace();
 			System.out.println("load error");
-		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return newNode;
 	}

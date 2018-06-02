@@ -22,7 +22,7 @@ public class MindMapModel extends Observable{
 	public MindMapModel() {
 		tree = new MindMapTree();
 		stateTracker = new MindMapStateTracker();
-		fileManager = new MindMapFileManager();
+		fileManager = new MindMapFileManager();	
 	}
 
 	
@@ -33,8 +33,6 @@ public class MindMapModel extends Observable{
 	 */
 	public void remove(int nodeID) {
 		tree.removeNode(nodeID);
-		setChanged();
-		notifyObservers(null);
 	}
 	
 	public int getTreeSize() {
@@ -48,35 +46,21 @@ public class MindMapModel extends Observable{
 	public void forward() {
 		tree = stateTracker.getForwardState();
 	}
-	
-	public void saveTo(String path, String name) {
-		// TODO: save data for Joon
-		fileManager.setPath(path);
-		fileManager.setFileName(name);
-		fileManager.save(this);
-	}
-	
+
 	public void save(String path) {
 		fileManager.setPath(path);
 		fileManager.save(this);
 	}
 	
+	public void save() {
+		if(fileManager.getPath() != "")
+			fileManager.save(this);
+	}
+	
 	public void load(String path) {
 		// TODO: load data for Joon
 		fileManager.setPath(path);
-		System.out.println(tree);
 		tree.loadTree(fileManager.loadRoot());
-//		if(tree != null) {
-//			// if there is a actual loadedModel than update model.
-//			System.out.println(loadedModel.stateTracker);
-//			System.out.println(loadedModel.fileManager);
-//
-//			tree.loadTree(loadedModel.tree);
-//			this.stateTracker = loadedModel.stateTracker;
-//			this.fileManager = loadedModel.fileManager;
-//		}
-		setChanged();
-		notifyObservers("LOAD");
 	}
 	
 	public void setNodeLocation(int nodeID, int x, int y) {
@@ -84,8 +68,6 @@ public class MindMapModel extends Observable{
 		MindMapNode node = tree.getNode(nodeID);
 		node.setX(x);
 		node.setY(y);
-		setChanged();
-		notifyObservers((NodeDataDeliver) node);
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeLocation NullPointerException");
 		}
@@ -97,8 +79,6 @@ public class MindMapModel extends Observable{
 		MindMapNode node = tree.getNode(nodeID);
 		node.setWidth(width);
 		node.setHeight(height);
-		setChanged();
-		notifyObservers((NodeDataDeliver) node);
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeSize NullPointerException");
 		}
@@ -111,8 +91,7 @@ public class MindMapModel extends Observable{
 		node.setGreen(green);
 		node.setBlue(blue);
 		node.setAlpha(alpha);
-		setChanged();
-		notifyObservers((NodeDataDeliver) node);
+
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeColor NullPointerException");
 		}
@@ -126,6 +105,17 @@ public class MindMapModel extends Observable{
 		return tree.toString();
 	}
 	
+	public boolean isSaved() {
+		return fileManager.getFileName() != "" && fileManager.getPath() != "";
+	}
+	
+	public void reset() {
+		tree.removeAllNodes();
+		stateTracker = new MindMapStateTracker();
+		fileManager = new MindMapFileManager();	
+		setChanged();
+		notifyObservers("RESET");
+	}
 }
 
 

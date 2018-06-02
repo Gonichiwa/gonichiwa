@@ -95,11 +95,18 @@ public class MindMapMenuController {
 	}
 	
 	//make action listener later;
-	
+	// TODO: unify new, save, save as to one Listener Class. because there are too many copy and paste code.
 	class newwActionListener implements ActionListener{
 				
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("New");
+			if(!model.isSaved()) {
+				int returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getFileFilter());
+					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				}
+			}
+			model.reset();
 		}
 	}
 	class openActionListener implements ActionListener{
@@ -114,21 +121,17 @@ public class MindMapMenuController {
 	}
 	class saveActionListener implements ActionListener{
 		
-		private JFileChooser chooser;
-		
-		public saveActionListener() {
-			chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("json", "json");
-			chooser.setFileFilter(filter);
-		}
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("save");
-			int ret = chooser.showSaveDialog(null);
-			String filePath = chooser.getSelectedFile().getPath();
-
-			System.out.println(filePath+".json");
-			
-			//model.saveTo(filePath+".json", null);
+			if(model.isSaved()) {
+				model.save(); 
+				return;
+			} else {
+				int returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getFileFilter());
+					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				}
+			}
 		}
 	}
 	class saveasActionListener implements ActionListener{

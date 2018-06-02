@@ -33,9 +33,7 @@ public class MindMapTree extends Observable implements Cloneable {
 	}
 	
 	public void loadTree(MindMapNode root) {
-		System.out.println(root);
 		this.root = MindMapTreeFactory.loadNewTree(root);
-		System.out.println(this);
 		setChanged();
 		notifyObservers("LOAD");
 	}
