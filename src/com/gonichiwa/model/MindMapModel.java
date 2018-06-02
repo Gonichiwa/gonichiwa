@@ -25,6 +25,9 @@ public class MindMapModel extends Observable{
 		fileManager = new MindMapFileManager();
 	}
 
+	public void pushNewState() {
+		stateTracker.pushNewState(tree);
+	}
 	
 	/**
 	 * remove the certain node which has given Id.
@@ -33,6 +36,7 @@ public class MindMapModel extends Observable{
 	 */
 	public void remove(int nodeID) {
 		tree.removeNode(nodeID);
+		pushNewState();
 		setChanged();
 		notifyObservers(null);
 	}
@@ -42,11 +46,11 @@ public class MindMapModel extends Observable{
 	}
 	
 	public void backward() {
-		tree = stateTracker.getBackwardState();
+		tree.loadTree(stateTracker.getBackwardState());
 	}
 	
 	public void forward() {
-		tree = stateTracker.getForwardState();
+		tree.loadTree(stateTracker.getForwardState());
 	}
 	
 	public void saveTo(String path, String name) {

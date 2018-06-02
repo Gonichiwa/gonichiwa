@@ -69,8 +69,10 @@ class MindMapFileManager {
 			// TODO Auto-generated catch block
 			System.out.println("error");
 //			e1.printStackTrace();
+
 		} catch (IOException e) {
 			System.out.println("IO save error");
+
 		}
 //		try {
 //			File file = new File(path+fileName);

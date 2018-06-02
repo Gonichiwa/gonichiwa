@@ -8,6 +8,7 @@ public class MindMapToolBar extends JToolBar {
 
 	private JButton neww,open,save,saveas,close,apply,change,zoomin,zoomout,fitmap,undo,redo;
 
+
 	public MindMapToolBar() {
 		createToolBar();
 	}

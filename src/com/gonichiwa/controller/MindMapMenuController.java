@@ -8,6 +8,10 @@ import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.*;
+
 import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.view.MindMapMenuBar;
 import com.gonichiwa.view.MindMapToolBar;
@@ -100,18 +104,50 @@ public class MindMapMenuController {
 	}
 	class openActionListener implements ActionListener{
 		
+		private JFileChooser chooser;
+		
+		public openActionListener() {
+			chooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("json", "json");
+			chooser.setFileFilter(filter);
+		}
 		public void actionPerformed(ActionEvent e) {
 			int returnValue = fileChooser.showOpenDialog(null);
 			if(returnValue == JFileChooser.APPROVE_OPTION) {
 				model.load(fileChooser.getSelectedFile().getPath());
 			}
 			System.out.println("Open");
+		
+			int ret = chooser.showOpenDialog(null);
+			if(ret != JFileChooser.APPROVE_OPTION) {
+				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
+			String filePath = chooser.getSelectedFile().getPath();
+			String fileName = chooser.getSelectedFile().getName();
+
+			System.out.println(filePath);
+			System.out.println(fileName);
 		}
 	}
 	class saveActionListener implements ActionListener{
 		
+		private JFileChooser chooser;
+		
+		public saveActionListener() {
+			chooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("json", "json");
+			chooser.setFileFilter(filter);
+		}
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("save");
+			int ret = chooser.showSaveDialog(null);
+			String filePath = chooser.getSelectedFile().getPath();
+
+			System.out.println(filePath+".json");
+			
+			//model.saveTo(filePath+".json", null);
 		}
 	}
 	class saveasActionListener implements ActionListener{
@@ -140,6 +176,7 @@ public class MindMapMenuController {
 	class undoActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			model.backward();
 			System.out.println("undo");
 		}
 	}
