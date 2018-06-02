@@ -229,6 +229,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
+		AffineTransform at = g2d.getTransform();
+	    at.setToTranslation(dx, dy);
+		at.scale(zoomFactor, zoomFactor);
+
+		at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
+	    g2d.setTransform(at);
+
 		QuadCurve2D q2 = new QuadCurve2D.Float();
 		g2d.setStroke(new BasicStroke(1));
 		
