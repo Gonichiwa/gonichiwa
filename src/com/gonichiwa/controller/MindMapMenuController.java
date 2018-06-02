@@ -149,6 +149,7 @@ public class MindMapMenuController {
 		
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("close");
+			System.exit(-1);
 		}
 	}
 	class exportActionListener implements ActionListener{
