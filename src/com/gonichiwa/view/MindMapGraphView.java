@@ -9,12 +9,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.gonichiwa.model.MindMapModel;
@@ -29,6 +31,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private MouseAdapter nodeMouseListener;
 	private KeyListener nodeKeyListener;
 	
+	private JLabel label;
+	private double zoomFactor = 1;
+	private double zoomX, zoomY;
+	private boolean zoomable;
+	private double dx, dy;
+	
+	
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
 		this.model.tree.addObserver(this);
@@ -39,6 +48,17 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.setFocusable(true);
 		this.setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
+	
+	public double getZoomFactor() {
+		return zoomFactor;
+	}
+
+
+
+	public void setZoomFactor(double zoomFactor) {
+		this.zoomFactor = zoomFactor;
+	}
+
 	
 	public void reset() {
 		this.clearNodes();
@@ -219,7 +239,55 @@ public class MindMapGraphView extends JPanel implements Observer {
 //			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
 //			g2d.draw(q2);
 		}
+
+	}
+	public void zoom(int x, int y, double factor) {
+
+		zoomable = true;
+		//		zoomX = (x - dx + this.getWidth() / zoomFactor);
+		//		zoomY = (y - dy + this.getHeight() / zoomFactor);
+		zoomX = x - dx;
+		zoomY = y - dy;
+		System.out.println("before zoomX " + zoomX);
+
+		setZoomFactor(factor);
+		this.repaint();
+	}
 	
+	public void move(double dx, double dy) {
+		this.dx = dx;
+		this.dy = dy;
+		this.repaint();
+	}
+	
+	public double getDX() {
+		return dx;
+	}
+	
+	public double getDY() {
+		return dy;
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+	    AffineTransform at = g2d.getTransform();
+
+	    at.setToTranslation(dx, dy);
+
+	    at.scale(zoomFactor, zoomFactor);
+//	    if(zoomable) {
+	    System.out.println("x translate after zoom : " + (zoomX / zoomFactor - zoomX));
+	    at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
+//	    at.translate(-zoomX * (zoomFactor - 1), -zoomY * (zoomFactor - 1));
+	    System.out.println(zoomX + " " + zoomY);
+	    	zoomable = false;
+//	    }
+
+	    g2d.setTransform(at);
 	}
 	
 	private class MindMapEdge {
