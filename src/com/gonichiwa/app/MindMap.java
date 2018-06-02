@@ -24,15 +24,13 @@ public class MindMap extends JFrame implements Runnable {
 	MindMapModel model;
 	
 	MindMapGraphView graphView;
-	
+	MindMapMenuBar menuBar;
+	MindMapToolBar toolBar;
 	
 	MindMapTextAreaController textAreaController;
 	MindMapAttributeController attributeController;
 	MindMapGraphController graphController;
 	MindMapMenuController menuController;
-	
-	MindMapMenuBar menuBar;
-	MindMapToolBar toolBar;
 	
 	JSplitPane centerPane;
 	JSplitPane graphPane;
@@ -48,16 +46,15 @@ public class MindMap extends JFrame implements Runnable {
 		menuBar = new MindMapMenuBar();
 		toolBar = new MindMapToolBar();
 		graphView = new MindMapGraphView(model, GRAPH_WIDTH, GRAPH_HEIGHT);
-		
+		menuBar = new MindMapMenuBar();
+		toolBar = new MindMapToolBar();
+
 		
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
 		graphController = new MindMapGraphController(model, graphView, attributeController.getView());
 		menuController = new MindMapMenuController(model, menuBar, toolBar);
-		
-		
-		// utilController.addApplyListener(textAreaControoler.getListener());
-		
+
 //		menuBar.addApplyListener(textAreaController.getLister());
 //		toolBar.addApplyListener(textAreaController.getListener());
 		
@@ -75,10 +72,10 @@ public class MindMap extends JFrame implements Runnable {
 		centerPane.setRightComponent(graphPane);
 		
 		add(centerPane, BorderLayout.CENTER);
-		
-		add(menuController.getToolBar(), BorderLayout.NORTH);
 		setJMenuBar(menuController.getMenuBar());
-		//add(utilController.getToolBar(), BorderLayout.NORTH);
+		add(menuController.getToolBar(), BorderLayout.NORTH);
+
+
 //		setSize(800, 600);      may be we don't need this.
 		pack();
 		setVisible(true);

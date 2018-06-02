@@ -144,6 +144,7 @@ public class MindMapGraphController {
 			cursor = border.getCursor(e);
             startPos = e.getPoint();
 			graphView.repaint();
+			
 		}
 
 		@Override
@@ -264,6 +265,7 @@ public class MindMapGraphController {
                 }
 
                 graphView.setCursor(Cursor.getPredefinedCursor(cursor));
+
             }
 		}
 	}

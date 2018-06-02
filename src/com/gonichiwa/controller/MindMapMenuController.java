@@ -120,6 +120,7 @@ public class MindMapMenuController {
 			chooser.setFileFilter(filter);
 		}
 		public void actionPerformed(ActionEvent e) {
+			model.saveTo("/Users/penubo/Developer/Java/", "hello");
 			System.out.println("save");
 			int ret = chooser.showSaveDialog(null);
 			String filePath = chooser.getSelectedFile().getPath();
@@ -132,6 +133,7 @@ public class MindMapMenuController {
 	class saveasActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+			
 			System.out.println("saveas");
 		}
 	}

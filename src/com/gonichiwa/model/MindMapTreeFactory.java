@@ -37,7 +37,7 @@ class MindMapTreeFactory {
 			throw new IllegalArgumentException("invalid format text: invalid format at the root position");
 
 		// make new Root Node
-		tree.setRoot(new MindMapNode(lines.remove(0), null));
+		tree.setRoot(new MindMapNode(lines.remove(0)));
 		
 		// build tree recursively
 		recMakeNode(tree.getRoot(), lines, 1);
@@ -72,7 +72,7 @@ class MindMapTreeFactory {
 			// if line has same level add them up to parent node.
 			if(numberOfTabsIn(lines.get(0)) == level) {
 				String name = lines.remove(0).replaceAll("\t", "");     // remove tab in the line.
-				newChildNode = new MindMapNode(name, parent);				// make new node.
+				newChildNode = new MindMapNode(name);				// make new node.
 				parent.addChild(newChildNode);
 				
 			// when nextLine has more big level.
@@ -83,7 +83,7 @@ class MindMapTreeFactory {
 				
 			// when nextLine has more small level.
 			} else if(numberOfTabsIn(lines.get(0)) < level) {
-				if(parent.getParent() == null)    // exception for multiple root node.
+				if(level == 1)    // exception for multiple root node.
 					throw new IllegalArgumentException("invalid format text: root node must be one");
 				return;
 			}
