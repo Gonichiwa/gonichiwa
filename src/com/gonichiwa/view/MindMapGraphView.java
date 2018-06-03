@@ -141,6 +141,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void drawGraph() {
 		dx = 0;
 		dy = 0;
+		zoomFactor = 1;
 		this.clearNodes();
 //		this.removeAll();
 		this.repaint();
@@ -231,26 +232,29 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 	
 	public void zoom(int x, int y, double factor) {
+		dx = (int) ((dx - x) * (factor / zoomFactor) + x);
+		dy = (int) ((dy - y) * (factor / zoomFactor) + y);
 
-		zoomable = true;
-		//		zoomX = (x - dx + this.getWidth() / zoomFactor);
-		//		zoomY = (y - dy + this.getHeight() / zoomFactor);
-		zoomX = x - dx;
-		zoomY = y - dy;
-		System.out.println("before zoomX " + zoomX);
+//		zoomable = true;
+//		//		zoomX = (x - dx + this.getWidth() / zoomFactor);
+//		//		zoomY = (y - dy + this.getHeight() / zoomFactor);
+//		zoomX = x / zoomFactor - dx;
+//		zoomY = y / zoomFactor - dy;
+//		System.out.println("before zoomX " + zoomX);
 
 		setZoomFactor(factor);
-//		for(MindMapNodeView node : nodes) {
-//			node.zoomNode((int) zoomFactor, (int) zoomX, (int) zoomY);
-//		}
+		for(MindMapNodeView node : nodes) {
+			System.out.println("factor " + factor);
+			node.zoomNode(factor, x, y);
+		}
 		this.repaint();
 		this.revalidate();
 		this.doLayout();
 	}
 
 	public void movePanel(double dx, double dy) {
-		this.dx = dx;
-		this.dy = dy;
+		this.dx += dx;
+		this.dy += dy;
 		for(MindMapNodeView node : nodes) {
 			node.moveNode((int)dx,  (int)dy);
 		}
@@ -277,6 +281,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 //		at.scale(zoomFactor, zoomFactor);
 //		at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
 //	    g2d.setTransform(at);
+		System.out.println("dx is " + dx + " " + dy);
 		int idx = (int) dx;
 		int idy = (int) dy;
 		QuadCurve2D q2 = new QuadCurve2D.Float();
@@ -285,7 +290,10 @@ public class MindMapGraphView extends JPanel implements Observer {
 		// is that ok for each NodeView to have parent information?
 		// isn't that domain logic? or is it view logic?
 		for(MindMapEdge edge : edges) {
-			g2d.drawLine(edge.getX1() + idx, edge.getY1() + idy, edge.getX2() + idx, edge.getY2() + idy);
+			g2d.drawLine(edge.getX1(),
+						 edge.getY1(), 
+						 edge.getX2(),
+						 edge.getY2());
 //			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
 //			g2d.draw(q2);
 		}
@@ -313,30 +321,44 @@ public class MindMapGraphView extends JPanel implements Observer {
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 	}
+	
+	private MindMapNodeView getNodeView(int nodeID) {
+		for(MindMapNodeView node : nodes) {
+			if(node.getID() == nodeID) {
+				return node;
+			}
+		}
+		return null;
+	}
 
 	private class MindMapEdge {
-		private MindMapNode from;
-		private MindMapNode to;
+		private MindMapNodeView from;
+		private MindMapNodeView to;
+		private int offsetX, offsetY;
+		private double zoomFactor;
+		
 		public MindMapEdge(MindMapNode from, MindMapNode to) {
-			this.from = from;
-			this.to = to;
+			this.from = getNodeView(from.getID());
+			this.to = getNodeView(to.getID());
 		}
 
 		public int getX1() {
-			return from.getX() + (from.getWidth()/2);
+			return from.getRelativeX() + (from.getWidth()/2);
 		}
 
 		public int getX2() {
-			return to.getX() + (to.getWidth()/2);
+			return to.getRelativeX() + (to.getWidth()/2);
 		}
 
 		public int getY1() {
-			return from.getY() + (from.getHeight()/2);
+			return from.getRelativeY() + (from.getHeight()/2);
 		}
 
 		public int getY2() {
-			return to.getY() + (to.getHeight()/2);
+			return to.getRelativeY() + (to.getHeight()/2);
 		}
+		
+		
 	}
 
 

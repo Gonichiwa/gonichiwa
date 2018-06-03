@@ -129,7 +129,7 @@ public class MindMapGraphController implements Observer {
 				double dx = e.getX() - startPos.getX();
 				double dy = e.getY() - startPos.getY();
 
-				graphView.movePanel(graphView.getDX() + dx, graphView.getDY() + dy);
+				graphView.movePanel(dx, dy);
 				startPos = e.getPoint();
 			}
 			graphView.repaint();
@@ -225,8 +225,8 @@ public class MindMapGraphController implements Observer {
 		
 			if (startPos != null && node.hasFocus()) {
 
-                int x = node.getX() - (int) graphView.getDX();
-                int y = node.getY() - (int) graphView.getDY();
+                int x = node.getX() - (int) node.getOffsetX();
+                int y = node.getY() - (int) node.getOffsetY();
                 int w = node.getWidth();
                 int h = node.getHeight();
                 int dx = e.getX() - startPos.x;

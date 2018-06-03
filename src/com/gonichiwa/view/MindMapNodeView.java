@@ -34,7 +34,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private int originY = 0;
 	private int zoomX = 0;
 	private int zoomY = 0;
-	private int zoomFactor = 1;
+	private double zoomFactor = 1;
 
 	public MindMapNodeView(MindMapNode node, int centerX, int centerY) {
 		if(node == null)
@@ -75,17 +75,36 @@ public class MindMapNodeView extends JPanel implements Observer {
 		setSize(node.getWidth(), node.getHeight());
 	}
 
+	public int getOffsetX() {
+		return offsetX;
+	}
+	
+	public int getOffsetY() {
+		return offsetY;
+	}
+	
 	public void moveNode(int dx, int dy) {
-		offsetX = dx;
-		offsetY = dy;
+		offsetX += dx;
+		offsetY += dy;
+		System.out.println("offset is " + offsetX + " " + offsetY);
+		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
 //		this.repaint();
 	}
 
-	public void zoomNode(double zoomFactor, int zoomX, int zoomY) {
-		this.zoomX = offsetX + zoomX;
-		this.zoomY = offsetY + zoomY;
-		this.setSize((int)(node.getWidth()*zoomFactor), (int)(node.getWidth()* zoomFactor));
+	public void zoomNode(double zoomFactor, int mouseX, int mouseY) {
+		this.zoomX = mouseX;
+		this.zoomY = mouseY;
+		System.out.println("mouse position" + mouseX + " " + mouseY);
+		System.out.println("relative mouse " + (mouseX + offsetX) + " " + (mouseY + offsetY));
+		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
+		offsetX = (int) ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX();
+		offsetY = (int) ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY();
+		System.out.println("new offset " +offsetX);
+		this.zoomFactor = zoomFactor;
+
+		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
+		this.setSize((int)(node.getWidth()*zoomFactor), (int)(node.getHeight()* zoomFactor));
 		this.repaint();
 	}
 
@@ -114,12 +133,29 @@ public class MindMapNodeView extends JPanel implements Observer {
 		// TODO Auto-generated method stub
 		// set location and size here;
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
-		this.setSize(node.getWidth() * zoomFactor, node.getHeight() * zoomFactor);
+		this.setSize((int)(node.getWidth() * zoomFactor), (int)(node.getHeight() * zoomFactor));
 		this.revalidate();
+	}
+	
+	public void scale(double factor) {
+		zoomFactor = factor;
+	}
+	
+	public void translate(double x, double y) {
+		offsetX += x;
+		offsetY += y;
 	}
 
 
 	public MindMapNode getNode() {
 		return node;
+	}
+	
+	public int getRelativeX() {
+		return node.getX() + offsetX;
+	}
+	
+	public int getRelativeY() {
+		return node.getY() + offsetY;
 	}
 }
