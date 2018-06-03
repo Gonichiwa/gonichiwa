@@ -158,4 +158,24 @@ public class MindMapNodeView extends JPanel implements Observer {
 	public int getRelativeY() {
 		return node.getY() + offsetY;
 	}
+	
+	public int getActualWidth() {
+		return node.getWidth();
+	}
+	
+	public int getActualHeight() {
+		return node.getHeight();
+	}
+	
+	public double getZoomFactor() {
+		return zoomFactor;
+	}
+	
+	public int getActualX() {
+		return node.getX();
+	}
+	
+	public int getActualY() {
+		return node.getY();
+	}
 }

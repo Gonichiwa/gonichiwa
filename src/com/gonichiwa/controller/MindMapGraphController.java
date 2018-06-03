@@ -225,12 +225,12 @@ public class MindMapGraphController implements Observer {
 		
 			if (startPos != null && node.hasFocus()) {
 
-                int x = node.getX() - (int) node.getOffsetX();
-                int y = node.getY() - (int) node.getOffsetY();
-                int w = node.getWidth();
-                int h = node.getHeight();
-                int dx = e.getX() - startPos.x;
-                int dy = e.getY() - startPos.y;
+                int x = node.getActualX(); 
+                int y = node.getActualY();
+                int w = node.getActualWidth();
+                int h = node.getActualHeight();
+                int dx = (int) ((e.getX() - startPos.x) / node.getZoomFactor());
+                int dy = (int) ((e.getY() - startPos.y) / node.getZoomFactor());
 
                 switch (cursor) {
                     case Cursor.N_RESIZE_CURSOR:

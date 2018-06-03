@@ -154,6 +154,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 	 * load Graph from already built tree.
 	 */
 	public void loadGraph() {
+		dx = 0;
+		dy = 0;
+		zoomFactor = 1;
 		this.clearNodes();
 //		this.removeAll();
 		recLoadNode(model.tree.getRoot());
