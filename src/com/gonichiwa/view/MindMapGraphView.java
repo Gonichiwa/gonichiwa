@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
@@ -227,14 +228,14 @@ public class MindMapGraphView extends JPanel implements Observer {
 	}
 	
 	public void paint(Graphics g) {
-		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 		AffineTransform at = g2d.getTransform();
-	    at.setToTranslation(dx, dy);
+		System.out.println(dx + " " + dy);
+//	    at.setToTranslation(dx, dy);
 		at.scale(zoomFactor, zoomFactor);
-
 		at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
 	    g2d.setTransform(at);
+		super.paint(g);
 
 		QuadCurve2D q2 = new QuadCurve2D.Float();
 		g2d.setStroke(new BasicStroke(1));
@@ -246,6 +247,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 //			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
 //			g2d.draw(q2);
 		}
+		this.paintChildren(g2d);
+//		this.paintComponents(g2d);
 
 	}
 	public void zoom(int x, int y, double factor) {
@@ -258,13 +261,21 @@ public class MindMapGraphView extends JPanel implements Observer {
 		System.out.println("before zoomX " + zoomX);
 
 		setZoomFactor(factor);
+		
 		this.repaint();
+		this.revalidate();
+		this.doLayout();
 	}
 	
-	public void move(double dx, double dy) {
+	public void movePanel(double dx, double dy) {
 		this.dx = dx;
 		this.dy = dy;
+		for(MindMapNodeView node : nodes) {
+			node.moveNode((int)dx,  (int)dy);
+		}
 		this.repaint();
+//		this.revalidate();
+//		this.doLayout();
 	}
 	
 	public double getDX() {
@@ -278,12 +289,12 @@ public class MindMapGraphView extends JPanel implements Observer {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+
 		Graphics2D g2d = (Graphics2D) g;
 		
 	    AffineTransform at = g2d.getTransform();
 
-	    at.setToTranslation(dx, dy);
+//	    at.setToTranslation(dx, dy);
 
 	    at.scale(zoomFactor, zoomFactor);
 //	    if(zoomable) {
@@ -295,6 +306,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 //	    }
 
 	    g2d.setTransform(at);
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 	}
 	
 	private class MindMapEdge {

@@ -28,6 +28,10 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private int id;
 	private JLabel label;
 	private MindMapNode node;
+	private int offsetX = 0;
+	private int offsetY = 0;
+	private int originX = 0;
+	private int originY = 0;
 	
 	public MindMapNodeView(MindMapNode node, int centerX, int centerY) {
 		if(node == null) 
@@ -51,7 +55,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 //		label.setBackground(Color.blue);
 		label.setAlignmentX(JLabel.CENTER);
 		label.setAlignmentY(JLabel.CENTER);
-		this.setOpaque(true);
+		this.setOpaque(false);
 		this.add(label);
 		
 		// set geometry.
@@ -66,6 +70,17 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this(node, node.getX(), node.getY());
 		setLocation(node.getX(), node.getY());
 		setSize(node.getWidth(), node.getHeight());
+	}
+	
+	public void moveNode(int dx, int dy) {
+		offsetX = dx;
+		offsetY = dy;
+		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
+//		this.repaint();
+	}
+	
+	public void zoomNode(int zoomFactor) {
+		this.setSize(node.getWidth()*zoomFactor, node.getWidth()*zoomFactor);
 	}
 	
 	public int getID() {
@@ -85,14 +100,14 @@ public class MindMapNodeView extends JPanel implements Observer {
 //		g.setColor(Color.BLUE);
 //		System.out.println(this.getX()+" "+ this.getY()+" "+ this.getWidth()+" "+ this.getHeight());
 //		g.fillOval(0+2, 0+2, this.getWidth()-4, this.getHeight()-4);
-		this.paintComponents(g);
+//		this.paintComponents(g);
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		// set location and size here;
-		this.setLocation(node.getX(), node.getY());
+		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
 		this.setSize(node.getWidth(), node.getHeight());
 		this.revalidate();
 	}
