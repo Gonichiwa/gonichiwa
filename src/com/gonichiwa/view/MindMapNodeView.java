@@ -51,7 +51,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 //		label.setBackground(Color.blue);
 		label.setAlignmentX(JLabel.CENTER);
 		label.setAlignmentY(JLabel.CENTER);
-		this.setOpaque(true);
+		this.setOpaque(false);
 		this.add(label);
 		
 		// set geometry.

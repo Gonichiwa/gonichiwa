@@ -219,7 +219,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 //			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
 //			g2d.draw(q2);
 		}
-	
+		paintChildren(g2d);
 	}
 	
 	private class MindMapEdge {
