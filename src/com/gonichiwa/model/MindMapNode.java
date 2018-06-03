@@ -129,6 +129,10 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	 * setter method
 	 */
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public void setX(int x) {
 		this.x = x;
 		setChanged();

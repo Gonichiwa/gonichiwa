@@ -41,7 +41,7 @@ public class MindMapAttributeView extends JPanel implements Observer {
 		layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(layout);
 		attributePane = new MindMapAttributeContainer(NodeDataDeliver.attributes);
-		attributePane.setEditable("NAME", false);		// I don't like this part.
+//		attributePane.setEditable("NAME", false);		// I don't like this part.
 		changeButton = new JButton("change");
 		
 		changeButton.setAlignmentX(CENTER_ALIGNMENT);

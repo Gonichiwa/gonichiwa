@@ -114,10 +114,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 			this.repaint();
 			return;
 		}
-
-		switch((String) arg) {
+		
+		switch(String.valueOf(arg)) {
 		case "NEW":
-
 			drawGraph();
 			break;
 		case "LOAD":

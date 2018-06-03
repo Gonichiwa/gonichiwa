@@ -46,6 +46,16 @@ public class MindMapTree extends Observable implements Cloneable {
 		root = node;
 	}
 	
+	public void changeNodeName(int nodeID, String name) {
+		MindMapNode node = getNode(nodeID);
+		if(node != null) {
+			node.setName(name);
+			setChanged();
+			notifyObservers();
+		}
+		
+	}
+	
 	/**
 	 * Modifier
 	 * 

@@ -79,6 +79,7 @@ public class MindMapAttributeController {
 			
 			try {
 				// get All the value from MindMapAttributeView
+				String name = validateNameValue(view.getValue("NAME"));
 				int x = Integer.parseInt(view.getValue("X"));
 				int y = Integer.parseInt(view.getValue("Y"));
 				int width = validateSizeValue(view.getValue("WIDTH"));
@@ -90,12 +91,15 @@ public class MindMapAttributeController {
 				int alpha = color.getAlpha();
 				
 				// update model
+				model.changeNodeName(view.getNode().getID(), name);
 				model.setNodeLocation(view.getNode().getID(), x, y);
 				model.setNodeSize(view.getNode().getID(), width, height);
 				model.setNodeColor(view.getNode().getID(), red, green, blue, alpha);
 				
 			} catch (Exception err) {
 				JOptionPane.showMessageDialog(view, err.getMessage(), "invalid format", 2);
+				System.out.println(err);
+				err.printStackTrace();
 			}
 		}
 	}
@@ -112,6 +116,14 @@ public class MindMapAttributeController {
 		view.setNode(node);
 	}
 	
+	public String validateNameValue(String value) {
+		// TODO Auto-generated method stub
+		if(!value.equals("")) 
+			return value;
+		else 
+			throw new IllegalArgumentException("name can not be empty");
+	}
+
 	/**
 	 * Helper Method.
 	 * 
