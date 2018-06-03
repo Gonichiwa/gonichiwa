@@ -76,11 +76,13 @@ class MindMapFileManager {
 		Gson gson = new Gson();
 		MindMapNode newNode = null;
 		try {
+
 //			loadedModelData = objectMapper.readValue(new FileReader(path), MindMapModel.class);
 //			newNode = objectMapper.readValue(new FileReader(path), MindMapNode.class);
 			FileReader reader = new FileReader(path);
 			newNode = gson.fromJson(reader, MindMapNode.class);
 			fileName = new File(path).getName();
+
 		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
 			System.out.println("load error");
 		} catch (IOException e) {

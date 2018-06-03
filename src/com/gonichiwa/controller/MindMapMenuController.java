@@ -1,10 +1,12 @@
 package com.gonichiwa.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -40,7 +42,8 @@ public class MindMapMenuController {
 
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".json", "json"));
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".XML", "XML"));
-
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		
 		menuBar.addNewwListener(new newwActionListener());
 		menuBar.addOpenListener(new openActionListener());
 		menuBar.addSaveListener(new saveActionListener());
@@ -99,29 +102,61 @@ public class MindMapMenuController {
 	class newwActionListener implements ActionListener{
 				
 		public void actionPerformed(ActionEvent e) {
-			if(!model.isSaved()) {
+			
+				int saveCheck = JOptionPane.showConfirmDialog(null, "변경사항을 저장하시겠습니까?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+				
+				if(saveCheck == JOptionPane.YES_OPTION) {
+					int returnValue = fileChooser.showSaveDialog(null);
+					if(returnValue == JFileChooser.APPROVE_OPTION) {
+						System.out.println(fileChooser.getFileFilter());
+						model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+					}
+				}
+				else if(saveCheck == JOptionPane.NO_OPTION) {
+					
+				}
+				else {
+					return;
+				}
+				
+				System.out.println("New");
+				model.reset();
+			
+		}
+	}
+	class openActionListener implements ActionListener{
+		
+		public void actionPerformed(ActionEvent e) {
+
+			
+			int saveCheck = JOptionPane.showConfirmDialog(null, "변경사항을 저장하시겠습니까?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+			
+			if(saveCheck == JOptionPane.YES_OPTION) {
 				int returnValue = fileChooser.showSaveDialog(null);
 				if(returnValue == JFileChooser.APPROVE_OPTION) {
 					System.out.println(fileChooser.getFileFilter());
 					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
 				}
 			}
-			model.reset();
-		}
-	}
-	class openActionListener implements ActionListener{
-		
-		public void actionPerformed(ActionEvent e) {
+			else if(saveCheck == JOptionPane.NO_OPTION) {
+				
+			}
+			else {
+				return;
+			}
+			
+			System.out.println("Open");
 			int returnValue = fileChooser.showOpenDialog(null);
 			if(returnValue == JFileChooser.APPROVE_OPTION) {
 				model.load(fileChooser.getSelectedFile().getPath());
 			}
-			System.out.println("Open");
+
 		}
 	}
 	class saveActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+
 			if(model.isSaved()) {
 				model.save(); 
 				return;
@@ -132,6 +167,7 @@ public class MindMapMenuController {
 					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
 				}
 			}
+
 		}
 	}
 	class saveasActionListener implements ActionListener{
@@ -148,8 +184,27 @@ public class MindMapMenuController {
 	class closeActionListener implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
+		
+			int saveCheck = JOptionPane.showConfirmDialog(null, "변경사항을 저장하시겠습니까?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+			
+			if(saveCheck == JOptionPane.YES_OPTION) {
+				int returnValue = fileChooser.showSaveDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getFileFilter());
+					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				}
+			}
+			else if(saveCheck == JOptionPane.NO_OPTION) {
+				
+			}
+			else {
+				return;
+			}
 			System.out.println("close");
+			
 			System.exit(-1);
+			
+			
 		}
 	}
 	class exportActionListener implements ActionListener{
@@ -199,6 +254,7 @@ public class MindMapMenuController {
 	class fitmapActionListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("fitmap");	
+			
 		}
 	}
 	class hideeditorpaneActionListener implements ActionListener{
@@ -211,5 +267,12 @@ public class MindMapMenuController {
 			System.out.println("hideattribute");
 		}
 	}
-	
+	class ColorPickerActionListener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			Color selectedColor = JColorChooser.showDialog(null, "Color", Color.blue);
+			if(selectedColor != null) {
+				
+			}
+		}
+	}
 }
