@@ -32,11 +32,14 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private int offsetY = 0;
 	private int originX = 0;
 	private int originY = 0;
-	
+	private int zoomX = 0;
+	private int zoomY = 0;
+	private int zoomFactor = 1;
+
 	public MindMapNodeView(MindMapNode node, int centerX, int centerY) {
-		if(node == null) 
+		if(node == null)
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
-		
+
 //		this.setBackground(Color.blue);
 		// make label center
 		GridBagLayout gridbag = new GridBagLayout();
@@ -44,7 +47,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 	    constraints.fill = GridBagConstraints.CENTER;
 	    gridbag.setConstraints(this, constraints);
 	    this.setLayout(gridbag);
-	    
+
 	    // set custom border
 		setBorder(new ResizableBorder(6));
 		// make label.
@@ -57,44 +60,47 @@ public class MindMapNodeView extends JPanel implements Observer {
 		label.setAlignmentY(JLabel.CENTER);
 		this.setOpaque(false);
 		this.add(label);
-		
+
 		// set geometry.
 		this.setLocation(centerX-(this.getPreferredSize().width/2), centerY-(this.getPreferredSize().height/2));
 		this.setSize(this.getPreferredSize());
-		
+
 		// add observer.
 		node.addObserver(this);
 	}
-	
+
 	public MindMapNodeView(MindMapNode node) {
 		this(node, node.getX(), node.getY());
 		setLocation(node.getX(), node.getY());
 		setSize(node.getWidth(), node.getHeight());
 	}
-	
+
 	public void moveNode(int dx, int dy) {
 		offsetX = dx;
 		offsetY = dy;
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
 //		this.repaint();
 	}
-	
-	public void zoomNode(int zoomFactor) {
-		this.setSize(node.getWidth()*zoomFactor, node.getWidth()*zoomFactor);
+
+	public void zoomNode(double zoomFactor, int zoomX, int zoomY) {
+		this.zoomX = offsetX + zoomX;
+		this.zoomY = offsetY + zoomY;
+		this.setSize((int)(node.getWidth()*zoomFactor), (int)(node.getWidth()* zoomFactor));
+		this.repaint();
 	}
-	
+
 	public int getID() {
 		return id;
 	}
-	
+
 	public boolean hasParent() {
 		return false;
 	}
-	
+
 	public Point getParentLocation() {
 		return parentView.getLocation();
 	}
-	
+
 	public void paint(Graphics g) {
 		super.paint(g);
 //		g.setColor(Color.BLUE);
@@ -108,11 +114,11 @@ public class MindMapNodeView extends JPanel implements Observer {
 		// TODO Auto-generated method stub
 		// set location and size here;
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
-		this.setSize(node.getWidth(), node.getHeight());
+		this.setSize(node.getWidth() * zoomFactor, node.getHeight() * zoomFactor);
 		this.revalidate();
 	}
 
-	
+
 	public MindMapNode getNode() {
 		return node;
 	}

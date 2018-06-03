@@ -225,8 +225,8 @@ public class MindMapGraphController implements Observer {
 		
 			if (startPos != null && node.hasFocus()) {
 
-                int x = node.getX();
-                int y = node.getY();
+                int x = node.getX() - (int) graphView.getDX();
+                int y = node.getY() - (int) graphView.getDY();
                 int w = node.getWidth();
                 int h = node.getHeight();
                 int dx = e.getX() - startPos.x;
