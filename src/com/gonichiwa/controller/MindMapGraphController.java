@@ -141,6 +141,7 @@ public class MindMapGraphController implements Observer {
 			attributeView.setNode(node.getNode());
 			node.requestFocus();
 			node.repaint();
+			graphView.setComponentZOrder(node, 0);	// selected node overlap anything else.
 			graphView.repaint();
 			ResizableBorder border = (ResizableBorder) node.getBorder();          
 			cursor = border.getCursor(e);
