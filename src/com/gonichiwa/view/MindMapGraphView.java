@@ -34,8 +34,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 	private JLabel label;
 	private double zoomFactor = 1;
-	private double zoomX, zoomY;
-	private boolean zoomable;
 	private double dx, dy;
 
 
@@ -139,9 +137,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 //	}
 
 	public void drawGraph() {
-		dx = 0;
-		dy = 0;
-		zoomFactor = 1;
+//		dx = 0;
+//		dy = 0;
+//		zoomFactor = 1;
 		this.clearNodes();
 //		this.removeAll();
 		this.repaint();
@@ -154,9 +152,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	 * load Graph from already built tree.
 	 */
 	public void loadGraph() {
-		dx = 0;
-		dy = 0;
-		zoomFactor = 1;
+
 		this.clearNodes();
 //		this.removeAll();
 		recLoadNode(model.tree.getRoot());
@@ -171,6 +167,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
 		addNode(nodeView);
+		nodeView.zoomNode(zoomFactor, 0, 0);
+		nodeView.moveNode((int)dx, (int)dy);
 		node.addObserver(this);
 		for(MindMapNode child : node.getChildren()) {
 			recLoadNode(child);
@@ -195,12 +193,14 @@ public class MindMapGraphView extends JPanel implements Observer {
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
+		
 		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
 		node.initViewAttribute(nodeView.getX(), nodeView.getY(), nodeView.getPreferredSize().width, nodeView.getPreferredSize().height);
 		node.addObserver(this);
 		// node.setColor()
 		this.addNode(nodeView);
-
+		nodeView.zoomNode(zoomFactor, 0, 0);
+		nodeView.moveNode((int)dx, (int)dy);
 
 		// get number of children
 		numberOfChildren = node.getChildren().size();
@@ -318,7 +318,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 //	    at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
 //	    at.translate(-zoomX * (zoomFactor - 1), -zoomY * (zoomFactor - 1));
 //	    System.out.println(zoomX + " " + zoomY);
-	    zoomable = false;
 
 	    g2d.setTransform(at);
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

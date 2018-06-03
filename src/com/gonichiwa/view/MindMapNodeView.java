@@ -132,6 +132,8 @@ public class MindMapNodeView extends JPanel implements Observer {
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		// set location and size here;
+		this.label.setText(node.getName());
+		this.label.revalidate();
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
 		this.setSize((int)(node.getWidth() * zoomFactor), (int)(node.getHeight() * zoomFactor));
 		this.revalidate();
@@ -177,5 +179,9 @@ public class MindMapNodeView extends JPanel implements Observer {
 	
 	public int getActualY() {
 		return node.getY();
+	}
+	
+	public void setZoomFactor(double factor) {
+		zoomFactor = factor;
 	}
 }

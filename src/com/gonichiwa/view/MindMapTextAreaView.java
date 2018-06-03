@@ -64,7 +64,6 @@ public class MindMapTextAreaView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		System.out.println("redrawing");
 		System.out.println(model.tree.toString());
 		setText(model.tree.toString());
 		mindMapBuildingTextArea.repaint();

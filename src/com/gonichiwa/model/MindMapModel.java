@@ -65,9 +65,9 @@ public class MindMapModel extends Observable{
 	
 	public void setNodeLocation(int nodeID, int x, int y) {
 		try {
-		MindMapNode node = tree.getNode(nodeID);
-		node.setX(x);
-		node.setY(y);
+			MindMapNode node = tree.getNode(nodeID);
+			node.setX(x);
+			node.setY(y);
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeLocation NullPointerException");
 		}
