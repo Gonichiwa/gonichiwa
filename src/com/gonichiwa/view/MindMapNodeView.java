@@ -36,7 +36,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private int zoomY = 0;
 	private double zoomFactor = 1;
 
-	public MindMapNodeView(MindMapNode node, int centerX, int centerY) {
+	public MindMapNodeView(MindMapNode node, double centerX, double centerY) {
 		if(node == null)
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
 
@@ -62,7 +62,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.add(label);
 
 		// set geometry.
-		this.setLocation(centerX-(this.getPreferredSize().width/2), centerY-(this.getPreferredSize().height/2));
+		this.setLocation((int) (centerX-(this.getPreferredSize().width/2)), (int) (centerY-(this.getPreferredSize().height/2)));
 		this.setSize(this.getPreferredSize());
 		
 		// add observer.
@@ -71,8 +71,8 @@ public class MindMapNodeView extends JPanel implements Observer {
 
 	public MindMapNodeView(MindMapNode node) {
 		this(node, node.getX(), node.getY());
-		setLocation(node.getX(), node.getY());
-		setSize(node.getWidth(), node.getHeight());
+		setLocation((int) node.getX(), (int) node.getY());
+		setSize((int) node.getWidth(), (int) node.getHeight());
 	}
 
 	public int getOffsetX() {
@@ -88,7 +88,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		offsetY += dy;
 		System.out.println("offset is " + offsetX + " " + offsetY);
 		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
-		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
+		this.setLocation((int) node.getX() + offsetX, (int) node.getY() + offsetY);
 //		this.repaint();
 	}
 
@@ -98,12 +98,12 @@ public class MindMapNodeView extends JPanel implements Observer {
 		System.out.println("mouse position" + mouseX + " " + mouseY);
 		System.out.println("relative mouse " + (mouseX + offsetX) + " " + (mouseY + offsetY));
 		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
-		offsetX = (int) ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX();
-		offsetY = (int) ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY();
+		offsetX = (int) ((int) ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX());
+		offsetY = (int) ((int) ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY());
 		System.out.println("new offset " +offsetX);
 		this.zoomFactor = zoomFactor;
 
-		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
+		this.setLocation((int)node.getX() + offsetX, (int)node.getY() + offsetY);
 		this.setSize((int)(node.getWidth()*zoomFactor + widthOffset), (int)(node.getHeight()* zoomFactor + heightOffset));
 		this.repaint();
 	}
@@ -134,7 +134,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		// set location and size here;
 		this.label.setText(node.getName());
 		this.label.revalidate();
-		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
+		this.setLocation((int)node.getX() + offsetX, (int)node.getY() + offsetY);
 		this.setSize((int)(node.getWidth() * zoomFactor + widthOffset), (int)(node.getHeight() * zoomFactor + heightOffset));
 		this.revalidate();
 	}
@@ -153,19 +153,19 @@ public class MindMapNodeView extends JPanel implements Observer {
 		return node;
 	}
 	
-	public int getRelativeX() {
+	public double getRelativeX() {
 		return node.getX() + offsetX;
 	}
 	
-	public int getRelativeY() {
+	public double getRelativeY() {
 		return node.getY() + offsetY;
 	}
 	
-	public int getActualWidth() {
+	public double getActualWidth() {
 		return node.getWidth();
 	}
 	
-	public int getActualHeight() {
+	public double getActualHeight() {
 		return node.getHeight();
 	}
 	
@@ -173,12 +173,14 @@ public class MindMapNodeView extends JPanel implements Observer {
 		return zoomFactor;
 	}
 	
-	public int getActualX() {
-		return this.getX() - offsetX;
+	public double getActualX() {
+//		return this.getX() - offsetX;
+		return node.getX();
 	}
 	
-	public int getActualY() {
-		return this.getY() - offsetY;
+	public double getActualY() {
+//		return this.getY() - offsetY;
+		return node.getY();
 	}
 	
 	public void setZoomFactor(double factor) {

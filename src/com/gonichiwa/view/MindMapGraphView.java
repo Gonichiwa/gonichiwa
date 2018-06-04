@@ -346,19 +346,19 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 
 		public int getX1() {
-			return from.getRelativeX() + (from.getWidth()/2);
+			return (int) (from.getRelativeX() + (from.getWidth()/2));
 		}
 
 		public int getX2() {
-			return to.getRelativeX() + (to.getWidth()/2);
+			return (int) (to.getRelativeX() + (to.getWidth()/2));
 		}
 
 		public int getY1() {
-			return from.getRelativeY() + (from.getHeight()/2);
+			return (int) (from.getRelativeY() + (from.getHeight()/2));
 		}
 
 		public int getY2() {
-			return to.getRelativeY() + (to.getHeight()/2);
+			return (int) (to.getRelativeY() + (to.getHeight()/2));
 		}
 		
 		

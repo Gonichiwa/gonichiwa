@@ -15,13 +15,13 @@ public interface NodeDataDeliver {
 	
 	public String getName();
 	
-	public int getX();
+	public double getX();
 	
-	public int getY(); 
+	public double getY(); 
 	
-	public int getWidth();
+	public double getWidth();
 	
-	public int getHeight();
+	public double getHeight();
 	
 	public int getRedColor();
 	

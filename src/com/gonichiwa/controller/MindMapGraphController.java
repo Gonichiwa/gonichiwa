@@ -225,13 +225,13 @@ public class MindMapGraphController implements Observer {
 		
 			if (startPos != null && node.hasFocus()) {
 
-                int x = node.getActualX(); 
-                int y = node.getActualY();
-                int w = node.getActualWidth();
-                int h = node.getActualHeight();
+                double x = node.getActualX(); 
+                double y = node.getActualY();
+                double w = node.getActualWidth();
+                double h = node.getActualHeight();
                
-                int dx = (int) ((e.getX() - startPos.x) / node.getZoomFactor());
-                int dy = (int) ((e.getY() - startPos.y) / node.getZoomFactor());
+                double dx =  ((e.getX() - startPos.x) / node.getZoomFactor());
+                double dy =  ((e.getY() - startPos.y) / node.getZoomFactor());
 
 //                int dx = e.getX() - startPos.x;
 //                int dy = e.getY() - startPos.y;
@@ -239,7 +239,7 @@ public class MindMapGraphController implements Observer {
                 switch (cursor) {
                     case Cursor.N_RESIZE_CURSOR:
                         if (!(h - dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x, y+dy);
+                        	model.setNodeLocation(node.getID(), x, y+dy*node.getZoomFactor());
                         	model.setNodeSize(node.getID(), w, h-dy);
 //                        	node.moveNode(0, 0);
 //                        	node.scaleHeight(+dy);
@@ -263,9 +263,8 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.W_RESIZE_CURSOR:
                         if (!(w - dx < 30)) {
-                        	model.setNodeLocation(node.getID(), x+dx, y);
+                        	model.setNodeLocation(node.getID(), x+dx*node.getZoomFactor(), y);
                         	model.setNodeSize(node.getID(), w-dx, h);
-                        	node.moveNode(dx, 0);
                         	graphView.repaint();
                         }
                         break;
@@ -274,7 +273,6 @@ public class MindMapGraphController implements Observer {
                         if (!(w + dx < 30)) {
                         	model.setNodeLocation(node.getID(), x, y);
                         	model.setNodeSize(node.getID(), w+dx, h);
-                        	node.moveNode(-dx, 0);
                             startPos = e.getPoint();
                             graphView.repaint();
                         }
@@ -282,7 +280,7 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.NW_RESIZE_CURSOR:
                         if (!(w - dx < 30) && !(h - dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x+dx, y+dy);
+                        	model.setNodeLocation(node.getID(), x+dx*node.getZoomFactor(), y+dy*node.getZoomFactor());
                         	model.setNodeSize(node.getID(), w-dx, h-dy);
                         	graphView.repaint();
                         }
@@ -290,7 +288,7 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.NE_RESIZE_CURSOR:
                         if (!(w + dx < 30) && !(h - dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x, y+dy);
+                        	model.setNodeLocation(node.getID(), x, y+dy*node.getZoomFactor());
                         	model.setNodeSize(node.getID(), w+dx, h-dy);
                         	graphView.repaint();
                             startPos = new Point(e.getX(), startPos.y);
@@ -299,7 +297,7 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.SW_RESIZE_CURSOR:
                         if (!(w - dx < 30) && !(h + dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x+dx, y);
+                        	model.setNodeLocation(node.getID(), x+dx*node.getZoomFactor(), y);
                         	model.setNodeSize(node.getID(), w-dx, h+dy);
                         	graphView.repaint();
                             startPos = new Point(startPos.x, e.getY());
@@ -316,7 +314,7 @@ public class MindMapGraphController implements Observer {
                         break;
 
                     case Cursor.HAND_CURSOR:
-                    	model.setNodeLocation(node.getID(), x + dx, y + dy);
+                    	model.setNodeLocation(node.getID(), x + dx *node.getZoomFactor(), y + dy*node.getZoomFactor());
                     	graphView.repaint();
                 }
 

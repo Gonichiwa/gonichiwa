@@ -11,7 +11,7 @@ import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 public class MindMapNode extends Observable implements NodeDataDeliver {
 	private static int idGenerator = 0;
 	private final int id;
-	private int x, y, width, height; 
+	private double x, y, width, height; 
 	private int red, green, blue, alpha;
 	private String name;
 	
@@ -30,7 +30,7 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	}
 	
 	@JsonCreator
-	MindMapNode(@JsonProperty("name") String name, @JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("width") int width, @JsonProperty("height") int height) {
+	MindMapNode(@JsonProperty("name") String name, @JsonProperty("x") double x, @JsonProperty("y") double y, @JsonProperty("width") double width, @JsonProperty("height") double height) {
 		super();
 		id = ++idGenerator;
 		this.name = name;
@@ -45,7 +45,7 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	}
 	
 	// 3. node method implementation
-	public void initViewAttribute(int x, int y, int width, int height, int red, int green, int blue) {
+	public void initViewAttribute(double x, double y, double width, double height, int red, int green, int blue) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -96,19 +96,19 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		return name;
 	}
 	
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 	
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 	
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 	
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 	
@@ -136,25 +136,25 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		this.name = name;
 	}
 	
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void setWidth(int width) {
+	public void setWidth(double width) {
 		this.width = width;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 		setChanged();
 		notifyObservers();

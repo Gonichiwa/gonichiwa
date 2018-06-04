@@ -67,7 +67,7 @@ public class MindMapModel extends Observable{
 		tree.changeNodeName(nodeID, name);
 	}
 	
-	public void setNodeLocation(int nodeID, int x, int y) {
+	public void setNodeLocation(int nodeID, double x, double y) {
 		try {
 			MindMapNode node = tree.getNode(nodeID);
 			node.setX(x);
@@ -78,7 +78,7 @@ public class MindMapModel extends Observable{
 
 	}
 	
-	public void setNodeSize(int nodeID, int width, int height) {
+	public void setNodeSize(int nodeID, double width, double height) {
 		try {
 		MindMapNode node = tree.getNode(nodeID);
 		node.setWidth(width);
