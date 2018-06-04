@@ -25,17 +25,10 @@ public class MindMapTree extends Observable implements Cloneable {
 	 * @param text
 	 * 		the text which is given from TextAreaPane.
 	 */
-
 	public void buildTree(String text) {
 		root = MindMapTreeFactory.build(text);
 		setChanged();
 		notifyObservers("NEW");
-	}
-	
-	public void loadTree(MindMapNode root) {
-		this.root = MindMapTreeFactory.loadNewTree(root);
-		setChanged();
-		notifyObservers("LOAD");
 	}
 	
 	public MindMapNode getRoot() {
