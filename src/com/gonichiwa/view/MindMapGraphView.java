@@ -136,11 +136,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 //	}
 
 	public void drawGraph() {
-//		dx = 0;
-//		dy = 0;
-//		zoomFactor = 1;
 		this.clearNodes();
-//		this.removeAll();
 		this.repaint();
 		this.revalidate();
 		System.out.println("tree size is" + model.tree);
@@ -153,7 +149,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void loadGraph() {
 
 		this.clearNodes();
-//		this.removeAll();
 		recLoadNode(model.tree.getRoot());
 		this.repaint();
 		this.revalidate();
@@ -194,8 +189,15 @@ public class MindMapGraphView extends JPanel implements Observer {
 		nodeView.addKeyListener(nodeKeyListener);
 		
 		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
-		node.initViewAttribute(nodeView.getX(), nodeView.getY(), nodeView.getPreferredSize().width, nodeView.getPreferredSize().height);
+		node.initViewAttribute(nodeView.getX(),
+							   nodeView.getY(),
+							   nodeView.getPreferredSize().width, 
+							   nodeView.getPreferredSize().height,
+							   nodeView.getColorModel().getRed(255),
+							   nodeView.getColorModel().getGreen(255),
+							   nodeView.getColorModel().getBlue(255));
 		node.addObserver(this);
+		
 		// node.setColor()
 		this.addNode(nodeView);
 		nodeView.zoomNode(zoomFactor, 0, 0);

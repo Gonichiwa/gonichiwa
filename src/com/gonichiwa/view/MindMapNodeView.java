@@ -30,8 +30,8 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private MindMapNode node;
 	private int offsetX = 0;
 	private int offsetY = 0;
-	private int originX = 0;
-	private int originY = 0;
+	private int widthOffset = 0;
+	private int heightOffset = 0;
 	private int zoomX = 0;
 	private int zoomY = 0;
 	private double zoomFactor = 1;
@@ -64,7 +64,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		// set geometry.
 		this.setLocation(centerX-(this.getPreferredSize().width/2), centerY-(this.getPreferredSize().height/2));
 		this.setSize(this.getPreferredSize());
-
+		
 		// add observer.
 		node.addObserver(this);
 	}
@@ -104,7 +104,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.zoomFactor = zoomFactor;
 
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
-		this.setSize((int)(node.getWidth()*zoomFactor), (int)(node.getHeight()* zoomFactor));
+		this.setSize((int)(node.getWidth()*zoomFactor + widthOffset), (int)(node.getHeight()* zoomFactor + heightOffset));
 		this.repaint();
 	}
 
@@ -135,7 +135,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.label.setText(node.getName());
 		this.label.revalidate();
 		this.setLocation(node.getX() + offsetX, node.getY() + offsetY);
-		this.setSize((int)(node.getWidth() * zoomFactor), (int)(node.getHeight() * zoomFactor));
+		this.setSize((int)(node.getWidth() * zoomFactor + widthOffset), (int)(node.getHeight() * zoomFactor + heightOffset));
 		this.revalidate();
 	}
 	
@@ -174,14 +174,25 @@ public class MindMapNodeView extends JPanel implements Observer {
 	}
 	
 	public int getActualX() {
-		return node.getX();
+		return this.getX() - offsetX;
 	}
 	
 	public int getActualY() {
-		return node.getY();
+		return this.getY() - offsetY;
 	}
 	
 	public void setZoomFactor(double factor) {
 		zoomFactor = factor;
+	}
+	
+	public void scaleWidth(int dx) {
+		widthOffset += dx;
+		this.setSize((int)(node.getWidth()*zoomFactor + widthOffset), (int)(node.getHeight()* zoomFactor + heightOffset));
+
+	}
+	
+	public void scaleHeight(int dy) {
+		heightOffset += dy;
+		this.setSize((int)(node.getWidth()*zoomFactor + widthOffset), (int)(node.getHeight()* zoomFactor + heightOffset));
 	}
 }

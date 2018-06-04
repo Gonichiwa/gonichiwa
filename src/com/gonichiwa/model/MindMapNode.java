@@ -45,11 +45,14 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	}
 	
 	// 3. node method implementation
-	public void initViewAttribute(int x, int y, int width, int height) {
+	public void initViewAttribute(int x, int y, int width, int height, int red, int green, int blue) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.red = red;
+		this.green = green;
+		this.red = red;
 	}
 	
 	public void addChild(MindMapNode child) {
