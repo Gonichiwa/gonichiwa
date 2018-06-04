@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
@@ -21,7 +23,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.model.MindMapNode;
@@ -58,6 +63,23 @@ public class MindMapGraphController implements Observer {
 		
 		graphViewContainer = new JPanel(new BorderLayout());
 		graphScalerView = new MindMapGraphScalerView();
+		
+		graphScalerView.addScaleListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JSlider scaler = (JSlider) e.getSource();
+				double zoomFactor = scaler.getValue() / 100.0;
+				graphView.zoom(graphView.getWidth() / 2, graphView.getHeight() / 2, zoomFactor);
+			}
+		});
+		
+		graphScalerView.addResetListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				graphView.resetAllOffset();
+				graphScalerView.setScalerPoint(graphView.getZoomFactor());
+			}
+		});
 
 		this.graphViewContainer.add(graphView, BorderLayout.CENTER);
 		this.graphViewContainer.add(graphScalerView, BorderLayout.SOUTH);
@@ -120,11 +142,12 @@ public class MindMapGraphController implements Observer {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			int rotation = e.getWheelRotation();
 			
-			if(rotation > 0 && graphView.getZoomFactor() < 4) 
+			if(rotation > 0 && graphView.getZoomFactor() < MindMapGraphView.MAX_ZOOM_FACTOR) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*1.1);
-			else if(rotation < 0 && graphView.getZoomFactor() > 0.8) 
+			else if(rotation < 0 && graphView.getZoomFactor() > MindMapGraphView.MIN_ZOOM_FACTOR) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*0.9);
-
+			
+			graphScalerView.setScalerPoint(graphView.getZoomFactor());
 			graphView.repaint();
 		}
 

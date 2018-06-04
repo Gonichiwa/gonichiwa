@@ -5,20 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.gonichiwa.model.MindMapModel;
@@ -33,10 +27,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private MouseAdapter nodeMouseListener;
 	private KeyListener nodeKeyListener;
 
-//	private JLabel label;
 	private double zoomFactor = 1;
 	private double dx, dy;
 
+	public static final double MAX_ZOOM_FACTOR = 3.0;
+	public static final double MIN_ZOOM_FACTOR = 0.8;
 
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
@@ -59,11 +54,22 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 
 	public void reset() {
+		resetAllOffset();
+		clearNodes();
+		repaint();
+	}
+	
+	public void resetAllOffset() {
+		
+		this.zoom((int) dx, (int) dy, 1);
+		this.movePanel(-dx, -dy);
+
 		dx = 0;
 		dy = 0;
 		zoomFactor = 1;
-		clearNodes();
+		
 		repaint();
+		revalidate();
 	}
 
 	public void addNodeMouseAdapter(MouseAdapter l) {
@@ -234,6 +240,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void movePanel(double dx, double dy) {
 		this.dx += dx;
 		this.dy += dy;
+		
 		for(MindMapNodeView node : nodes) {
 			node.moveNode((int)dx,  (int)dy);
 		}
