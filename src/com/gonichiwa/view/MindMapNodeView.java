@@ -28,8 +28,8 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private int id;
 	private JLabel label;
 	private MindMapNode node;
-	private int offsetX = 0;
-	private int offsetY = 0;
+	private double offsetX = 0;
+	private double offsetY = 0;
 	private int widthOffset = 0;
 	private int heightOffset = 0;
 	private int zoomX = 0;
@@ -75,35 +75,29 @@ public class MindMapNodeView extends JPanel implements Observer {
 		setSize((int) node.getWidth(), (int) node.getHeight());
 	}
 
-	public int getOffsetX() {
+	public double getOffsetX() {
 		return offsetX;
 	}
 	
-	public int getOffsetY() {
+	public double getOffsetY() {
 		return offsetY;
 	}
 	
-	public void moveNode(int dx, int dy) {
+	public void moveNode(double dx, double dy) {
 		offsetX += dx;
 		offsetY += dy;
 		System.out.println("offset is " + offsetX + " " + offsetY);
 		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
-		this.setLocation((int) node.getX() + offsetX, (int) node.getY() + offsetY);
+		this.setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 //		this.repaint();
 	}
 
 	public void zoomNode(double zoomFactor, int mouseX, int mouseY) {
-		this.zoomX = mouseX;
-		this.zoomY = mouseY;
-		System.out.println("mouse position" + mouseX + " " + mouseY);
-		System.out.println("relative mouse " + (mouseX + offsetX) + " " + (mouseY + offsetY));
-		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
-		offsetX = (int) ((int) ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX());
-		offsetY = (int) ((int) ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY());
-		System.out.println("new offset " +offsetX);
+		offsetX = ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX();
+		offsetY = ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY();
 		this.zoomFactor = zoomFactor;
 
-		this.setLocation((int)node.getX() + offsetX, (int)node.getY() + offsetY);
+		this.setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 		this.setSize((int)(node.getWidth()*zoomFactor + widthOffset), (int)(node.getHeight()* zoomFactor + heightOffset));
 		this.repaint();
 	}
@@ -122,10 +116,10 @@ public class MindMapNodeView extends JPanel implements Observer {
 
 	public void paint(Graphics g) {
 		super.paint(g);
-//		g.setColor(Color.BLUE);
-//		System.out.println(this.getX()+" "+ this.getY()+" "+ this.getWidth()+" "+ this.getHeight());
-//		g.fillOval(0+2, 0+2, this.getWidth()-4, this.getHeight()-4);
-//		this.paintComponents(g);
+		g.setColor(Color.BLUE);
+		System.out.println(this.getX()+" "+ this.getY()+" "+ this.getWidth()+" "+ this.getHeight());
+		g.fillOval(0+4, 0+4, this.getWidth()-8, this.getHeight()-8);
+		this.paintChildren(g);
 	}
 
 	@Override
@@ -134,7 +128,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		// set location and size here;
 		this.label.setText(node.getName());
 		this.label.revalidate();
-		this.setLocation((int)node.getX() + offsetX, (int)node.getY() + offsetY);
+		this.setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 		this.setSize((int)(node.getWidth() * zoomFactor + widthOffset), (int)(node.getHeight() * zoomFactor + heightOffset));
 		this.revalidate();
 	}
@@ -147,8 +141,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		offsetX += x;
 		offsetY += y;
 	}
-
-
+	
 	public MindMapNode getNode() {
 		return node;
 	}

@@ -81,7 +81,8 @@ class MindMapAttributeContainer extends JPanel {
 	}
 	
 	private void setValue(String key, double value) {
-		setValue(key, String.valueOf(value));
+		setValue(key, String.valueOf( (int) value));
+		
 	}
 	
 	private void validateKey(String key) {
@@ -95,4 +96,5 @@ class MindMapAttributeContainer extends JPanel {
 			answer = "0"+answer;
 		return answer;
 	}
+	
 }

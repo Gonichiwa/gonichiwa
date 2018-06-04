@@ -80,10 +80,10 @@ public class MindMapAttributeController {
 			try {
 				// get All the value from MindMapAttributeView
 				String name = validateNameValue(view.getValue("NAME"));
-				int x = Integer.parseInt(view.getValue("X"));
-				int y = Integer.parseInt(view.getValue("Y"));
-				int width = validateSizeValue(view.getValue("WIDTH"));
-				int height = validateSizeValue(view.getValue("HEIGHT"));
+				double x = Double.parseDouble(view.getValue("X"));
+				double y = Double.parseDouble(view.getValue("Y"));
+				double width = validateSizeValue(view.getValue("WIDTH"));
+				double height = validateSizeValue(view.getValue("HEIGHT"));
 				Color color = new Color(validateColorValue(view.getValue("COLOR")));
 				int red = color.getRed();
 				int green = color.getGreen();
@@ -139,8 +139,8 @@ public class MindMapAttributeController {
 	 * @return
 	 * 		the valid value for the new size.
 	 */
-	private int validateSizeValue(String sizeValue) {
-		int answer = Integer.parseInt(sizeValue);
+	private double validateSizeValue(String sizeValue) {
+		double answer = Double.parseDouble(sizeValue);
 		if(answer < 0)
 			throw new IllegalArgumentException("negative size doesn't make sense.");
 		if(answer > 400) 	//TODO: must change this to constant value from MindMapNodeView

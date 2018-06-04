@@ -238,6 +238,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void zoom(int x, int y, double factor) {
 		dx = (int) ((dx - x) * (factor / zoomFactor) + x);
 		dy = (int) ((dy - y) * (factor / zoomFactor) + y);
+		setZoomFactor(factor);
 
 //		zoomable = true;
 //		//		zoomX = (x - dx + this.getWidth() / zoomFactor);
@@ -246,7 +247,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 //		zoomY = y / zoomFactor - dy;
 //		System.out.println("before zoomX " + zoomX);
 
-		setZoomFactor(factor);
 		for(MindMapNodeView node : nodes) {
 			System.out.println("factor " + factor);
 			node.zoomNode(factor, x, y);

@@ -138,10 +138,11 @@ public class MindMapGraphController implements Observer {
 		@Override 
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			int rotation = e.getWheelRotation();
-			if(rotation > 0)
+			if(rotation > 0 && graphView.getZoomFactor() < 4) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*1.1);
-			else if(rotation < 0)
+			else if(rotation < 0 && graphView.getZoomFactor() > 0.8) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*0.9);
+
 			graphView.repaint();
 		}
 
@@ -240,8 +241,9 @@ public class MindMapGraphController implements Observer {
                 switch (cursor) {
                     case Cursor.N_RESIZE_CURSOR:
                         if (!(h - dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x, y+dy*node.getZoomFactor());
+                        	model.setNodeLocation(node.getID(), x, y+dy);
                         	model.setNodeSize(node.getID(), w, h-dy);
+                        	node.moveNode(0, dy * (node.getZoomFactor() - 1));
 //                        	node.moveNode(0, 0);
 //                        	node.scaleHeight(+dy);
 //                        	model.setNodeLocation(node.getID(), x, y+dy);
@@ -264,8 +266,9 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.W_RESIZE_CURSOR:
                         if (!(w - dx < 30)) {
-                        	model.setNodeLocation(node.getID(), x+dx*node.getZoomFactor(), y);
+                        	model.setNodeLocation(node.getID(), x+dx, y);   
                         	model.setNodeSize(node.getID(), w-dx, h);
+                        	node.moveNode(dx * (node.getZoomFactor() - 1), 0);
                         	graphView.repaint();
                         }
                         break;
@@ -281,16 +284,19 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.NW_RESIZE_CURSOR:
                         if (!(w - dx < 30) && !(h - dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x+dx*node.getZoomFactor(), y+dy*node.getZoomFactor());
+                        	model.setNodeLocation(node.getID(), x+dx, y+dy);
                         	model.setNodeSize(node.getID(), w-dx, h-dy);
+                        	node.moveNode(dx * (node.getZoomFactor() - 1), dy * (node.getZoomFactor() - 1));
                         	graphView.repaint();
                         }
                         break;
 
                     case Cursor.NE_RESIZE_CURSOR:
                         if (!(w + dx < 30) && !(h - dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x, y+dy*node.getZoomFactor());
+                        	model.setNodeLocation(node.getID(), x, y+dy);
                         	model.setNodeSize(node.getID(), w+dx, h-dy);
+                        	node.moveNode(0, dy * (node.getZoomFactor() - 1));
+
                         	graphView.repaint();
                             startPos = new Point(e.getX(), startPos.y);
                         }
@@ -298,8 +304,10 @@ public class MindMapGraphController implements Observer {
 
                     case Cursor.SW_RESIZE_CURSOR:
                         if (!(w - dx < 30) && !(h + dy < 30)) {
-                        	model.setNodeLocation(node.getID(), x+dx*node.getZoomFactor(), y);
+                        	model.setNodeLocation(node.getID(), x+dx, y);
                         	model.setNodeSize(node.getID(), w-dx, h+dy);
+                        	node.moveNode(dx * (node.getZoomFactor() - 1), 0);
+
                         	graphView.repaint();
                             startPos = new Point(startPos.x, e.getY());
                         }
@@ -315,7 +323,9 @@ public class MindMapGraphController implements Observer {
                         break;
 
                     case Cursor.HAND_CURSOR:
-                    	model.setNodeLocation(node.getID(), x + dx *node.getZoomFactor(), y + dy*node.getZoomFactor());
+                    	model.setNodeLocation(node.getID(), x + dx, y + dy);
+                    	node.moveNode(dx * (node.getZoomFactor() - 1), dy * (node.getZoomFactor() - 1));
+
                     	graphView.repaint();
                 }
 
