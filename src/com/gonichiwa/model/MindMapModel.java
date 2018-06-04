@@ -60,7 +60,7 @@ public class MindMapModel extends Observable{
 	public void load(String path) {
 		// TODO: load data for Joon
 		fileManager.setPath(path);
-		tree.loadTree(fileManager.loadRoot());
+		tree.setRoot(fileManager.loadRoot());
 	}
 	
 	public void changeNodeName(int nodeID, String name) {
