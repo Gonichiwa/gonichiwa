@@ -33,7 +33,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private MouseAdapter nodeMouseListener;
 	private KeyListener nodeKeyListener;
 
-	private JLabel label;
+//	private JLabel label;
 	private double zoomFactor = 1;
 	private double dx, dy;
 
@@ -41,19 +41,17 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
 		this.model.tree.addObserver(this);
-		this.setLayout(null);
-		this.setPreferredSize(new Dimension(width, height));
+		setLayout(null);
+		setPreferredSize(new Dimension(width, height));
 		nodes = new ArrayList<MindMapNodeView>();
 		edges = new ArrayList<MindMapEdge>();
-		this.setFocusable(true);
-		this.setRequestFocusEnabled(true); 		// now we can request this panel for focus.
+		setFocusable(true);
+		setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
 
 	public double getZoomFactor() {
 		return zoomFactor;
 	}
-
-
 
 	public void setZoomFactor(double zoomFactor) {
 		this.zoomFactor = zoomFactor;
@@ -61,9 +59,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 
 	public void reset() {
-		this.clearNodes();
-		this.removeAll();
-		this.repaint();
+		dx = 0;
+		dy = 0;
+		zoomFactor = 1;
+		clearNodes();
+		repaint();
 	}
 
 	public void addNodeMouseAdapter(MouseAdapter l) {
@@ -77,7 +77,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void addNode(MindMapNodeView node) {
 		nodes.add(node);
 		add(node);
-		this.repaint();
+		repaint();
 	}
 
 	public void removeNode(MindMapNodeView node) {
@@ -88,7 +88,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void clearNodes() {
 		nodes.clear();
 		edges.clear();
-		this.removeAll();
+		removeAll();
 	}
 
 	public void addMouseListenerToNodes(MouseListener l) {
@@ -101,18 +101,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 			node.addMouseMotionListener(l);
 	}
 
-//	@Override
-//	public void repaint() {
-//		super.repaint();
-//		revalidate();
-//		repaintAllNodes();
-//	}
-
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		if(o instanceof MindMapNode) {
-			this.repaint();
+			repaint();
 			return;
 		}
 		
@@ -121,7 +114,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 			drawGraph();
 			break;
 		case "LOAD":
-
 			loadGraph();
 			break;
 		default:
@@ -129,30 +121,23 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
-//	public void repaintAllNodes() {
-//		for(MindMapNodeView node: nodes) {
-//			node.repaint();
-//			node.revalidate();
-//		}
-//	}
-
 	public void drawGraph() {
-		this.clearNodes();
-		this.repaint();
-		this.revalidate();
-		System.out.println("tree size is" + model.tree);
-		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1), 1);
+		clearNodes();
+		recMakeNodeView(model.tree.getRoot(),
+						this.getPreferredSize().width/2,
+						this.getPreferredSize().height/2,
+						Math.PI*2, new MindMapVector(0, -1),
+						1);
+		revalidate();
 	}
 
 	/**
 	 * load Graph from already built tree.
 	 */
 	public void loadGraph() {
-
-		this.clearNodes();
+		clearNodes();
 		recLoadNode(model.tree.getRoot());
-		this.repaint();
-		this.revalidate();
+		revalidate();
 	}
 
 	private void recLoadNode(MindMapNode node) {
@@ -200,7 +185,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		node.addObserver(this);
 		
 		// node.setColor()
-		this.addNode(nodeView);
+		addNode(nodeView);
 		nodeView.zoomNode(zoomFactor, 0, 0);
 		nodeView.moveNode((int)dx, (int)dy);
 
@@ -239,22 +224,15 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void zoom(int x, int y, double factor) {
 		dx = (int) ((dx - x) * (factor / zoomFactor) + x);
 		dy = (int) ((dy - y) * (factor / zoomFactor) + y);
+		
 		setZoomFactor(factor);
 
-//		zoomable = true;
-//		//		zoomX = (x - dx + this.getWidth() / zoomFactor);
-//		//		zoomY = (y - dy + this.getHeight() / zoomFactor);
-//		zoomX = x / zoomFactor - dx;
-//		zoomY = y / zoomFactor - dy;
-//		System.out.println("before zoomX " + zoomX);
-
 		for(MindMapNodeView node : nodes) {
-			System.out.println("factor " + factor);
 			node.zoomNode(factor, x, y);
 		}
-		this.repaint();
-		this.revalidate();
-		this.doLayout();
+		
+		repaint();
+		revalidate();
 	}
 
 	public void movePanel(double dx, double dy) {
@@ -263,9 +241,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 		for(MindMapNodeView node : nodes) {
 			node.moveNode((int)dx,  (int)dy);
 		}
-		this.repaint();
-//		this.revalidate();
-//		this.doLayout();
+		
+		repaint();
 	}
 
 	public double getDX() {
@@ -280,50 +257,16 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-		AffineTransform at = g2d.getTransform();
-		System.out.println(dx + " " + dy);
-//	    at.setToTranslation(dx, dy);
-//		at.scale(zoomFactor, zoomFactor);
-//		at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
-//	    g2d.setTransform(at);
-		System.out.println("dx is " + dx + " " + dy);
-		int idx = (int) dx;
-		int idy = (int) dy;
-		QuadCurve2D q2 = new QuadCurve2D.Float();
+		
 		g2d.setStroke(new BasicStroke(1));
 
-		// is that ok for each NodeView to have parent information?
-		// isn't that domain logic? or is it view logic?
 		for(MindMapEdge edge : edges) {
 			g2d.drawLine(edge.getX1(),
 						 edge.getY1(), 
 						 edge.getX2(),
 						 edge.getY2());
-//			q2.setCurve(edge.x1, edge.y1, 0, 0, edge.x2, edge.y2);
-//			g2d.draw(q2);
 		}
-		this.paintChildren(g2d);
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		Graphics2D g2d = (Graphics2D) g;
-
-	    AffineTransform at = g2d.getTransform();
-//
-//	    at.setToTranslation(dx, dy);
-//
-//	    at.scale(zoomFactor, zoomFactor);
-//	    System.out.println("x translate after zoom : " + (zoomX / zoomFactor - zoomX));
-//	    at.translate((zoomX / zoomFactor - zoomX), (zoomY / zoomFactor - zoomY));
-//	    at.translate(-zoomX * (zoomFactor - 1), -zoomY * (zoomFactor - 1));
-//	    System.out.println(zoomX + " " + zoomY);
-
-	    g2d.setTransform(at);
-	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+		paintChildren(g2d);
 	}
 	
 	private MindMapNodeView getNodeView(int nodeID) {
@@ -338,8 +281,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private class MindMapEdge {
 		private MindMapNodeView from;
 		private MindMapNodeView to;
-		private int offsetX, offsetY;
-		private double zoomFactor;
 		
 		public MindMapEdge(MindMapNode from, MindMapNode to) {
 			this.from = getNodeView(from.getID());
