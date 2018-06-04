@@ -158,7 +158,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel) {
 		// make node first
-		// TODO: we might need more better algorithm here.
 		// TODO: using node size not constant.
 
 		// for example, angle decision.
