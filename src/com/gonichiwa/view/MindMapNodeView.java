@@ -1,9 +1,12 @@
 package com.gonichiwa.view;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.geom.AffineTransform;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,7 +16,7 @@ import javax.swing.JPanel;
 import com.gonichiwa.model.MindMapNode;
 
 public class MindMapNodeView extends JPanel implements Observer {
-	public static final int MIN_SIZE = 40;
+	public static final int MIN_SIZE = 80;
 	private int id;
 	private JLabel label;
 	private MindMapNode node;
@@ -22,7 +25,9 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private double zoomFactor = 1;
 	private Color color;
 	private final int BORDER_DIST = 6;
-
+	private final double LABEL_SIZE_RATIO = 0.5;
+	private final int INITIAL_FONT_SIZE = 30;
+	
 	public MindMapNodeView(MindMapNode node, double centerX, double centerY, Color color) {
 		if(node == null)
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
@@ -44,6 +49,8 @@ public class MindMapNodeView extends JPanel implements Observer {
 		label.setOpaque(false);
 		label.setAlignmentX(JLabel.CENTER);
 		label.setAlignmentY(JLabel.CENTER);
+		Font font = new Font("Monaco", Font.BOLD, INITIAL_FONT_SIZE);
+		label.setFont(font);
 		setOpaque(false);
 		add(label);
 
@@ -71,10 +78,32 @@ public class MindMapNodeView extends JPanel implements Observer {
 		offsetX = ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX();
 		offsetY = ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY();
 		this.zoomFactor = zoomFactor;
-
+		
 		setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 		setSize((int)(node.getWidth()*zoomFactor), (int)(node.getHeight()* zoomFactor));
+		updateLabelFont();
 		repaint();
+	}
+	
+	public void updateLabelFont() {
+		label.setSize((int) (getWidth() * LABEL_SIZE_RATIO), (int) (getHeight() * LABEL_SIZE_RATIO));
+		Font labelFont = label.getFont();
+		String labelText = label.getText();
+
+		int stringWidth = label.getFontMetrics(labelFont).stringWidth(labelText);
+		int componentWidth = label.getWidth();
+
+		// Find out how much the font can grow in width.
+		double widthRatio = (double)componentWidth / (double)stringWidth;
+
+		int newFontSize = (int)(labelFont.getSize() * widthRatio);
+		int componentHeight = label.getHeight();
+
+		// Pick a new font size so it will not be larger than the height of label.
+		int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+		// Set the label's font size to the newly determined size.
+		label.setFont(new Font(labelFont.getName(), Font.BOLD, fontSizeToUse));
 	}
 
 	public void paint(Graphics g) {
@@ -83,7 +112,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		g.fillOval(0+BORDER_DIST, 0+BORDER_DIST, this.getWidth()-BORDER_DIST*2, this.getHeight()-BORDER_DIST*2);
 		paintChildren(g);
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		label.setText(node.getName());
@@ -91,6 +120,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 		setSize((int)(node.getWidth() * zoomFactor), (int)(node.getHeight() * zoomFactor));
 		color = new Color(node.getRedColor(), node.getGreenColor(), node.getBlueColor());
+		updateLabelFont();
 		revalidate();
 	}
 	
