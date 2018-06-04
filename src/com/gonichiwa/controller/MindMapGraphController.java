@@ -1,5 +1,6 @@
 package com.gonichiwa.controller;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -25,6 +26,7 @@ import javax.swing.SwingConstants;
 import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.model.MindMapNode;
 import com.gonichiwa.view.MindMapAttributeView;
+import com.gonichiwa.view.MindMapGraphScalerView;
 import com.gonichiwa.view.MindMapGraphView;
 import com.gonichiwa.view.MindMapNodeView;
 import com.gonichiwa.view.ResizableBorder;
@@ -32,7 +34,9 @@ import com.gonichiwa.util.MindMapVector;
 
 public class MindMapGraphController implements Observer {
 	private MindMapModel model;
+	private JPanel graphViewContainer;
 	private MindMapGraphView graphView;
+	private MindMapGraphScalerView graphScalerView;
 	private MindMapAttributeView attributeView;
 	private MouseAdapter mouseListener = new GraphViewPaneMouseListener();
 	
@@ -52,11 +56,16 @@ public class MindMapGraphController implements Observer {
 			}
 		});
 		
+		graphViewContainer = new JPanel(new BorderLayout());
+		graphScalerView = new MindMapGraphScalerView();
+
+		this.graphViewContainer.add(graphView, BorderLayout.CENTER);
+		this.graphViewContainer.add(graphScalerView, BorderLayout.SOUTH);
 		this.model.addObserver(this);
 	}
 	
-	public MindMapGraphView getView() {
-		return graphView;
+	public JPanel getView() {
+		return graphViewContainer;
 	}
 	
 	private class NodeKeyListener implements KeyListener {
@@ -93,16 +102,12 @@ public class MindMapGraphController implements Observer {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println("pressed");
 			startPos = e.getPoint();
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if(startPos != null) {			
-				System.out.println(e.getX() + " " + e.getY());
-				System.out.println("relative position " + (e.getX() - graphView.getDX()) + " " + (e.getY() - graphView.getDY()));
 				double dx = e.getX() - startPos.getX();
 				double dy = e.getY() - startPos.getY();
 				graphView.movePanel(dx, dy);

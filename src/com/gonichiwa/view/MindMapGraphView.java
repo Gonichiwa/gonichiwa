@@ -167,13 +167,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 		// make NodeView
 
-		System.out.println(node.getName() + " is making...");
 		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY, new Color(0 + colorLevel, 0, 255-colorLevel));
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
 		
-		System.out.println(nodeView.getLocation().x + " " + nodeView.getLocation().y);
 		node.initViewAttribute(nodeView.getX(),
 							   nodeView.getY(),
 							   nodeView.getPreferredSize().width, 
@@ -201,7 +199,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_SIZE/Math.sin(theta/2) : 40; // 10 is debug offset.
 
 		direction.normalize();
-		System.out.println(node.getName() + "'s direction is " + direction.getX() +", "+ direction.getY());
 		direction.mult(distance);
 
 		if(theta > Math.PI)

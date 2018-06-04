@@ -64,8 +64,6 @@ public class MindMapNodeView extends JPanel implements Observer {
 	public void moveNode(double dx, double dy) {
 		offsetX += dx;
 		offsetY += dy;
-		System.out.println("offset is " + offsetX + " " + offsetY);
-		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
 		setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 	}
 
@@ -82,7 +80,6 @@ public class MindMapNodeView extends JPanel implements Observer {
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setColor(color);
-		System.out.println(this.getX()+" "+ this.getY()+" "+ this.getWidth()+" "+ this.getHeight());
 		g.fillOval(0+BORDER_DIST, 0+BORDER_DIST, this.getWidth()-BORDER_DIST*2, this.getHeight()-BORDER_DIST*2);
 		paintChildren(g);
 	}
