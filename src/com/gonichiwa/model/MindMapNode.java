@@ -7,6 +7,7 @@ import java.util.Observable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
+import com.google.gson.annotations.Expose;
 
 public class MindMapNode extends Observable implements NodeDataDeliver {
 	private static int idGenerator = 0;
@@ -14,7 +15,6 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	private double x, y, width, height; 
 	private int red, green, blue, alpha;
 	private String name;
-	
 	private List<MindMapNode> children = new ArrayList<MindMapNode>();;
 	
 	// 1. node field implementation
@@ -25,12 +25,12 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	 */
 
 	MindMapNode(String name) {
-		this(name, 0, 0, 0, 0); 
+		this(name, 0, 0, 0, 0, 0, 0, 0); 
 		// 2. node initailize implementation
 	}
 	
 	@JsonCreator
-	MindMapNode(@JsonProperty("name") String name, @JsonProperty("x") double x, @JsonProperty("y") double y, @JsonProperty("width") double width, @JsonProperty("height") double height) {
+	MindMapNode(String name, double x, double y, double width, double height, int red, int green, int blue) {
 		super();
 		id = ++idGenerator;
 		this.name = name;
@@ -38,10 +38,13 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.red = red;
+		this.green = green;
+		this.blue = blue;
 	}
 	
 	public MindMapNode(MindMapNode node) {
-		this(node.name, node.x, node.y, node.width, node.height);
+		this(node.name, node.x, node.y, node.width, node.height, node.getRedColor(), node.getGreenColor(), node.getBlueColor());
 	}
 	
 	// 3. node method implementation
@@ -50,9 +53,10 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.red = red;
-		this.green = green;
-		this.red = red;
+		setRed(red);
+		setGreen(green);
+		setBlue(blue);
+
 	}
 	
 	public void addChild(MindMapNode child) {

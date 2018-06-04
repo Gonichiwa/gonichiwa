@@ -1,6 +1,7 @@
 package com.gonichiwa.view;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -140,7 +141,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.repaint();
 		this.revalidate();
 		System.out.println("tree size is" + model.tree);
-		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1));
+		recMakeNodeView(model.tree.getRoot(), this.getPreferredSize().width/2, this.getPreferredSize().height/2, Math.PI*2, new MindMapVector(0, -1), 1);
 	}
 
 	/**
@@ -170,7 +171,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
-	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction) {
+	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel) {
 		// make node first
 		// TODO: we might need more better algorithm here.
 		// TODO: using node size not constant.
@@ -183,7 +184,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		// make NodeView
 
 		System.out.println(node.getName() + " is making...");
-		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY);
+		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY, new Color(0 + colorLevel, 0, 255-colorLevel));
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
@@ -193,9 +194,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 							   nodeView.getY(),
 							   nodeView.getPreferredSize().width, 
 							   nodeView.getPreferredSize().height,
-							   nodeView.getColorModel().getRed(255),
-							   nodeView.getColorModel().getGreen(255),
-							   nodeView.getColorModel().getBlue(255));
+							   nodeView.getColor().getRed(),
+							   nodeView.getColor().getGreen(),
+							   nodeView.getColor().getBlue());
 		node.addObserver(this);
 		
 		// node.setColor()
@@ -228,7 +229,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 						 centerX+(int)direction.getX(),
 						 centerY+(int)direction.getY(),
 						 theta,
-						 direction.copy().normalize().rotate(-theta/2));
+						 direction.copy().normalize().rotate(-theta/2), colorLevel + 50);
 			edges.add(new MindMapEdge(node, child));
 			direction.rotate(theta);
 		}

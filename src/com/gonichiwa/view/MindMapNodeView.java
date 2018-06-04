@@ -35,8 +35,9 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private int zoomX = 0;
 	private int zoomY = 0;
 	private double zoomFactor = 1;
+	private Color color;
 
-	public MindMapNodeView(MindMapNode node, double centerX, double centerY) {
+	public MindMapNodeView(MindMapNode node, double centerX, double centerY, Color color) {
 		if(node == null)
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
 
@@ -55,26 +56,30 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.id = node.getID();
 		label = new JLabel(node.getName());
 		label.setOpaque(false);
-//		label.setBackground(Color.blue);
 		label.setAlignmentX(JLabel.CENTER);
 		label.setAlignmentY(JLabel.CENTER);
 		this.setOpaque(false);
 		this.add(label);
 
 		// set geometry.
+		this.color = color;
 		this.setLocation((int) (centerX-(this.getPreferredSize().width/2)), (int) (centerY-(this.getPreferredSize().height/2)));
-		this.setSize(this.getPreferredSize());
+//		this.setSize(this.getPreferredSize());
 		
 		// add observer.
 		node.addObserver(this);
 	}
 
 	public MindMapNodeView(MindMapNode node) {
-		this(node, node.getX(), node.getY());
+		this(node, node.getX(), node.getY(), new Color(node.getRedColor(), node.getGreenColor(), node.getBlueColor()));
 		setLocation((int) node.getX(), (int) node.getY());
 		setSize((int) node.getWidth(), (int) node.getHeight());
 	}
 
+	public Color getColor() {
+		return color;
+	}
+	
 	public double getOffsetX() {
 		return offsetX;
 	}
@@ -89,7 +94,6 @@ public class MindMapNodeView extends JPanel implements Observer {
 		System.out.println("offset is " + offsetX + " " + offsetY);
 		System.out.println("relative node position " + (node.getX() + offsetX) + " " + (node.getY() + offsetY));
 		this.setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
-//		this.repaint();
 	}
 
 	public void zoomNode(double zoomFactor, int mouseX, int mouseY) {
@@ -116,7 +120,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.setColor(Color.BLUE);
+		g.setColor(color);
 		System.out.println(this.getX()+" "+ this.getY()+" "+ this.getWidth()+" "+ this.getHeight());
 		g.fillOval(0+4, 0+4, this.getWidth()-8, this.getHeight()-8);
 		this.paintChildren(g);
@@ -130,6 +134,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.label.revalidate();
 		this.setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 		this.setSize((int)(node.getWidth() * zoomFactor + widthOffset), (int)(node.getHeight() * zoomFactor + heightOffset));
+		this.color = new Color(node.getRedColor(), node.getGreenColor(), node.getBlueColor());
 		this.revalidate();
 	}
 	

@@ -89,7 +89,7 @@ public class MindMapAttributeController {
 				int green = color.getGreen();
 				int blue = color.getBlue();
 				int alpha = color.getAlpha();
-				
+				System.out.println(color);
 				// update model
 				model.changeNodeName(view.getNode().getID(), name);
 				model.setNodeLocation(view.getNode().getID(), x, y);

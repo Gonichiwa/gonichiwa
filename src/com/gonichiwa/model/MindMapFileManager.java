@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -15,7 +16,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
@@ -52,11 +59,13 @@ class MindMapFileManager {
 	 * @param model
 	 */
 	void save(MindMapModel model) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode node = objectMapper.convertValue(model.tree.getRoot(), JsonNode.class);
+		
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(MindMapNode.class, new MindMapNodeSerializer());
+		Gson gson = gsonBuilder.create();
 		String result;
 		try {
-			result = objectMapper.writeValueAsString(node);
+			result = gson.toJson(model.tree.getRoot());
 			File file = new File(path);
 			if(!file.exists()) 
 				file.createNewFile();
@@ -87,5 +96,38 @@ class MindMapFileManager {
 			// TODO Auto-generated catch block
 		}
 		return newNode;
+	}
+	
+	private class MindMapNodeSerializer implements JsonSerializer<MindMapNode> {
+
+		@Override
+		public JsonElement serialize(MindMapNode node, Type type, JsonSerializationContext arg2) {
+			JsonObject jsonObject = new JsonObject();
+			
+			jsonObject.addProperty("name", node.getName());
+			jsonObject.addProperty("x", node.getX());
+			jsonObject.addProperty("y", node.getY());
+			jsonObject.addProperty("width", node.getWidth());
+			jsonObject.addProperty("height", node.getHeight());
+			jsonObject.addProperty("id", node.getID());
+			jsonObject.addProperty("alpha", node.getAlpha());
+			jsonObject.addProperty("red", node.getRedColor());
+			jsonObject.addProperty("green", node.getGreenColor());
+			jsonObject.addProperty("blue", node.getBlueColor());
+			System.out.println("red color is " + node.getRedColor());
+
+			JsonArray childNodes = new JsonArray();
+			
+			for(MindMapNode child : node.getChildren()) {
+				JsonObject childObject = (JsonObject) serialize(child, type, arg2);
+				childNodes.add(childObject);
+			}
+			
+			jsonObject.add("children", childNodes);
+
+			return jsonObject;
+		}
+
+		
 	}
 }
