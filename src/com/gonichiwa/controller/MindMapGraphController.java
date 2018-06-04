@@ -19,6 +19,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.gonichiwa.model.MindMapModel;
@@ -46,7 +47,6 @@ public class MindMapGraphController implements Observer {
 		this.graphView.addNodeKeyListener(new NodeKeyListener());
 		
 		this.graphView.addFocusListener(new FocusAdapter () {
-
 			public void focusGained(FocusEvent e) {
 				graphView.repaint();
 			}
@@ -62,9 +62,7 @@ public class MindMapGraphController implements Observer {
 	private class NodeKeyListener implements KeyListener {
 
 		@Override
-		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
+		public void keyTyped(KeyEvent e) {			
 		}
 
 		@Override
@@ -86,39 +84,18 @@ public class MindMapGraphController implements Observer {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+		}		
 	}
 	
 	private class GraphViewPaneMouseListener extends MouseAdapter { 
-		
-		//TODO: moving pane.
-		//TODO: zooming pane.
-		
+
 		private Point startPos = null;
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
 			System.out.println("pressed");
 			startPos = e.getPoint();
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-g
 		}
 		
 		@Override
@@ -128,7 +105,6 @@ public class MindMapGraphController implements Observer {
 				System.out.println("relative position " + (e.getX() - graphView.getDX()) + " " + (e.getY() - graphView.getDY()));
 				double dx = e.getX() - startPos.getX();
 				double dy = e.getY() - startPos.getY();
-
 				graphView.movePanel(dx, dy);
 				startPos = e.getPoint();
 			}
@@ -138,6 +114,7 @@ public class MindMapGraphController implements Observer {
 		@Override 
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			int rotation = e.getWheelRotation();
+			
 			if(rotation > 0 && graphView.getZoomFactor() < 4) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*1.1);
 			else if(rotation < 0 && graphView.getZoomFactor() > 0.8) 
@@ -150,9 +127,7 @@ public class MindMapGraphController implements Observer {
 			attributeView.dismissNode();
 			graphView.requestFocus();
 			startPos = null;
-
 		}
-		
 	}
 	
 	private class NodeMouseListener extends MouseAdapter {
@@ -179,18 +154,24 @@ public class MindMapGraphController implements Observer {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// maybe we can fix here later on.
+			// display node data on AttributePane.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			attributeView.setNode(node.getNode());
+			
+			// request focus to the selected node.
 			node.requestFocus();
 			node.repaint();
+			
+			// set Z-order of the selected node to be the most higher priority.
 			graphView.setComponentZOrder(node, 0);
-			graphView.repaint();
+			
+			// set cursor by the border.
 			ResizableBorder border = (ResizableBorder) node.getBorder();          
 			cursor = border.getCursor(e);
-            startPos = e.getPoint();
-			graphView.repaint();
 			
+            startPos = e.getPoint();
+            
+            graphView.repaint();
 		}
 
 		@Override
@@ -200,22 +181,22 @@ public class MindMapGraphController implements Observer {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// set cursor to HAND shape.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			ResizableBorder border = (ResizableBorder) node.getBorder();
-			border.setHighlighted(true);	// border could be highlighted.
+			border.setHighlighted(true);	// border will be highlighted.
 			node.repaint();
+			// set cursor to hand shape.
 			graphView.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			graphView.repaint();
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// set cursur back to normal.
 			MindMapNodeView node = (MindMapNodeView) e.getSource();
 			ResizableBorder border = (ResizableBorder) node.getBorder();
     		border.setHighlighted(false);	// border no longer highlighted
     		node.repaint();
+			// set cursor back to normal.
 			graphView.setCursor(Cursor.getDefaultCursor());
 			graphView.repaint();
 		}
@@ -234,22 +215,12 @@ public class MindMapGraphController implements Observer {
                 double dx =  ((e.getX() - startPos.x) / node.getZoomFactor());
                 double dy =  ((e.getY() - startPos.y) / node.getZoomFactor());
 
-//                int dx = e.getX() - startPos.x;
-//                int dy = e.getY() - startPos.y;
-                
-                //TODO: zoomable2 x y width height is double
                 switch (cursor) {
                     case Cursor.N_RESIZE_CURSOR:
                         if (!(h - dy < 30)) {
                         	model.setNodeLocation(node.getID(), x, y+dy);
                         	model.setNodeSize(node.getID(), w, h-dy);
                         	node.moveNode(0, dy * (node.getZoomFactor() - 1));
-//                        	node.moveNode(0, 0);
-//                        	node.scaleHeight(+dy);
-//                        	model.setNodeLocation(node.getID(), x, y+dy);
-//                        	model.setNodeSize(node.getID(), w, h-dy);
-//                        	node.moveNode(0, (int) -(dy - dy * node.getZoomFactor()));
-//                        	node.scaleHeight(-dy);
                         	graphView.repaint();
                         }
                         break;
@@ -258,7 +229,6 @@ public class MindMapGraphController implements Observer {
                         if (!(h + dy < 30)) {
                         	model.setNodeLocation(node.getID(), x, y);
                         	model.setNodeSize(node.getID(), w, h+dy);
-                        	node.moveNode(0, 0);
                             startPos = e.getPoint();
                             graphView.repaint();
                         }
@@ -307,7 +277,6 @@ public class MindMapGraphController implements Observer {
                         	model.setNodeLocation(node.getID(), x+dx, y);
                         	model.setNodeSize(node.getID(), w-dx, h+dy);
                         	node.moveNode(dx * (node.getZoomFactor() - 1), 0);
-
                         	graphView.repaint();
                             startPos = new Point(startPos.x, e.getY());
                         }
