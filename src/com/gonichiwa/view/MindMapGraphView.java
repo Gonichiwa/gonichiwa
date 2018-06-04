@@ -32,8 +32,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	
 	private static final int INITIAL_GRAPH_VIEW_WIDTH = 600;
 	private static final int INITIAL_GRAPH_VIEW_HEIGHT = 600;
-
-	public static final double MAX_ZOOM_FACTOR = 3.0;
+	public static final double MAX_ZOOM_FACTOR = 4.0;
 	public static final double MIN_ZOOM_FACTOR = 0.8;
 
 	public MindMapGraphView(MindMapModel model, int width, int height) {
@@ -49,6 +48,14 @@ public class MindMapGraphView extends JPanel implements Observer {
 	
 	public MindMapGraphView(MindMapModel model) {
 		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
+	}
+	
+	public static int getMaxZoomPercentage() {
+		return (int) (MAX_ZOOM_FACTOR * 100);
+	}
+	
+	public static int getMinZoomPercentage() {
+		return (int) (MIN_ZOOM_FACTOR * 100);
 	}
 
 	public double getZoomFactor() {
@@ -312,9 +319,5 @@ public class MindMapGraphView extends JPanel implements Observer {
 		public int getY2() {
 			return (int) (to.getRelativeY() + (to.getHeight()/2));
 		}
-		
-		
 	}
-
-
 }

@@ -70,6 +70,7 @@ public class MindMapGraphController implements Observer {
 				JSlider scaler = (JSlider) e.getSource();
 				double zoomFactor = scaler.getValue() / 100.0;
 				graphView.zoom(graphView.getWidth() / 2, graphView.getHeight() / 2, zoomFactor);
+				graphScalerView.changePercentageLabelTextTo((int)(zoomFactor * 100));
 			}
 		});
 		
@@ -338,6 +339,7 @@ public class MindMapGraphController implements Observer {
 		if(((String) arg).equals("RESET")) {
 			graphView.reset();
 			attributeView.reset();
+			graphScalerView.reset();
 		}
 	}
 }
