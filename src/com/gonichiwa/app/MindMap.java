@@ -35,9 +35,6 @@ public class MindMap extends JFrame implements Runnable {
 	JSplitPane centerPane;
 	JSplitPane graphPane;
 
-	private static final int GRAPH_WIDTH = 600;
-	private static final int GRAPH_HEIGHT = 600;
-	
 	public MindMap() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -45,14 +42,13 @@ public class MindMap extends JFrame implements Runnable {
 		
 		menuBar = new MindMapMenuBar();
 		toolBar = new MindMapToolBar();
-		graphView = new MindMapGraphView(model, GRAPH_WIDTH, GRAPH_HEIGHT);
 		menuBar = new MindMapMenuBar();
 		toolBar = new MindMapToolBar();
 
 		
 		textAreaController = new MindMapTextAreaController(model);
 		attributeController = new MindMapAttributeController(model);
-		graphController = new MindMapGraphController(model, graphView, attributeController.getView());
+		graphController = new MindMapGraphController(model, attributeController.getView());
 		menuController = new MindMapMenuController(model, menuBar, toolBar);
 
 //		menuBar.addApplyListener(textAreaController.getLister());

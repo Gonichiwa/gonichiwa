@@ -29,6 +29,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 	private double zoomFactor = 1;
 	private double dx, dy;
+	
+	private static final int INITIAL_GRAPH_VIEW_WIDTH = 600;
+	private static final int INITIAL_GRAPH_VIEW_HEIGHT = 600;
 
 	public static final double MAX_ZOOM_FACTOR = 3.0;
 	public static final double MIN_ZOOM_FACTOR = 0.8;
@@ -42,6 +45,10 @@ public class MindMapGraphView extends JPanel implements Observer {
 		edges = new ArrayList<MindMapEdge>();
 		setFocusable(true);
 		setRequestFocusEnabled(true); 		// now we can request this panel for focus.
+	}
+	
+	public MindMapGraphView(MindMapModel model) {
+		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
 	}
 
 	public double getZoomFactor() {

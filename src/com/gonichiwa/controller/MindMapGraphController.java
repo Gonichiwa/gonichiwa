@@ -45,9 +45,9 @@ public class MindMapGraphController implements Observer {
 	private MindMapAttributeView attributeView;
 	private MouseAdapter mouseListener = new GraphViewPaneMouseListener();
 	
-	public MindMapGraphController(MindMapModel model, MindMapGraphView graphView, MindMapAttributeView attributeView) {
+	public MindMapGraphController(MindMapModel model, MindMapAttributeView attributeView) {
 		this.model = model;
-		this.graphView = graphView;
+		this.graphView = new MindMapGraphView(model);
 		this.attributeView = attributeView;
 		this.graphView.addMouseListener(mouseListener);
 		this.graphView.addMouseMotionListener(mouseListener);
