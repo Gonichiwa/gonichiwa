@@ -1,5 +1,6 @@
 package com.gonichiwa.view;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
@@ -39,13 +40,11 @@ public class MindMapAttributeView extends JPanel implements Observer {
 		super();
 		
 		layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		this.setLayout(layout);
+		setLayout(layout);
 		attributePane = new MindMapAttributeContainer(NodeDataDeliver.attributes);
-//		attributePane.setEditable("NAME", false);		// I don't like this part.
 		changeButton = new JButton("change");
 		
 		changeButton.setAlignmentX(CENTER_ALIGNMENT);
-		//TODO: how to set Alignment something to put attributePane on CENTER.
 		add(new JScrollPane(attributePane));
 		add(changeButton);
 	}

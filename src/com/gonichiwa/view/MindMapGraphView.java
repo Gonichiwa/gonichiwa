@@ -39,6 +39,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		this.model = model;
 		this.model.tree.addObserver(this);
 		setLayout(null);
+		setBackground(Color.LIGHT_GRAY);
 		setPreferredSize(new Dimension(width, height));
 		nodes = new ArrayList<MindMapNodeView>();
 		edges = new ArrayList<MindMapEdge>();

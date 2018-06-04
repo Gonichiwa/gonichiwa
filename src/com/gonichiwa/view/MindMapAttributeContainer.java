@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 
+import java.awt.Color;
+
 class MindMapAttributeContainer extends JPanel {
 	
 	private LinkedHashMap<String, MindMapAttributeTextField> attributePanelDict; // preserve order
@@ -18,13 +20,11 @@ class MindMapAttributeContainer extends JPanel {
 	}
 	
 	public MindMapAttributeContainer(String...attributeNames) {
-		//TODO: remove duplicate attributeNames
 		super();
 		attributePanelDict = new LinkedHashMap<String, MindMapAttributeTextField>();
 		
 		layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		this.setLayout(layout);
-		
+		setLayout(layout);
 		for(String name: attributeNames) {
 			attributePanelDict.put(name, new MindMapAttributeTextField(name));
 		}
@@ -32,6 +32,7 @@ class MindMapAttributeContainer extends JPanel {
 		for(MindMapAttributeTextField attributeComponent : attributePanelDict.values()) {
 			add(attributeComponent);
 		}
+		
 		setVisible(false);
 	}
 	

@@ -65,7 +65,7 @@ public class MindMap extends JFrame implements Runnable {
 		graphPane.setRightComponent(attributeController.getView());
 		centerPane.setLeftComponent(textAreaController.getView());
 		centerPane.setRightComponent(graphPane);
-		
+				
 		add(centerPane, BorderLayout.CENTER);
 		setJMenuBar(menuController.getMenuBar());
 		add(menuController.getToolBar(), BorderLayout.NORTH);
