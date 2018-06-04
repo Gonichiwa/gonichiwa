@@ -236,6 +236,7 @@ public class MindMapGraphController implements Observer {
 //                int dx = e.getX() - startPos.x;
 //                int dy = e.getY() - startPos.y;
                 
+                //TODO: zoomable2 x y width height is double
                 switch (cursor) {
                     case Cursor.N_RESIZE_CURSOR:
                         if (!(h - dy < 30)) {
