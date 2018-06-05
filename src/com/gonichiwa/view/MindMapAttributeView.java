@@ -1,5 +1,6 @@
 package com.gonichiwa.view;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
@@ -27,10 +28,12 @@ import com.gonichiwa.model.MindMapNode;
  */
 public class MindMapAttributeView extends JPanel implements Observer {
 	
-	private MindMapAttributeContainer attributePane;
+	private MindMapAttributeContainer attributeContainer;
 	private JButton changeButton;
+	private JScrollPane scrollPane;
 	private BoxLayout layout;
 	private MindMapNode node;
+	private JPanel watingPanel;
 
 	/**
 	 * Constructor
@@ -39,14 +42,14 @@ public class MindMapAttributeView extends JPanel implements Observer {
 		super();
 		
 		layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		this.setLayout(layout);
-		attributePane = new MindMapAttributeContainer(NodeDataDeliver.attributes);
-		attributePane.setEditable("NAME", false);		// I don't like this part.
+		setLayout(layout);
+		attributeContainer = new MindMapAttributeContainer(NodeDataDeliver.attributes);
 		changeButton = new JButton("change");
-		
 		changeButton.setAlignmentX(CENTER_ALIGNMENT);
-		//TODO: how to set Alignment something to put attributePane on CENTER.
-		add(new JScrollPane(attributePane));
+		watingPanel = new JPanel();
+		watingPanel.setBackground(Color.gray);
+		scrollPane  = new JScrollPane(attributeContainer);
+		add(scrollPane);
 		add(changeButton);
 	}
 	
@@ -77,16 +80,15 @@ public class MindMapAttributeView extends JPanel implements Observer {
 		if(node != null) {
 			node.deleteObserver(this);
 			node = null;
-			attributePane.displayNode(node);
-//			this.repaint();
+			attributeContainer.displayNode(node);
+			revalidate();
 		}
 	}
 	
 	public void setNode(MindMapNode node) {
 		this.node = node;
 		node.addObserver(this);
-		attributePane.displayNode(node);
-		this.revalidate();
+		attributeContainer.displayNode(node);
 	}
 	
 	/**
@@ -100,7 +102,7 @@ public class MindMapAttributeView extends JPanel implements Observer {
 	 * 		value of the attribute matched by the given key.
 	 */
 	public String getValue(String key) {
-		return attributePane.getValue(key);
+		return attributeContainer.getValue(key);
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class MindMapAttributeView extends JPanel implements Observer {
 		if(!hasNodeToDisplay())
 			setNode((MindMapNode)o);
 		else {
-			attributePane.displayNode(node);
+			attributeContainer.displayNode(node);
 			this.revalidate();
 		}
 	}

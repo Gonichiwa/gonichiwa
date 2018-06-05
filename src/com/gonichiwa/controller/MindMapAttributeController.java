@@ -79,23 +79,28 @@ public class MindMapAttributeController {
 			
 			try {
 				// get All the value from MindMapAttributeView
-				int x = Integer.parseInt(view.getValue("X"));
-				int y = Integer.parseInt(view.getValue("Y"));
-				int width = validateSizeValue(view.getValue("WIDTH"));
-				int height = validateSizeValue(view.getValue("HEIGHT"));
+				String name = validateNameValue(view.getValue("NAME"));
+				double x = Double.parseDouble(view.getValue("X"));
+				double y = Double.parseDouble(view.getValue("Y"));
+				double width = validateSizeValue(view.getValue("WIDTH"));
+				double height = validateSizeValue(view.getValue("HEIGHT"));
 				Color color = new Color(validateColorValue(view.getValue("COLOR")));
 				int red = color.getRed();
 				int green = color.getGreen();
 				int blue = color.getBlue();
 				int alpha = color.getAlpha();
-				
+				String note = view.getValue("NOTE");
+				System.out.println(color);
 				// update model
+				model.changeNodeName(view.getNode().getID(), name);
 				model.setNodeLocation(view.getNode().getID(), x, y);
 				model.setNodeSize(view.getNode().getID(), width, height);
 				model.setNodeColor(view.getNode().getID(), red, green, blue, alpha);
-				
+				model.setNodeNote(view.getNode().getID(), note);
 			} catch (Exception err) {
 				JOptionPane.showMessageDialog(view, err.getMessage(), "invalid format", 2);
+				System.out.println(err);
+				err.printStackTrace();
 			}
 		}
 	}
@@ -112,6 +117,14 @@ public class MindMapAttributeController {
 		view.setNode(node);
 	}
 	
+	public String validateNameValue(String value) {
+		// TODO Auto-generated method stub
+		if(!value.equals("")) 
+			return value;
+		else 
+			throw new IllegalArgumentException("name can not be empty");
+	}
+
 	/**
 	 * Helper Method.
 	 * 
@@ -127,8 +140,8 @@ public class MindMapAttributeController {
 	 * @return
 	 * 		the valid value for the new size.
 	 */
-	private int validateSizeValue(String sizeValue) {
-		int answer = Integer.parseInt(sizeValue);
+	private double validateSizeValue(String sizeValue) {
+		double answer = Double.parseDouble(sizeValue);
 		if(answer < 0)
 			throw new IllegalArgumentException("negative size doesn't make sense.");
 		if(answer > 400) 	//TODO: must change this to constant value from MindMapNodeView

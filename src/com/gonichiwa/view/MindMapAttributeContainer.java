@@ -4,34 +4,49 @@ import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.Border;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 
+import java.awt.Color;
+import java.awt.Insets;
+
 class MindMapAttributeContainer extends JPanel {
 	
-	private LinkedHashMap<String, MindMapAttributeTextField> attributePanelDict; // preserve order
+	private LinkedHashMap<String, MindMapAttributeComponent<String>> attributePanelDict; // preserve order
 	private BoxLayout layout;
+	private MindMapAttributeTextArea noteTextArea;
 	
 	public MindMapAttributeContainer() {
 		this(new String[] {});
 	}
 	
 	public MindMapAttributeContainer(String...attributeNames) {
-		//TODO: remove duplicate attributeNames
 		super();
-		attributePanelDict = new LinkedHashMap<String, MindMapAttributeTextField>();
+		attributePanelDict = new LinkedHashMap<String, MindMapAttributeComponent<String>>();
 		
 		layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		this.setLayout(layout);
+		setLayout(layout);
+		
+		noteTextArea = new MindMapAttributeTextArea();
 		
 		for(String name: attributeNames) {
 			attributePanelDict.put(name, new MindMapAttributeTextField(name));
 		}
 
-		for(MindMapAttributeTextField attributeComponent : attributePanelDict.values()) {
-			add(attributeComponent);
+	
+		attributePanelDict.put("NOTE", noteTextArea);
+		
+		for(MindMapAttributeComponent<String> attributeComponent : attributePanelDict.values()) {
+			if(attributeComponent != null)
+				add((JComponent) attributeComponent);
 		}
+		
+		add(noteTextArea);
+
 		setVisible(false);
 	}
 	
@@ -49,6 +64,7 @@ class MindMapAttributeContainer extends JPanel {
 		String green = toHexString(node.getGreenColor()).toUpperCase();
 		String blue = toHexString(node.getBlueColor()).toUpperCase();
 		setValue("COLOR", red+green+blue);
+		setValue("NOTE", node.getNote());
 		setVisible(true);
 	}
 
@@ -60,17 +76,12 @@ class MindMapAttributeContainer extends JPanel {
 		attributePanelDict.put(key, panel);
 		add(panel);
 	}
-	
+
 	public String getValue(String key) {
 		validateKey(key);
 		return attributePanelDict.get(key).getValue();
 	}
-	
-	public void setEditable(String key, boolean editable) {
-		validateKey(key);
-		attributePanelDict.get(key).setEditableOfTheAttributeTextField(editable);
-	}
-	
+
 	private void setValue(String key, String value) {
 		validateKey(key);
 		attributePanelDict.get(key).setValue(value);	
@@ -81,7 +92,8 @@ class MindMapAttributeContainer extends JPanel {
 	}
 	
 	private void setValue(String key, double value) {
-		setValue(key, String.valueOf(value));
+		setValue(key, String.valueOf( (int) value));
+		
 	}
 	
 	private void validateKey(String key) {
@@ -95,4 +107,5 @@ class MindMapAttributeContainer extends JPanel {
 			answer = "0"+answer;
 		return answer;
 	}
+	
 }

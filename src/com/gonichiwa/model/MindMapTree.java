@@ -25,17 +25,10 @@ public class MindMapTree extends Observable implements Cloneable {
 	 * @param text
 	 * 		the text which is given from TextAreaPane.
 	 */
-
 	public void buildTree(String text) {
 		root = MindMapTreeFactory.build(text);
 		setChanged();
 		notifyObservers("NEW");
-	}
-	
-	public void loadTree(MindMapNode root) {
-		this.root = MindMapTreeFactory.loadNewTree(root);
-		setChanged();
-		notifyObservers("LOAD");
 	}
 	
 	public MindMapNode getRoot() {
@@ -44,6 +37,18 @@ public class MindMapTree extends Observable implements Cloneable {
 	
 	public void setRoot(MindMapNode node) {
 		root = node;
+		setChanged();
+		notifyObservers("LOAD");
+	}
+	
+	public void changeNodeName(int nodeID, String name) {
+		MindMapNode node = getNode(nodeID);
+		if(node != null) {
+			node.setName(name);
+			setChanged();
+			notifyObservers();
+		}
+		
 	}
 	
 	/**

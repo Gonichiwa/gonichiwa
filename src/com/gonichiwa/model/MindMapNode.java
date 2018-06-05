@@ -7,14 +7,15 @@ import java.util.Observable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
+import com.google.gson.annotations.Expose;
 
 public class MindMapNode extends Observable implements NodeDataDeliver {
 	private static int idGenerator = 0;
 	private final int id;
-	private int x, y, width, height; 
+	private double x, y, width, height; 
 	private int red, green, blue, alpha;
 	private String name;
-	
+	private String note;
 	private List<MindMapNode> children = new ArrayList<MindMapNode>();;
 	
 	// 1. node field implementation
@@ -25,12 +26,12 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	 */
 
 	MindMapNode(String name) {
-		this(name, 0, 0, 0, 0); 
+		this(name, 0, 0, 0, 0, 0, 0, 0, ""); 
 		// 2. node initailize implementation
 	}
 	
 	@JsonCreator
-	MindMapNode(@JsonProperty("name") String name, @JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("width") int width, @JsonProperty("height") int height) {
+	MindMapNode(String name, double x, double y, double width, double height, int red, int green, int blue, String note) {
 		super();
 		id = ++idGenerator;
 		this.name = name;
@@ -38,18 +39,25 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.red = red;
+		this.green = green;
+		this.blue = blue;
+		this.note = note;
 	}
 	
 	public MindMapNode(MindMapNode node) {
-		this(node.name, node.x, node.y, node.width, node.height);
+		this(node.name, node.x, node.y, node.width, node.height, node.getRedColor(), node.getGreenColor(), node.getBlueColor(), node.getNote());
 	}
 	
 	// 3. node method implementation
-	public void initViewAttribute(int x, int y, int width, int height) {
+	public void initViewAttribute(double x, double y, double width, double height, int red, int green, int blue) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		setRed(red);
+		setGreen(green);
+		setBlue(blue);
 	}
 	
 	public void addChild(MindMapNode child) {
@@ -93,19 +101,19 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		return name;
 	}
 	
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 	
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 	
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 	
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 	
@@ -125,28 +133,37 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		return alpha;
 	}
 	
+	public String getNote() {
+		return note;
+	}
+	
 	/*
 	 * setter method
 	 */
-	public void setX(int x) {
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setX(double x) {
 		this.x = x;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void setWidth(int width) {
+	public void setWidth(double width) {
 		this.width = width;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 		setChanged();
 		notifyObservers();
@@ -192,6 +209,12 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 			alpha = 0;
 		else
 			alpha = alphaValue;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void setNote(String note) {
+		this.note = note;
 		setChanged();
 		notifyObservers();
 	}

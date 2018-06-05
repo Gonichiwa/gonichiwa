@@ -21,10 +21,10 @@ public class MindMapTextAreaView extends JPanel implements Observer {
 	MindMapModel model;
 	
 	public MindMapTextAreaView(MindMapModel model) {
-		this.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 		initSubViews();
-		this.add(textAreaScrollPane, BorderLayout.CENTER);
-		this.add(textApplyToModelButton, BorderLayout.SOUTH);
+		add(textAreaScrollPane, BorderLayout.CENTER);
+		add(textApplyToModelButton, BorderLayout.SOUTH);
 		this.model = model;
 		this.model.tree.addObserver(this);
 	}
@@ -63,13 +63,8 @@ public class MindMapTextAreaView extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		System.out.println("redrawing");
-		System.out.println(model.tree.toString());
 		setText(model.tree.toString());
 		mindMapBuildingTextArea.repaint();
 		mindMapBuildingTextArea.revalidate();
-		
 	}
-	
 }
