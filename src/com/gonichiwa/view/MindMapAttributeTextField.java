@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  * @author YONG_JOON_KIM
  *
  */
-class MindMapAttributeTextField extends JPanel {
+class MindMapAttributeTextField extends MindMapAttributeComponent<String> {
 
     private static final int MAX_WIDTH = 400;
     private static final int MAX_HEIGHT = 30;

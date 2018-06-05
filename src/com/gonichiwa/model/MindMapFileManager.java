@@ -97,7 +97,7 @@ class MindMapFileManager {
 			jsonObject.addProperty("red", node.getRedColor());
 			jsonObject.addProperty("green", node.getGreenColor());
 			jsonObject.addProperty("blue", node.getBlueColor());
-			System.out.println("red color is " + node.getRedColor());
+			jsonObject.addProperty("note", node.getNote());
 
 			JsonArray childNodes = new JsonArray();
 			
@@ -126,7 +126,8 @@ class MindMapFileManager {
 											      jsonObject.get("height").getAsDouble(),
 											      jsonObject.get("red").getAsInt(),
 											      jsonObject.get("green").getAsInt(),
-											      jsonObject.get("blue").getAsInt());
+											      jsonObject.get("blue").getAsInt(),
+											      jsonObject.get("note").getAsString());
 			
 			JsonArray childrenNodes = jsonObject.get("children").getAsJsonArray();
 			

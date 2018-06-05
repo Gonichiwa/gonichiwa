@@ -217,7 +217,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 			theta = availableAngle / numberOfChildren;
 
 		// get distance.
-		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_SIZE/Math.sin(theta/2) : 40; // 10 is debug offset.
+		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_SIZE/Math.sin(theta/2) : MindMapNodeView.MIN_SIZE; // 10 is debug offset.
 
 		direction.normalize();
 		direction.mult(distance);

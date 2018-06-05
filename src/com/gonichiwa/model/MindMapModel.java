@@ -66,7 +66,7 @@ public class MindMapModel extends Observable{
 	public void changeNodeName(int nodeID, String name) {
 		tree.changeNodeName(nodeID, name);
 	}
-	
+
 	public void setNodeLocation(int nodeID, double x, double y) {
 		try {
 			MindMapNode node = tree.getNode(nodeID);
@@ -77,24 +77,24 @@ public class MindMapModel extends Observable{
 		}
 
 	}
-	
+
 	public void setNodeSize(int nodeID, double width, double height) {
 		try {
-		MindMapNode node = tree.getNode(nodeID);
-		node.setWidth(width);
-		node.setHeight(height);
+			MindMapNode node = tree.getNode(nodeID);
+			node.setWidth(width);
+			node.setHeight(height);
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeSize NullPointerException");
 		}
 	}
-	
+
 	public void setNodeColor(int nodeID, int red, int green, int blue, int alpha) {
 		try {
-		MindMapNode node = tree.getNode(nodeID);
-		node.setRed(red);
-		node.setGreen(green);
-		node.setBlue(blue);
-		node.setAlpha(alpha);
+			MindMapNode node = tree.getNode(nodeID);
+			node.setRed(red);
+			node.setGreen(green);
+			node.setBlue(blue);
+			node.setAlpha(alpha);
 
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeColor NullPointerException");
@@ -119,6 +119,16 @@ public class MindMapModel extends Observable{
 		fileManager = new MindMapFileManager();	
 		setChanged();
 		notifyObservers("RESET");
+	}
+
+
+	public void setNodeNote(int nodeID, String note) {
+		try {
+			MindMapNode node = tree.getNode(nodeID);
+			node.setNote(note);
+		}catch (NullPointerException e) {
+			System.out.println(e.getClass() + "setNodeNote NullPointerException");
+		}
 	}
 }
 

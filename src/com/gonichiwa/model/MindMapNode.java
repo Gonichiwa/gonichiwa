@@ -15,6 +15,7 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	private double x, y, width, height; 
 	private int red, green, blue, alpha;
 	private String name;
+	private String note;
 	private List<MindMapNode> children = new ArrayList<MindMapNode>();;
 	
 	// 1. node field implementation
@@ -25,12 +26,12 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 	 */
 
 	MindMapNode(String name) {
-		this(name, 0, 0, 0, 0, 0, 0, 0); 
+		this(name, 0, 0, 0, 0, 0, 0, 0, ""); 
 		// 2. node initailize implementation
 	}
 	
 	@JsonCreator
-	MindMapNode(String name, double x, double y, double width, double height, int red, int green, int blue) {
+	MindMapNode(String name, double x, double y, double width, double height, int red, int green, int blue, String note) {
 		super();
 		id = ++idGenerator;
 		this.name = name;
@@ -41,10 +42,11 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
+		this.note = note;
 	}
 	
 	public MindMapNode(MindMapNode node) {
-		this(node.name, node.x, node.y, node.width, node.height, node.getRedColor(), node.getGreenColor(), node.getBlueColor());
+		this(node.name, node.x, node.y, node.width, node.height, node.getRedColor(), node.getGreenColor(), node.getBlueColor(), node.getNote());
 	}
 	
 	// 3. node method implementation
@@ -56,7 +58,6 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		setRed(red);
 		setGreen(green);
 		setBlue(blue);
-
 	}
 	
 	public void addChild(MindMapNode child) {
@@ -132,6 +133,10 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		return alpha;
 	}
 	
+	public String getNote() {
+		return note;
+	}
+	
 	/*
 	 * setter method
 	 */
@@ -204,6 +209,12 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 			alpha = 0;
 		else
 			alpha = alphaValue;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void setNote(String note) {
+		this.note = note;
 		setChanged();
 		notifyObservers();
 	}

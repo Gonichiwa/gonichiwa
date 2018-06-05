@@ -89,13 +89,14 @@ public class MindMapAttributeController {
 				int green = color.getGreen();
 				int blue = color.getBlue();
 				int alpha = color.getAlpha();
+				String note = view.getValue("NOTE");
 				System.out.println(color);
 				// update model
 				model.changeNodeName(view.getNode().getID(), name);
 				model.setNodeLocation(view.getNode().getID(), x, y);
 				model.setNodeSize(view.getNode().getID(), width, height);
 				model.setNodeColor(view.getNode().getID(), red, green, blue, alpha);
-				
+				model.setNodeNote(view.getNode().getID(), note);
 			} catch (Exception err) {
 				JOptionPane.showMessageDialog(view, err.getMessage(), "invalid format", 2);
 				System.out.println(err);

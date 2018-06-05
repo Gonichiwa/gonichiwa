@@ -30,4 +30,6 @@ public interface NodeDataDeliver {
 	public int getBlueColor();
 	
 	public int getAlpha();
+	
+	public String getNote();
 }
