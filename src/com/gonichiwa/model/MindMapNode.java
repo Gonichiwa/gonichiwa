@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Observable;
 
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
-import com.google.gson.annotations.Expose;
 
 public class MindMapNode extends Observable implements NodeDataDeliver {
 	private static int idGenerator = 0;

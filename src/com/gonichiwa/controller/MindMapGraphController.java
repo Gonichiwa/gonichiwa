@@ -92,7 +92,7 @@ public class MindMapGraphController implements Observer {
 	}
 	
 	private class NodeKeyListener implements KeyListener {
-
+		
 		@Override
 		public void keyTyped(KeyEvent e) {			
 		}

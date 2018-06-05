@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/yosei/Desktop/GitProj/simple-mindmap/library/gson-2.8.4.jar"/>
+=======
+	<classpathentry kind="lib" path="/Users/penubo/Developer/Java/simple-mindmap/library/gson-2.8.4.jar"/>
+>>>>>>> b3781faba6ef780af9d31157e413530f05f025bd
 	<classpathentry kind="output" path="bin"/>
 </classpath>
