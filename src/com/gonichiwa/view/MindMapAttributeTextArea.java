@@ -17,7 +17,7 @@ public class MindMapAttributeTextArea extends MindMapAttributeComponent<String> 
 		textArea.setRows(10);
 		textArea.setMargin(new Insets(8, 8, 8, 8));
 		textArea.setBackground(new Color(250, 230, 180));
-		
+		textArea.setTabSize(2);
 		label = new JLabel("Note");
 
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
