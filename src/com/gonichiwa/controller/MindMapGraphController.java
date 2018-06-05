@@ -77,8 +77,7 @@ public class MindMapGraphController implements Observer {
 		graphScalerView.addResetListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				graphView.resetAllOffset();
-				graphScalerView.setScalerPoint(graphView.getZoomFactor());
+				resetOffsets();
 			}
 		});
 
@@ -333,14 +332,29 @@ public class MindMapGraphController implements Observer {
             }
 		}
 	}
+	
+	private void resetOffsets() {
+		graphView.resetOffsets();
+		graphScalerView.setScalerPoint(graphView.getZoomFactor());
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		if(((String) arg).equals("RESET")) {
-			graphView.reset();
-			attributeView.reset();
-			graphScalerView.reset();
+		try {
+			String message = (String) arg;
+			switch(message) {
+			case "RESET":
+				graphView.reset();
+				attributeView.reset();
+				graphScalerView.reset();
+			case "NEW":
+				resetOffsets();
+				break;
+			default:
+				break;
+			}
+		} catch (ClassCastException e) {
+
 		}
 	}
 }

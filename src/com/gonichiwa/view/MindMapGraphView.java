@@ -69,20 +69,18 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 
 	public void reset() {
-		resetAllOffset();
+		resetOffsets();
 		clearNodes();
 		repaint();
 	}
 	
-	public void resetAllOffset() {
-		
-		this.zoom((int) dx, (int) dy, 1);
-		this.movePanel(-dx, -dy);
-
+	public void resetOffsets() {
+		movePanel(-dx, -dy);
 		dx = 0;
 		dy = 0;
 		zoomFactor = 1;
-		
+		zoom((int) dx, (int) dy, 1);
+		loadGraph();
 		repaint();
 		revalidate();
 	}
@@ -143,7 +141,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 	}
 
 	public void drawGraph() {
-		clearNodes();
+		reset();
 		int colorOffset = 255 / model.tree.size();
 		recMakeNodeView(model.tree.getRoot(),
 						this.getPreferredSize().width/2,
@@ -157,9 +155,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 	 * load Graph from already built tree.
 	 */
 	public void loadGraph() {
-		clearNodes();
-		recLoadNode(model.tree.getRoot());
-		revalidate();
+		try {
+			clearNodes();
+			recLoadNode(model.tree.getRoot());
+			revalidate();
+		} catch (NullPointerException e) {
+			
+		}
 	}
 
 	private void recLoadNode(MindMapNode node) {
