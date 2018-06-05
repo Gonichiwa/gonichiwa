@@ -144,11 +144,12 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 	public void drawGraph() {
 		clearNodes();
+		int colorOffset = 255 / model.tree.size();
 		recMakeNodeView(model.tree.getRoot(),
 						this.getPreferredSize().width/2,
 						this.getPreferredSize().height/2,
 						Math.PI*2, new MindMapVector(0, -1),
-						1);
+						1, colorOffset);
 		revalidate();
 	}
 
@@ -177,7 +178,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
-	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel) {
+	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel, int colorOffset) {
 		// make node first
 		// TODO: using node size not constant.
 
@@ -188,7 +189,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 		// make NodeView
 
-		MindMapNodeView nodeView = new MindMapNodeView(node, centerX, centerY, new Color(0 + colorLevel, 0, 255-colorLevel));
+		MindMapNodeView nodeView = new MindMapNodeView(node,
+				centerX, centerY, 
+				new Color(colorLevel * colorOffset, 0, 255 - colorLevel * colorOffset));
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
@@ -228,10 +231,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 		for(MindMapNode child : node.getChildren()) {
 
 			recMakeNodeView(child,
-						 centerX+(int)direction.getX(),
-						 centerY+(int)direction.getY(),
-						 theta,
-						 direction.copy().normalize().rotate(-theta/2), colorLevel + 50);
+							centerX+(int)direction.getX(),
+							centerY+(int)direction.getY(),
+							theta,
+							direction.copy().normalize().rotate(-theta/2),
+							colorLevel + 1, colorOffset);
 			edges.add(new MindMapEdge(node, child));
 			direction.rotate(theta);
 		}

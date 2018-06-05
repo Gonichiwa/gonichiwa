@@ -1,6 +1,7 @@
 package com.gonichiwa.controller;
 
 import java.awt.Color;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
@@ -18,6 +19,7 @@ import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.view.MindMapMenuBar;
 import com.gonichiwa.view.MindMapToolBar;
 
+import javafx.scene.control.ToolBar;
 import javafx.stage.FileChooser;
 
 public class MindMapMenuController {
@@ -25,23 +27,30 @@ public class MindMapMenuController {
 	private MindMapMenuBar menuBar;
 	private MindMapToolBar toolBar;
 	private MindMapModel model;
+	private MindMapGraphController graphController;
+	private MindMapAttributeController attributeController;
+	private MindMapTextAreaController textAreaController;
 	
 	private JFileChooser fileChooser;
 	
-	public MindMapMenuController(MindMapModel model,MindMapMenuBar menuBar,MindMapToolBar  toolBar){
+	public MindMapMenuController(MindMapModel model, 
+			MindMapTextAreaController textAreaController, 
+			MindMapGraphController graphController,
+			MindMapAttributeController attributeController) {
 		
-		Path currentRelativePath = Paths.get("save");
-		String s = currentRelativePath.toAbsolutePath().toString();
-		System.out.println("Current relative path is: " + s);
-		
-		this.menuBar = menuBar;
-		this.toolBar = toolBar;
 		this.model = model;
+
+		Path currentRelativePath = Paths.get("save");
+		
+		menuBar = new MindMapMenuBar();
+		toolBar = new MindMapToolBar();
+		this.textAreaController = textAreaController;
+		this.graphController = graphController;
+		this.attributeController = attributeController;
 		
 		fileChooser = new JFileChooser(currentRelativePath.toFile());
 
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".json", "json"));
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".XML", "XML"));
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		
 		menuBar.addNewwListener(new newwActionListener());
@@ -49,34 +58,16 @@ public class MindMapMenuController {
 		menuBar.addSaveListener(new saveActionListener());
 		menuBar.addSaveasListener(new saveasActionListener());
 		menuBar.addCloseListener(new closeActionListener());
-		menuBar.addExportListener(new exportActionListener());
-		menuBar.addUndoListener(new undoActionListener());
-		menuBar.addRedoListener(new redoActionListener());
-		menuBar.addDeleteListener(new deleteActionListener());
-		menuBar.addApplyListener(new applyActionListener());
-		menuBar.addChangeListener(new changeActionListener());
-		menuBar.addZoominListener(new zoominActionListener());
-		menuBar.addZoomoutListener(new zoomoutActionListener());
-		menuBar.addFitmapListener(new fitmapActionListener());
-		menuBar.addHideEditorPaneListener(new hideeditorpaneActionListener());
-		menuBar.addHideAttributePaneListener(new hideattributepaneActionListener());
+		menuBar.addApplyListener(textAreaController.getListener());
+		menuBar.addChangeListener(attributeController.getListener());
 		
-		toolBar.addApplyListener(new applyActionListener());
+		toolBar.addApplyListener(textAreaController.getListener());
 		toolBar.addNewwListener(new newwActionListener());
 		toolBar.addOpenListener(new openActionListener());
 		toolBar.addSaveListener(new saveActionListener());
 		toolBar.addSaveasListener(new saveasActionListener());
 		toolBar.addCloseListener(new closeActionListener());
-		toolBar.addChangeListener(new changeActionListener());
-		toolBar.addFitmapListener(new fitmapActionListener());
-		toolBar.addZoominListener(new zoominActionListener());
-		toolBar.addZoomoutListener(new zoomoutActionListener());
-		toolBar.addUndoListener(new undoActionListener());
-		toolBar.addRedoListener(new redoActionListener());
-	}
-	
-	public MindMapMenuController(MindMapModel model){
-		this(model,new MindMapMenuBar(),new MindMapToolBar());
+		toolBar.addChangeListener(attributeController.getListener());
 	}
 	
 	public MindMapMenuBar getMenuBar() {
@@ -103,7 +94,7 @@ public class MindMapMenuController {
 				
 		public void actionPerformed(ActionEvent e) {
 			
-				int saveCheck = JOptionPane.showConfirmDialog(null, "변경사항을 저장하시겠습니까?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+				int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?", "New", JOptionPane.YES_NO_CANCEL_OPTION);
 				
 				if(saveCheck == JOptionPane.YES_OPTION) {
 					int returnValue = fileChooser.showSaveDialog(null);
@@ -129,7 +120,7 @@ public class MindMapMenuController {
 		public void actionPerformed(ActionEvent e) {
 
 			
-			int saveCheck = JOptionPane.showConfirmDialog(null, "변경사항을 저장하시겠습니까?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?","New",JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			if(saveCheck == JOptionPane.YES_OPTION) {
 				int returnValue = fileChooser.showSaveDialog(null);
@@ -150,7 +141,7 @@ public class MindMapMenuController {
 			if(returnValue == JFileChooser.APPROVE_OPTION) {
 				model.load(fileChooser.getSelectedFile().getPath());
 			}
-
+			
 		}
 	}
 	class saveActionListener implements ActionListener{
@@ -185,7 +176,7 @@ public class MindMapMenuController {
 		
 		public void actionPerformed(ActionEvent e) {
 		
-			int saveCheck = JOptionPane.showConfirmDialog(null, "변경사항을 저장하시겠습니까?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?", "New", JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			if(saveCheck == JOptionPane.YES_OPTION) {
 				int returnValue = fileChooser.showSaveDialog(null);
