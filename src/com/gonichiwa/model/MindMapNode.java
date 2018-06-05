@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 import com.google.gson.annotations.Expose;
 
@@ -30,7 +28,6 @@ public class MindMapNode extends Observable implements NodeDataDeliver {
 		// 2. node initailize implementation
 	}
 	
-	@JsonCreator
 	MindMapNode(String name, double x, double y, double width, double height, int red, int green, int blue, String note) {
 		super();
 		id = ++idGenerator;

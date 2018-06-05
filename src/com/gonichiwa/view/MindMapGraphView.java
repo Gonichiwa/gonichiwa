@@ -231,7 +231,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 						 centerX+(int)direction.getX(),
 						 centerY+(int)direction.getY(),
 						 theta,
-						 direction.copy().normalize().rotate(-theta/2), colorLevel + 50);
+						 direction.copy().normalize().rotate(-theta/2), colorLevel + 10);
 			edges.add(new MindMapEdge(node, child));
 			direction.rotate(theta);
 		}
