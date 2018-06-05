@@ -16,7 +16,7 @@ import java.awt.Insets;
 
 class MindMapAttributeContainer extends JPanel {
 	
-	private LinkedHashMap<String, MindMapAttributeComponent<String>> attributePanelDict; // preserve order
+	private LinkedHashMap<String, MindMapAttributeComponent> attributePanelDict; // preserve order
 	private BoxLayout layout;
 	private MindMapAttributeTextArea noteTextArea;
 	
@@ -26,7 +26,7 @@ class MindMapAttributeContainer extends JPanel {
 	
 	public MindMapAttributeContainer(String...attributeNames) {
 		super();
-		attributePanelDict = new LinkedHashMap<String, MindMapAttributeComponent<String>>();
+		attributePanelDict = new LinkedHashMap<String, MindMapAttributeComponent>();
 		
 		layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
@@ -40,7 +40,7 @@ class MindMapAttributeContainer extends JPanel {
 	
 		attributePanelDict.put("NOTE", noteTextArea);
 		
-		for(MindMapAttributeComponent<String> attributeComponent : attributePanelDict.values()) {
+		for(MindMapAttributeComponent attributeComponent : attributePanelDict.values()) {
 			if(attributeComponent != null)
 				add((JComponent) attributeComponent);
 		}

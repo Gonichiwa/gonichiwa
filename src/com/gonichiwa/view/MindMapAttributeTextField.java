@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  * @author YONG_JOON_KIM
  *
  */
-class MindMapAttributeTextField extends MindMapAttributeComponent<String> {
+class MindMapAttributeTextField extends MindMapAttributeComponent {
 
     private static final int MAX_WIDTH = 400;
     private static final int MAX_HEIGHT = 30;
@@ -95,6 +95,4 @@ class MindMapAttributeTextField extends MindMapAttributeComponent<String> {
     	if (!editable)
     		attributeValueTextField.setBackground(Color.GRAY);
     }
-
-
 }

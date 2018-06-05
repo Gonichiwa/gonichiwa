@@ -141,7 +141,6 @@ public class MindMapMenuController {
 			if(returnValue == JFileChooser.APPROVE_OPTION) {
 				model.load(fileChooser.getSelectedFile().getPath());
 			}
-			
 		}
 	}
 	class saveActionListener implements ActionListener{

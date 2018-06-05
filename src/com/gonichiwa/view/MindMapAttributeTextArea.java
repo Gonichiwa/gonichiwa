@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class MindMapAttributeTextArea extends MindMapAttributeComponent<String> {
+class MindMapAttributeTextArea extends MindMapAttributeComponent {
 	JTextArea textArea;
 	JLabel label;
 	public MindMapAttributeTextArea() {
