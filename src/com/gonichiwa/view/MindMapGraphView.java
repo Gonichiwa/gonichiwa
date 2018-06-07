@@ -69,22 +69,45 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 
 	public void reset() {
-		resetOffsets();
+		resetGraphViewOffset();
 		clearNodes();
 		repaint();
 	}
 	
-	public void resetOffsets() {
+	public void resetGraphViewOffset() {
 		movePanel(-dx, -dy);
 		dx = 0;
 		dy = 0;
 		zoomFactor = 1;
 		zoom((int) dx, (int) dy, 1);
-		for(MindMapNodeView node : nodes) {
-			node.resetOffset();
-			node.zoomNode(zoomFactor, 0, 0);
-			node.moveNode((int)dx, (int)dy);
+	}
+	
+	public void resetOffsetsToCenter() {
+		
+		resetGraphViewOffset();
+		
+		MindMapNode root = model.tree.getRoot();
+		
+		if(root != null) {
+			// get center of the root node.
+			double nodeCenterX = root.getX() + root.getWidth() / 2;
+			double nodeCenterY = root.getY() + root.getHeight() / 2;
+			
+			// get center of the graphView.
+			double graphCenterX = getWidth() / 2;
+			double graphCenterY = getHeight() / 2;
+
+			double rootNodeCenterOffsetX = graphCenterX - nodeCenterX;
+			double rootNodeCenterOffsetY = graphCenterY - nodeCenterY;
+
+			for(MindMapNodeView node : nodes) {
+				// set all nodes' offset to rootNodeCenterOffsets.
+				node.setOffset((int) rootNodeCenterOffsetX, (int) rootNodeCenterOffsetY);
+				node.zoomNode(zoomFactor, 0, 0);
+				node.moveNode((int) dx, (int) dy);
+			}
 		}
+		
 		repaint();
 		revalidate();
 	}

@@ -334,7 +334,7 @@ public class MindMapGraphController implements Observer {
 	}
 	
 	private void resetOffsets() {
-		graphView.resetOffsets();
+		graphView.resetOffsetsToCenter();
 		graphScalerView.setScalerPoint(graphView.getZoomFactor());
 	}
 

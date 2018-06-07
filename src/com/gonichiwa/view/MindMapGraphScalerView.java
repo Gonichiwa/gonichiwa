@@ -29,7 +29,7 @@ public class MindMapGraphScalerView extends JPanel {
 							 100);
 		scaler.setPaintTicks(false);
 		scaler.setPaintLabels(false);
-		resetButton = new JButton("reset");
+		resetButton = new JButton("CENTER");
 		resetButton.setFont(new Font("Monaco", Font.BOLD, 14));
 		percentageLabel = new JLabel("100%");
 		percentageLabel.setFont(new Font("Monaco", Font.BOLD, 16));

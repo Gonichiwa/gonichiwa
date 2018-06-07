@@ -102,9 +102,14 @@ public class MindMapNodeView extends JPanel implements Observer {
 
 		// Pick a new font size so it will not be larger than the height of label.
 		int fontSizeToUse = Math.min(newFontSize, componentHeight);
-
+		if (!(fontSizeToUse > 0)) {
+			fontSizeToUse = 1;
+			label.setVisible(false);
+		} else {
 		// Set the label's font size to the newly determined size.
-		label.setFont(new Font(labelFont.getName(), Font.BOLD, fontSizeToUse));
+			label.setFont(new Font(labelFont.getName(), Font.BOLD, fontSizeToUse));
+			label.setVisible(true);
+		}
 	}
 
 	public void paint(Graphics g) {
@@ -178,8 +183,12 @@ public class MindMapNodeView extends JPanel implements Observer {
 	}
 	
 	public void resetOffset() {
-		offsetX = 0;
-		offsetY = 0;
+		setOffset(0, 0);
 		zoomFactor = 1;
+	}
+	
+	public void setOffset(int dx, int dy) {
+		offsetX = dx;
+		offsetY = dy;
 	}
 }
