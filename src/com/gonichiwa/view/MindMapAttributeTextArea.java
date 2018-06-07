@@ -2,22 +2,25 @@ package com.gonichiwa.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class MindMapAttributeTextArea extends MindMapAttributeComponent<String> {
+class MindMapAttributeTextArea extends MindMapAttributeComponent {
 	JTextArea textArea;
 	JLabel label;
 	public MindMapAttributeTextArea() {
 		setLayout(new BorderLayout());
 		textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setColumns(10);
 		textArea.setRows(10);
 		textArea.setMargin(new Insets(8, 8, 8, 8));
 		textArea.setBackground(new Color(250, 230, 180));
-		
+		textArea.setTabSize(2);
 		label = new JLabel("Note");
 
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
