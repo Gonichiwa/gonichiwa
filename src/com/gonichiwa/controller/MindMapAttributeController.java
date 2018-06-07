@@ -3,6 +3,8 @@ package com.gonichiwa.controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
@@ -21,7 +23,7 @@ import com.gonichiwa.view.MindMapAttributeView;
  * @author YONG_JOON_KIM
  *
  */
-public class MindMapAttributeController {
+public class MindMapAttributeController implements Observer {
 	private MindMapAttributeView view;
 	private MindMapModel model;
 	private ChangeActionListener listener;
@@ -33,6 +35,7 @@ public class MindMapAttributeController {
 	public MindMapAttributeController(MindMapModel model, MindMapAttributeView view) {
 		listener = new ChangeActionListener();
 		this.model = model;
+		this.model.addObserver(this);
 		this.view  = view;
 		this.view.addChangeButtonActionListener(listener);
 	}
@@ -170,4 +173,8 @@ public class MindMapAttributeController {
 		return Integer.parseInt(colorValue, 16);
 	}
 
+	@Override
+	public void update(Observable o, Object arg) {
+		view.reset();
+	}
 }

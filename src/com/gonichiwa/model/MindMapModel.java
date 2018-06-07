@@ -31,6 +31,13 @@ public class MindMapModel extends Observable{
 	 * @param nodeID
 	 * 		id of the node which is target to be deleted in the tree.
 	 */
+	
+	public void buildTree(String text) {
+		tree.buildTree(text);
+		setChanged();
+		notifyObservers("NEW");
+	}
+	
 	public void remove(int nodeID) {
 		tree.removeNode(nodeID);
 	}
@@ -61,6 +68,8 @@ public class MindMapModel extends Observable{
 		// TODO: load data for Joon
 		fileManager.setPath(path);
 		tree.setRoot(fileManager.loadRoot());
+		setChanged();
+		notifyObservers("NEW");
 	}
 	
 	public void changeNodeName(int nodeID, String name) {
