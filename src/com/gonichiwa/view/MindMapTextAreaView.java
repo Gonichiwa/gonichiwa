@@ -1,6 +1,7 @@
 package com.gonichiwa.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -36,6 +37,7 @@ public class MindMapTextAreaView extends JPanel implements Observer {
 	public void initSubViews() {
 		mindMapBuildingTextArea = new JTextArea();
 		mindMapBuildingTextArea.setTabSize(1);
+		mindMapBuildingTextArea.setBackground(new Color(198, 131, 49));
 		textAreaScrollPane = new JScrollPane(mindMapBuildingTextArea);
 		textApplyToModelButton = new JButton("APPLY");
 	}
