@@ -84,10 +84,6 @@ public class MindMapMenuController {
 		menuBar.addChangeListener(l);
 		toolBar.addChangeListener(l);
 	}
-	public void addDeleteListener(ActionListener l) {
-		menuBar.addDeleteListener(l);
-	}
-	
 	//make action listener later;
 	// TODO: unify new, save, save as to one Listener Class. because there are too many copy and paste code.
 	class newwActionListener implements ActionListener{
@@ -97,10 +93,14 @@ public class MindMapMenuController {
 				int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?", "New", JOptionPane.YES_NO_CANCEL_OPTION);
 				
 				if(saveCheck == JOptionPane.YES_OPTION) {
-					int returnValue = fileChooser.showSaveDialog(null);
-					if(returnValue == JFileChooser.APPROVE_OPTION) {
-						System.out.println(fileChooser.getFileFilter());
-						model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+					if(model.isSaved()) {
+						model.save();
+					} else {
+						int returnValue = fileChooser.showSaveDialog(null);
+						if(returnValue == JFileChooser.APPROVE_OPTION) {
+							System.out.println(fileChooser.getFileFilter());
+							model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+						}
 					}
 				}
 				else if(saveCheck == JOptionPane.NO_OPTION) {
@@ -123,10 +123,14 @@ public class MindMapMenuController {
 			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?","New",JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			if(saveCheck == JOptionPane.YES_OPTION) {
-				int returnValue = fileChooser.showSaveDialog(null);
-				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					System.out.println(fileChooser.getFileFilter());
-					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				if(model.isSaved()) {
+					model.save(); 
+				} else {
+					int returnValue = fileChooser.showSaveDialog(null);
+					if(returnValue == JFileChooser.APPROVE_OPTION) {
+						System.out.println(fileChooser.getFileFilter());
+						model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+					}
 				}
 			}
 			else if(saveCheck == JOptionPane.NO_OPTION) {
@@ -179,10 +183,14 @@ public class MindMapMenuController {
 			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?", "New", JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			if(saveCheck == JOptionPane.YES_OPTION) {
-				int returnValue = fileChooser.showSaveDialog(null);
-				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					System.out.println(fileChooser.getFileFilter());
-					model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+				if(model.isSaved()) {
+					model.save(); 
+				} else {
+					int returnValue = fileChooser.showSaveDialog(null);
+					if(returnValue == JFileChooser.APPROVE_OPTION) {
+						System.out.println(fileChooser.getFileFilter());
+						model.save(fileChooser.getSelectedFile().getPath() + fileChooser.getFileFilter().getDescription());
+					}
 				}
 			}
 			else if(saveCheck == JOptionPane.NO_OPTION) {
@@ -196,66 +204,6 @@ public class MindMapMenuController {
 			System.exit(-1);
 			
 			
-		}
-	}
-	class exportActionListener implements ActionListener{
-		
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("export");
-		}
-	}
-	class undoActionListener implements ActionListener{
-		
-		public void actionPerformed(ActionEvent e) {
-			model.backward();
-			System.out.println("undo");
-		}
-	}
-	class redoActionListener implements ActionListener{
-		
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("redo");
-		}
-	}
-	class deleteActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("delete");
-		}
-	}
-	class applyActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("apply");
-		}
-	}
-	class changeActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("change");
-		}
-	}
-	class zoominActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("zoomin");
-		}
-	}
-	class zoomoutActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("zoomout");
-		}
-	}
-	class fitmapActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("fitmap");	
-			
-		}
-	}
-	class hideeditorpaneActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("hideeditor");
-		}
-	}
-	class hideattributepaneActionListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("hideattribute");
 		}
 	}
 	class ColorPickerActionListener implements ActionListener{
