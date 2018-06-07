@@ -34,7 +34,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private static final int INITIAL_GRAPH_VIEW_HEIGHT = 600;
 	public static final double MAX_ZOOM_FACTOR = 4.0;
 	public static final double MIN_ZOOM_FACTOR = 0.5;
-
+	private static final double NODE_COLOR_FREQUENCY = 0.6;
+	
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
 		this.model.tree.addObserver(this);
@@ -47,18 +48,17 @@ public class MindMapGraphView extends JPanel implements Observer {
 		setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
 	//color
-	final private double frequency = 0.6;
 	public int makeR(int i) {
 		int check = i%7;
-		return (int) (Math.sin(frequency*check)*63+192);
+		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check)*63+192);
 	}
 	public int makeG(int i) {
 		int check = i%7;
-		return (int) (Math.sin(frequency*check+2)*63+192);
+		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+2)*63+192);
 	}
 	public int makeB(int i) {
 		int check = i%7;
-		return (int) (Math.sin(frequency*check+4)*63+192);
+		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+4)*63+192);
 	}
 	
 	public MindMapGraphView(MindMapModel model) {
