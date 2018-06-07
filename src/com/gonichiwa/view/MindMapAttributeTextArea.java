@@ -16,9 +16,8 @@ class MindMapAttributeTextArea extends MindMapAttributeComponent {
 		setLayout(new BorderLayout());
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
-//		textArea.setRows(10);
 		textArea.setColumns(10);
-		textArea.setPreferredSize(new Dimension(150, 300));		
+		textArea.setRows(10);
 		textArea.setMargin(new Insets(8, 8, 8, 8));
 		textArea.setBackground(new Color(250, 230, 180));
 		textArea.setTabSize(2);
