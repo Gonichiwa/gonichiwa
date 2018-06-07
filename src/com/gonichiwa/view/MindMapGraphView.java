@@ -80,7 +80,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 		dy = 0;
 		zoomFactor = 1;
 		zoom((int) dx, (int) dy, 1);
-		loadGraph();
+		for(MindMapNodeView node : nodes) {
+			node.resetOffset();
+			node.zoomNode(zoomFactor, 0, 0);
+			node.moveNode((int)dx, (int)dy);
+		}
 		repaint();
 		revalidate();
 	}

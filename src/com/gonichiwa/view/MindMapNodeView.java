@@ -177,9 +177,9 @@ public class MindMapNodeView extends JPanel implements Observer {
 		zoomFactor = factor;
 	}
 	
-	
-	public void setOffset(double x, double y) {
-		offsetX = x;
-		offsetY = y;
+	public void resetOffset() {
+		offsetX = 0;
+		offsetY = 0;
+		zoomFactor = 1;
 	}
 }
