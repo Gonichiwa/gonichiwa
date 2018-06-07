@@ -144,16 +144,6 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
-	public void drawGraph() {
-		reset();
-		int colorOffset = 255 / model.tree.size();
-		recMakeNodeView(model.tree.getRoot(),
-						this.getPreferredSize().width/2,
-						this.getPreferredSize().height/2,
-						Math.PI*2, new MindMapVector(0, -1),
-						1, colorOffset);
-		revalidate();
-	}
 
 	/**
 	 * load Graph from already built tree.
@@ -182,6 +172,17 @@ public class MindMapGraphView extends JPanel implements Observer {
 			recLoadNode(child);
 			edges.add(new MindMapEdge(node, child));
 		}
+	}
+	
+	public void drawGraph() {
+		reset();
+		int colorOffset = 255 / model.tree.size();
+		recMakeNodeView(model.tree.getRoot(),
+						getWidth()/2,
+						getHeight()/2,
+						Math.PI*2, new MindMapVector(0, -1),
+						1, colorOffset);
+		revalidate();
 	}
 
 	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel, int colorOffset) {

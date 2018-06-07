@@ -2,6 +2,7 @@ package com.gonichiwa.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
@@ -15,7 +16,9 @@ class MindMapAttributeTextArea extends MindMapAttributeComponent {
 		setLayout(new BorderLayout());
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
-		textArea.setRows(10);
+//		textArea.setRows(10);
+		textArea.setColumns(10);
+		textArea.setPreferredSize(new Dimension(150, 300));		
 		textArea.setMargin(new Insets(8, 8, 8, 8));
 		textArea.setBackground(new Color(250, 230, 180));
 		textArea.setTabSize(2);
