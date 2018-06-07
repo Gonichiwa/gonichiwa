@@ -46,7 +46,67 @@ public class MindMapGraphView extends JPanel implements Observer {
 		setFocusable(true);
 		setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
-	
+	//color
+	public int makeR(int i) {
+		int check = i%7;
+		switch(check) {
+		case 0:
+			return 244;
+		case 1:
+			return 244;
+		case 2:
+			return 244;
+		case 3:
+			return 66;
+		case 4:
+			return 66;
+		case 5:
+			return 66;
+		case 6:
+			return 244;
+		}
+		return 0;
+	}
+	public int makeG(int i) {
+		int check = i%7;
+		switch(check) {
+		case 0:
+			return 66;
+		case 1:
+			return 132;
+		case 2:
+			return 244;
+		case 3:
+			return 244;
+		case 4:
+			return 132;
+		case 5:
+			return 66;
+		case 6:
+			return 66;
+		}
+		return 0;
+	}
+	public int makeB(int i) {
+		int check = i%7;
+		switch(check) {
+		case 0:
+			return 66;
+		case 1:
+			return 66;
+		case 2:
+			return 66;
+		case 3:
+			return 66;
+		case 4:
+			return 244;
+		case 5:
+			return 244;
+		case 6:
+			return 244;
+		}
+		return 0;
+	}
 	public MindMapGraphView(MindMapModel model) {
 		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
 	}
@@ -221,7 +281,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 		MindMapNodeView nodeView = new MindMapNodeView(node,
 				centerX, centerY, 
-				new Color(colorLevel * colorOffset, 0, 255 - colorLevel * colorOffset));
+				new Color(makeR(colorLevel), makeG(colorLevel), makeB(colorLevel)));
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
@@ -266,6 +326,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 							theta,
 							direction.copy().normalize().rotate(-theta/2),
 							colorLevel + 1, colorOffset);
+
 			edges.add(new MindMapEdge(node, child));
 			direction.rotate(theta);
 		}
