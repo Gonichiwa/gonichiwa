@@ -2,12 +2,10 @@ package com.gonichiwa.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.geom.AffineTransform;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -37,7 +35,6 @@ public class MindMapNodeView extends JPanel implements Observer {
 		if(node == null)
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
 
-//		this.setBackground(Color.blue);
 		// make label center
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();

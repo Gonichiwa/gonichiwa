@@ -51,18 +51,15 @@ public class ResizableBorder implements Border {
     @Override
     public void paintBorder(Component component, Graphics g, int x, int y,
             int w, int h) {
-    	
+
     	Graphics2D g2d = (Graphics2D) g;
 		if (highlighted && !component.hasFocus()) {
-    		g2d = (Graphics2D) g;
     		g2d.setColor(Color.GREEN);
     		g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         	g2d.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
     	}
-      
-        if (component.hasFocus()) {
 
-        	g2d = (Graphics2D) g;
+        if (component.hasFocus()) {
         	g2d.setColor(Color.CYAN);
         	g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         	g2d.drawRect(x + dist / 2, y + dist / 2, w - dist, h - dist);
@@ -74,10 +71,10 @@ public class ResizableBorder implements Border {
                 g2d.setColor(Color.BLACK);
                 g2d.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
             }
-        } 
-        
-		
-        
+        }
+
+
+
     }
 
     private Rectangle getRectangle(int x, int y, int w, int h, int location) {
@@ -86,13 +83,11 @@ public class ResizableBorder implements Border {
             case SwingConstants.NORTH:
                 return new Rectangle(x + w / 2 - dist / 2, y, dist, dist);
             case SwingConstants.SOUTH:
-                return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist,
-                        dist);
+                return new Rectangle(x + w / 2 - dist / 2, y + h - dist, dist, dist);
             case SwingConstants.WEST:
                 return new Rectangle(x, y + h / 2 - dist / 2, dist, dist);
             case SwingConstants.EAST:
-                return new Rectangle(x + w - dist, y + h / 2 - dist / 2, dist,
-                        dist);
+                return new Rectangle(x + w - dist, y + h / 2 - dist / 2, dist, dist);
             case SwingConstants.NORTH_WEST:
                 return new Rectangle(x, y, dist, dist);
             case SwingConstants.NORTH_EAST:
