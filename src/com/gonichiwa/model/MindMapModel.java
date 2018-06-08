@@ -71,10 +71,6 @@ public class MindMapModel extends Observable{
 		setChanged();
 		notifyObservers("NEW");
 	}
-	
-	public void changeNodeName(int nodeID, String name) {
-		tree.changeNodeName(nodeID, name);
-	}
 
 	public void setNodeLocation(int nodeID, double x, double y) {
 		try {

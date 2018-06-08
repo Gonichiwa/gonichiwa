@@ -96,4 +96,5 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
     	if (!editable)
     		attributeValueTextField.setBackground(Color.GRAY);
     }
+    
 }
