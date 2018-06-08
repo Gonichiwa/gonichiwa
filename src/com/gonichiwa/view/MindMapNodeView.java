@@ -1,6 +1,7 @@
 package com.gonichiwa.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,7 +17,11 @@ import javax.swing.JPanel;
 import com.gonichiwa.model.MindMapNode;
 
 public class MindMapNodeView extends JPanel implements Observer {
-	public static final int MIN_SIZE = 80;
+	public static final int MIN_DISTANCE = 60;
+	public static final int MIN_WIDTH = 60;
+	public static final int MIN_HEIGHT = 40;
+	public static final int MAX_WIDTH = 100;
+	public static final int MAX_HEIGHT = 100;
 	private int id;
 	private JLabel label;
 	private MindMapNode node;
@@ -57,8 +62,9 @@ public class MindMapNodeView extends JPanel implements Observer {
 
 		// set geometry.
 		this.color = color;
+		setPreferredSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		setLocation((int) (centerX-(this.getPreferredSize().width/2)), (int) (centerY-(this.getPreferredSize().height/2)));
-		
+		updateLabelFont();
 		// add observer.
 		node.addObserver(this);
 	}
