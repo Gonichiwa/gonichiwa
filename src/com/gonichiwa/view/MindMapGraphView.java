@@ -34,12 +34,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 	private static final int INITIAL_GRAPH_VIEW_HEIGHT = 600;
 	public static final double MAX_ZOOM_FACTOR = 4.0;
 	public static final double MIN_ZOOM_FACTOR = 0.5;
-
+	private static final double NODE_COLOR_FREQUENCY = 0.6;
+	
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
 		this.model.tree.addObserver(this);
 		setLayout(null);
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(width, height));
 		nodes = new ArrayList<MindMapNodeView>();
 		edges = new ArrayList<MindMapEdge>();
@@ -49,64 +50,17 @@ public class MindMapGraphView extends JPanel implements Observer {
 	//color
 	public int makeR(int i) {
 		int check = i%7;
-		switch(check) {
-		case 0:
-			return 244;
-		case 1:
-			return 244;
-		case 2:
-			return 244;
-		case 3:
-			return 66;
-		case 4:
-			return 66;
-		case 5:
-			return 66;
-		case 6:
-			return 244;
-		}
-		return 0;
+		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check)*63+192);
 	}
 	public int makeG(int i) {
 		int check = i%7;
-		switch(check) {
-		case 0:
-			return 66;
-		case 1:
-			return 132;
-		case 2:
-			return 244;
-		case 3:
-			return 244;
-		case 4:
-			return 132;
-		case 5:
-			return 66;
-		case 6:
-			return 66;
-		}
-		return 0;
+		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+2)*63+192);
 	}
 	public int makeB(int i) {
 		int check = i%7;
-		switch(check) {
-		case 0:
-			return 66;
-		case 1:
-			return 66;
-		case 2:
-			return 66;
-		case 3:
-			return 66;
-		case 4:
-			return 244;
-		case 5:
-			return 244;
-		case 6:
-			return 244;
-		}
-		return 0;
+		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+4)*63+192);
 	}
+	
 	public MindMapGraphView(MindMapModel model) {
 		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
 	}
@@ -372,6 +326,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g2d.setStroke(new BasicStroke(1));
+		g2d.setColor(Color.white);
 
 		for(MindMapEdge edge : edges) {
 			g2d.drawLine(edge.getX1(),

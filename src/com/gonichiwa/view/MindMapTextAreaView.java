@@ -37,7 +37,7 @@ public class MindMapTextAreaView extends JPanel implements Observer {
 	public void initSubViews() {
 		mindMapBuildingTextArea = new JTextArea();
 		mindMapBuildingTextArea.setTabSize(1);
-		mindMapBuildingTextArea.setBackground(new Color(198, 131, 49));
+		mindMapBuildingTextArea.setBackground(new Color(250, 230, 180));
 		textAreaScrollPane = new JScrollPane(mindMapBuildingTextArea);
 		textApplyToModelButton = new JButton("APPLY");
 	}
