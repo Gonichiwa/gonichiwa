@@ -120,7 +120,7 @@ public class MindMapMenuController {
 		public void actionPerformed(ActionEvent e) {
 
 			
-			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?","New",JOptionPane.YES_NO_CANCEL_OPTION);
+			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?","Open",JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			if(saveCheck == JOptionPane.YES_OPTION) {
 				if(model.isSaved()) {
@@ -179,7 +179,7 @@ public class MindMapMenuController {
 		
 		public void actionPerformed(ActionEvent e) {
 		
-			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?", "New", JOptionPane.YES_NO_CANCEL_OPTION);
+			int saveCheck = JOptionPane.showConfirmDialog(null, "Do you want to save?", "Close", JOptionPane.YES_NO_CANCEL_OPTION);
 			
 			if(saveCheck == JOptionPane.YES_OPTION) {
 				if(model.isSaved()) {
