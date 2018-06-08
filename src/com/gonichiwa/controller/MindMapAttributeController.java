@@ -83,7 +83,6 @@ public class MindMapAttributeController implements Observer {
 			
 			try {
 				// get All the value from MindMapAttributeView
-				String name = validateNameValue(view.getValue("NAME"));
 				double x = Double.parseDouble(view.getValue("X"));
 				double y = Double.parseDouble(view.getValue("Y"));
 				double width = validateWidthSizeValue(view.getValue("WIDTH"));
@@ -96,7 +95,6 @@ public class MindMapAttributeController implements Observer {
 				String note = view.getValue("NOTE");
 				System.out.println(color);
 				// update model
-				model.changeNodeName(view.getNode().getID(), name);
 				model.setNodeLocation(view.getNode().getID(), x, y);
 				model.setNodeSize(view.getNode().getID(), width, height);
 				model.setNodeColor(view.getNode().getID(), red, green, blue, alpha);

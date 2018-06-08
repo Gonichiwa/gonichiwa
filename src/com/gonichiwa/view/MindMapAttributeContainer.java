@@ -67,6 +67,16 @@ class MindMapAttributeContainer extends JPanel {
 		setValue("NOTE", node.getNote());
 		setVisible(true);
 	}
+	
+	public void setEditable(String key, boolean editable) {
+		validateKey(key);
+		try {
+			MindMapAttributeTextField textField = (MindMapAttributeTextField) attributePanelDict.get(key);
+			textField.setEditableOfTheAttributeTextField(editable);
+		} catch (ClassCastException err) {
+			System.out.println("can not modify editability of this Key");
+		}
+	}
 
 	public void addAttributePanel(String key) {
 		if(attributePanelDict.containsKey(key)) 
