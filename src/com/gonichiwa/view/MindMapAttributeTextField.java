@@ -12,11 +12,11 @@ import javax.swing.JTextField;
 
 /**
  * MindMapAttributeTextField
- * 
+ *
  * It is component view of the MindMapAttributeContainer.
  * It contains JLabel, which is the name of the attribute, and JTextField, which indicates the value.
- * 
- * 
+ *
+ *
  * @author YONG_JOON_KIM
  *
  */
@@ -34,12 +34,12 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
 	public MindMapAttributeTextField(String name) {
 		this(name, true);
 	}
-	
+
 	/**
-	 * Constructor 
-	 * 
+	 * Constructor
+	 *
 	 * Initailize attributeName and attributeValueTextField.
-	 * 
+	 *
 	 * @param name
 	 * 		the given name of attribute.
 	 * @param editable
@@ -59,42 +59,44 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
 
 	/**
 	 * Accessor
-	 * 
+	 *
 	 * Return the value of the attribute.
-	 * 
+	 *
 	 * @return
 	 * 		the attribute value.
 	 */
+     @Override
     public String getValue() {
         return attributeValueTextField.getText();
     }
 
-    
+
     /**
      * Modifier
-     * 
+     *
      * Set the given attribute value.
-     * 
+     *
      * @param value
 	 * 		the given value which is going to be set.
      */
+     @Override
     public void setValue(String value) {
         attributeValueTextField.setText(value);
     }
-    
+
     /**
      * Modifier
-     * 
+     *
      * Set the TextField, which indicates attribute value, to weather editable or not.
      * After set TextField ineditable, it changes the background of it.
-     * 
+     *
      * @param editable
-     * 		the given boolean value. 
+     * 		the given boolean value.
      */
     public void setEditableOfTheAttributeTextField(boolean editable) {
     	attributeValueTextField.setEditable(editable);
     	if (!editable)
     		attributeValueTextField.setBackground(Color.GRAY);
     }
-    
+
 }
