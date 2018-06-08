@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
+import java.awt.event.FocusAdapter;	
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -142,11 +142,12 @@ public class MindMapGraphController implements Observer {
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			int rotation = e.getWheelRotation();
 			
-			if(rotation > 0 && graphView.getZoomFactor() < MindMapGraphView.MAX_ZOOM_FACTOR) 
+			if(rotation < 0 && graphView.getZoomFactor() < MindMapGraphView.MAX_ZOOM_FACTOR) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*1.1);
-			else if(rotation < 0 && graphView.getZoomFactor() > MindMapGraphView.MIN_ZOOM_FACTOR) 
+			else if(rotation > 0 && graphView.getZoomFactor() > MindMapGraphView.MIN_ZOOM_FACTOR) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*0.9);
 			
+			System.out.println(rotation);
 			graphScalerView.setScalerPoint(graphView.getZoomFactor());
 			graphView.repaint();
 		}
