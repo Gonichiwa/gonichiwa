@@ -12,6 +12,7 @@ import com.gonichiwa.mindmapinterface.NodeDataDeliver;
 import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.model.MindMapNode;
 import com.gonichiwa.view.MindMapAttributeView;
+import com.gonichiwa.view.MindMapNodeView;
 
 /**
  * MindMapAttributeController
@@ -85,8 +86,8 @@ public class MindMapAttributeController implements Observer {
 				String name = validateNameValue(view.getValue("NAME"));
 				double x = Double.parseDouble(view.getValue("X"));
 				double y = Double.parseDouble(view.getValue("Y"));
-				double width = validateSizeValue(view.getValue("WIDTH"));
-				double height = validateSizeValue(view.getValue("HEIGHT"));
+				double width = validateWidthSizeValue(view.getValue("WIDTH"));
+				double height = validateHeightSizeValue(view.getValue("HEIGHT"));
 				Color color = new Color(validateColorValue(view.getValue("COLOR")));
 				int red = color.getRed();
 				int green = color.getGreen();
@@ -131,7 +132,30 @@ public class MindMapAttributeController implements Observer {
 	/**
 	 * Helper Method.
 	 * 
-	 * check weather the given size value is valid or not.
+	 * check weather the given height value is valid or not.
+	 * size value can not be negative value.
+	 * size value can not exceed MAXIMUM size of the node.
+	 * if it isn't valid, then throw an exception.
+	 * 
+	 * @exception IllegalArgumentException
+	 * 		if the given value is not valid for updating model, then throw this exception.
+	 * @param heightValue
+	 * 		the given size (width or height) value from MindMapAttributeView
+	 * @return
+	 * 		the valid value for the new size.
+	 */
+	private double validateHeightSizeValue(String heightValue) {
+		double answer = Double.parseDouble(heightValue);
+		if(answer < MindMapNodeView.MIN_HEIGHT)
+			throw new IllegalArgumentException("minimum possible height must be " + MindMapNodeView.MIN_HEIGHT);
+	
+		return answer;
+	}
+	
+	/**
+	 * Helper Method.
+	 * 
+	 * check weather the given width value is valid or not.
 	 * size value can not be negative value.
 	 * size value can not exceed MAXIMUM size of the node.
 	 * if it isn't valid, then throw an exception.
@@ -143,15 +167,13 @@ public class MindMapAttributeController implements Observer {
 	 * @return
 	 * 		the valid value for the new size.
 	 */
-	private double validateSizeValue(String sizeValue) {
-		double answer = Double.parseDouble(sizeValue);
-		if(answer < 0)
-			throw new IllegalArgumentException("negative size doesn't make sense.");
-		if(answer > 400) 	//TODO: must change this to constant value from MindMapNodeView
-			throw new IllegalArgumentException("size can not exceed 100");
+	private double validateWidthSizeValue(String widthValue) {
+		double answer = Double.parseDouble(widthValue);
+		if(answer < MindMapNodeView.MIN_WIDTH)
+			throw new IllegalArgumentException("minimum possible width must be " + MindMapNodeView.MIN_WIDTH);
+		
 		return answer;
 	}
-	
 	/**
 	 * Helper Method.
 	 * 
