@@ -147,7 +147,6 @@ public class MindMapGraphController implements Observer {
 			else if(rotation > 0 && graphView.getZoomFactor() > MindMapGraphView.MIN_ZOOM_FACTOR) 
 				graphView.zoom(e.getX(), e.getY(), graphView.getZoomFactor()*0.9);
 			
-			System.out.println(rotation);
 			graphScalerView.setScalerPoint(graphView.getZoomFactor());
 			graphView.repaint();
 		}

@@ -53,6 +53,7 @@ public class ResizableBorder implements Border {
             int w, int h) {
 
     	Graphics2D g2d = (Graphics2D) g;
+        
 		if (highlighted && !component.hasFocus()) {
     		g2d.setColor(Color.GREEN);
     		g2d.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
