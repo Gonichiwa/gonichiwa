@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,8 +23,8 @@ import com.gonichiwa.util.MindMapVector;
 public class MindMapGraphView extends JPanel implements Observer {
 
 	private MindMapModel model;
-	private ArrayList<MindMapNodeView> nodes;
-	private ArrayList<MindMapEdge> edges;
+	private List<MindMapNodeView> nodes;
+	private List<MindMapEdge> edges;
 	private MouseAdapter nodeMouseListener;
 	private KeyListener nodeKeyListener;
 
@@ -42,8 +43,8 @@ public class MindMapGraphView extends JPanel implements Observer {
 		setLayout(null);
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(width, height));
-		nodes = new ArrayList<MindMapNodeView>();
-		edges = new ArrayList<MindMapEdge>();
+		nodes = new ArrayList<>();
+		edges = new ArrayList<>();
 		setFocusable(true);
 		setRequestFocusEnabled(true); 		// now we can request this panel for focus.
 	}
