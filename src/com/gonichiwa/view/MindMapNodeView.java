@@ -79,12 +79,12 @@ public class MindMapNodeView extends JPanel implements Observer {
 	}
 
 	public void zoomNode(double zoomFactor, int mouseX, int mouseY) {
-		offsetX = ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX )- node.getX();
-		offsetY = ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY )- node.getY();
+		offsetX = ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX ) - node.getX();
+		offsetY = ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY ) - node.getY();
 		this.zoomFactor = zoomFactor;
 		
 		setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
-		setSize((int)(node.getWidth()*zoomFactor), (int)(node.getHeight()* zoomFactor));
+		setSize((int) (node.getWidth() * zoomFactor), (int) (node.getHeight() * zoomFactor));
 		updateLabelFont();
 		repaint();
 	}

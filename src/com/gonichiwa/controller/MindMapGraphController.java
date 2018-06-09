@@ -250,6 +250,7 @@ public class MindMapGraphController implements Observer {
                         	model.setNodeLocation(node.getID(), x, y+dy);
                         	model.setNodeSize(node.getID(), w, h-dy);
                         	node.moveNode(0, dy * (node.getZoomFactor() - 1));
+
                         	graphView.repaint();
                         }
                         break;
