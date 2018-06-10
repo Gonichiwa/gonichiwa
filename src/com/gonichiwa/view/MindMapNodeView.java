@@ -82,7 +82,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		offsetX = ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX ) - node.getX();
 		offsetY = ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY ) - node.getY();
 		this.zoomFactor = zoomFactor;
-		
+
 		setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 		setSize((int) (node.getWidth() * zoomFactor), (int) (node.getHeight() * zoomFactor));
 		updateLabelFont();

@@ -30,13 +30,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 	private double zoomFactor = 1;
 	private double dx, dy;
-	
+
 	private static final int INITIAL_GRAPH_VIEW_WIDTH = 600;
 	private static final int INITIAL_GRAPH_VIEW_HEIGHT = 600;
 	public static final double MAX_ZOOM_FACTOR = 4.0;
 	public static final double MIN_ZOOM_FACTOR = 0.5;
 	private static final double NODE_COLOR_FREQUENCY = 0.6;
-	
+
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
 		this.model.tree.addObserver(this);
@@ -61,15 +61,15 @@ public class MindMapGraphView extends JPanel implements Observer {
 		int check = i%7;
 		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+4)*63+192);
 	}
-	
+
 	public MindMapGraphView(MindMapModel model) {
 		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
 	}
-	
+
 	public static int getMaxZoomPercentage() {
 		return (int) (MAX_ZOOM_FACTOR * 100);
 	}
-	
+
 	public static int getMinZoomPercentage() {
 		return (int) (MIN_ZOOM_FACTOR * 100);
 	}
@@ -88,7 +88,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 		clearNodes();
 		repaint();
 	}
-	
+
 	public void resetGraphViewOffset() {
 		movePanel(-dx, -dy);
 		dx = 0;
@@ -96,18 +96,18 @@ public class MindMapGraphView extends JPanel implements Observer {
 		zoomFactor = 1;
 		zoom((int) dx, (int) dy, 1);
 	}
-	
+
 	public void resetOffsetsToCenter() {
-		
+
 		resetGraphViewOffset();
-		
+
 		MindMapNode root = model.tree.getRoot();
-		
+
 		if(root != null) {
 			// get center of the root node.
 			double nodeCenterX = root.getX() + root.getWidth() / 2;
 			double nodeCenterY = root.getY() + root.getHeight() / 2;
-			
+
 			// get center of the graphView.
 			double graphCenterX = getWidth() / 2;
 			double graphCenterY = getHeight() / 2;
@@ -122,7 +122,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 				node.moveNode((int) dx, (int) dy);
 			}
 		}
-		
+
 		repaint();
 		revalidate();
 	}
@@ -169,7 +169,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 			repaint();
 			return;
 		}
-		
+
 		switch(String.valueOf(arg)) {
 		case "NEW":
 			drawGraph();
@@ -192,7 +192,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 			recLoadNode(model.tree.getRoot());
 			revalidate();
 		} catch (NullPointerException e) {
-			
+
 		}
 	}
 
@@ -211,7 +211,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 			edges.add(new MindMapEdge(node, child));
 		}
 	}
-	
+
 	public void drawGraph() {
 		reset();
 		int colorOffset = 255 / model.tree.size();
@@ -235,21 +235,21 @@ public class MindMapGraphView extends JPanel implements Observer {
 		// make NodeView
 
 		MindMapNodeView nodeView = new MindMapNodeView(node,
-				centerX, centerY, 
+				centerX, centerY,
 				new Color(makeR(colorLevel), makeG(colorLevel), makeB(colorLevel)));
 		nodeView.addMouseListener(nodeMouseListener);
 		nodeView.addMouseMotionListener(nodeMouseListener);
 		nodeView.addKeyListener(nodeKeyListener);
-		
+
 		node.initViewAttribute(nodeView.getX(),
 							   nodeView.getY(),
-							   nodeView.getPreferredSize().width, 
+							   nodeView.getPreferredSize().width,
 							   nodeView.getPreferredSize().height,
 							   nodeView.getColor().getRed(),
 							   nodeView.getColor().getGreen(),
 							   nodeView.getColor().getBlue());
 		node.addObserver(this);
-		
+
 		// node.setColor()
 		addNode(nodeView);
 		nodeView.zoomNode(zoomFactor, 0, 0);
@@ -265,7 +265,7 @@ public class MindMapGraphView extends JPanel implements Observer {
 			theta = availableAngle / numberOfChildren;
 
 		// get distance.
-		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_DISTANCE/Math.sin(theta/2) : MindMapNodeView.MIN_DISTANCE; 
+		distance = (numberOfChildren > 1) ? MindMapNodeView.MIN_DISTANCE/Math.sin(theta/2) : MindMapNodeView.MIN_DISTANCE;
 		direction.normalize();
 		direction.mult(distance);
 
@@ -286,13 +286,13 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
-	
+
 	public void zoom(int x, int y, double factor) {
 		dx = (int) ((dx - x) * (factor / zoomFactor) + x);
 		dy = (int) ((dy - y) * (factor / zoomFactor) + y);
-		
+
 		setZoomFactor(factor);
-	
+
 		for(MindMapNodeView node : nodes) {
 			node.zoomNode(factor, x, y);
 		}
@@ -304,11 +304,11 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public void movePanel(double dx, double dy) {
 		this.dx += dx;
 		this.dy += dy;
-		
+
 		for(MindMapNodeView node : nodes) {
 			node.moveNode((int)dx,  (int)dy);
 		}
-		
+
 		repaint();
 	}
 
@@ -319,24 +319,24 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public double getDY() {
 		return dy;
 	}
-	
-	@Override 
+
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-		
+
 		g2d.setStroke(new BasicStroke(1));
 		g2d.setColor(Color.white);
 
 		for(MindMapEdge edge : edges) {
 			g2d.drawLine(edge.getX1(),
-						 edge.getY1(), 
+						 edge.getY1(),
 						 edge.getX2(),
 						 edge.getY2());
 		}
 		paintChildren(g2d);
 	}
-	
+
 	private MindMapNodeView getNodeView(int nodeID) {
 		for(MindMapNodeView node : nodes) {
 			if(node.getID() == nodeID) {
@@ -347,9 +347,10 @@ public class MindMapGraphView extends JPanel implements Observer {
 	}
 
 	private class MindMapEdge {
+
 		private MindMapNodeView from;
 		private MindMapNodeView to;
-		
+
 		public MindMapEdge(MindMapNode from, MindMapNode to) {
 			this.from = getNodeView(from.getID());
 			this.to = getNodeView(to.getID());

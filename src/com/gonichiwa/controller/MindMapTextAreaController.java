@@ -73,6 +73,11 @@ public class MindMapTextAreaController implements Observer {
 	}
 	
 	/**
+	 * ApplyActionListener inner class
+	 * 
+	 * send the text typed from user to model so that model can 
+	 * build new mindmap tree based on that text data.
+	 * 
 	 * @exception	IllegalArgumentException
 	 * 		when user type wrong input then throw exception.
 	 * 		it creates JOptionPane when exception occurs.
@@ -91,6 +96,13 @@ public class MindMapTextAreaController implements Observer {
 		}
 	}
 
+	/**
+	 * Observer update method.
+	 * 
+	 * when MindMapModel calls notifyObservers() methods this will be
+	 * executed. if command is RESET than reset TextAreaView.
+	 * 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if(((String) arg).equals("RESET"))

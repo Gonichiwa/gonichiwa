@@ -1,7 +1,6 @@
 package com.gonichiwa.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,47 +17,90 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
 
+/**
+ * MindMapFileManager default class
+ * 
+ * this is one of the Model class which is in charge of
+ * saving and loading the root node of the MindMapTree.
+ * 
+ * this class is using Gson Library for serializing and
+ * desiralizing data to Json format.
+ * 
+ * this class has two properties path and fileName.
+ * fileName is also included in path.
+ * 
+ * @author YONG_JOON_KIM
+ *
+ */
 class MindMapFileManager {
 	private String path;
 	private String fileName;
 
+	/**
+	 * constructor
+	 * 
+	 * initialize the path and filaName to empty String.
+	 * 
+	 */
 	MindMapFileManager() {
 		path = "";
 		fileName = "";
 	}
 
-	void setFileName(String name) {
-		fileName = name;
-	}
-
+	/**
+	 * Accessor method.
+	 * 
+	 * @return
+	 * 		current fileName of the mindmap
+	 */
 	String getFileName() {
 		return fileName;
 	}
 
+	/**
+	 * Modifier method.
+	 * 
+	 * set New path this should be including fileName.
+	 * 
+	 * @param newPath
+	 * 		newPath to be set.
+	 */
 	void setPath(String newPath) {
-		//TODO: Joon
 		path = newPath;
 	}
 
+	/**
+	 * Accessor Method.
+	 * 
+	 * @return
+	 * 		current path.
+	 */
 	String getPath() {
 		return path;
 	}
 
 	/**
-	 * save model
-	 * @param model
+	 * Modifier Method.
+	 * 
+	 * save the root node in the MindMapTree.
+	 * if file doesn't exists in given path, then make new file.
+	 * 
+	 * @param tree
 	 */
-	void save(MindMapModel model) {
+	void save(MindMapTree tree) {
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(MindMapNode.class, new MindMapNodeSerializer());
 		Gson gson = gsonBuilder.create();
+		
 		try {
 			File file = new File(path);
+			
 			if(!file.exists())
 				file.createNewFile();
+			
 			FileWriter fileWriter = new FileWriter(file);
-			fileWriter.write(gson.toJson(model.tree.getRoot()));
+			fileWriter.write(gson.toJson(tree.getRoot()));
 			fileWriter.close();
 			fileName = file.getName();
 		} catch (IOException e) {
@@ -66,22 +108,42 @@ class MindMapFileManager {
 		}
 	}
 
+	/**
+	 * Accessor Method.
+	 * 
+	 * load the Json file from the path. path should include the fileName.
+	 * 
+	 * @return
+	 * 		loaded root node from the path.
+	 */
 	MindMapNode loadRoot() {
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(MindMapNode.class, new MindMapNodeDesiralizer());
+		gsonBuilder.registerTypeAdapter(MindMapNode.class, new MindMapNodeDeserializer());
 		Gson gson = gsonBuilder.create();
 		MindMapNode newNode = null;
 		try {
 			FileReader reader = new FileReader(path);
 			newNode = gson.fromJson(reader, MindMapNode.class);
 			fileName = new File(path).getName();
-
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			reader.close();
+		} catch (JsonSyntaxException | JsonIOException | IOException e) {
 			System.out.println("load error");
 		}
 		return newNode;
 	}
 
+	/**
+	 * MindMapNodeSerializer inner class
+	 * 
+	 * this is concrete class implements JsonSerializer<MindMapNode>
+	 * using serialize() method, we can serialize the objects in the way 
+	 * we want.
+	 * 
+	 * this serializes all the property includes children List recursively.
+	 * 
+	 * @author YONG_JOON_KIM
+	 *
+	 */
 	private class MindMapNodeSerializer implements JsonSerializer<MindMapNode> {
 
 		@Override
@@ -94,7 +156,6 @@ class MindMapFileManager {
 			jsonObject.addProperty("width", node.getWidth());
 			jsonObject.addProperty("height", node.getHeight());
 			jsonObject.addProperty("id", node.getID());
-			jsonObject.addProperty("alpha", node.getAlpha());
 			jsonObject.addProperty("red", node.getRedColor());
 			jsonObject.addProperty("green", node.getGreenColor());
 			jsonObject.addProperty("blue", node.getBlueColor());
@@ -113,7 +174,17 @@ class MindMapFileManager {
 		}
 	}
 
-	private class MindMapNodeDesiralizer implements JsonDeserializer<MindMapNode> {
+	/**
+	 * MindMapNodeDeserializer inner class
+	 * 
+	 * this is concrete class implements JsonDeserializer<MindMapNode>
+	 * using deserialize() method, we can initialize the MindMapNode classes
+	 * while deserializing from Json file.
+	 * 	 * 
+	 * @author YONG_JOON_KIM
+	 *
+	 */
+	private class MindMapNodeDeserializer implements JsonDeserializer<MindMapNode> {
 
 		@Override
 		public MindMapNode deserialize(JsonElement element, Type type, JsonDeserializationContext arg2)

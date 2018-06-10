@@ -4,6 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * 
+ * MindMapTreeFactory
+ * 
+ * this class has only static method. 
+ * from given text value, this builds new tree.
+ * hierarchy is indicated by '\t' in the given text.
+ * 
+ * rules
+ * 1. there can not be multiple root node
+ * 2. node must has at least one parent node except root one.
+ * 3. name of the root can not be empty string
+ * 
+ * @author YONG_JOON_KIM
+ *
+ */
 class MindMapTreeFactory {
 
 	/**

@@ -2,15 +2,18 @@ package com.gonichiwa.model;
 
 import java.util.Observable;
 
-import com.gonichiwa.mindmapinterface.NodeDataDeliver;
-
 /**
- * Observable
+ * MindMapModel class
  * 
- * if model send notification with a specific node, view will change that node.
- * else if model send null object as a argument, view will change all nodes.
+ * this is Broker class for interacting with four different Controller classes.
  * 
- * @author penubo
+ * this has MindMapTree, MindMapStateTracker and MindMapFileManager. so that it can
+ * manage all the functioning that models can do.
+ * 
+ * MindMapModel object will only notify to Controller classes not View classes.
+ * 
+ * 
+ * @author YONG_JOON_KIM
  *
  */
 public class MindMapModel extends Observable{
@@ -25,25 +28,33 @@ public class MindMapModel extends Observable{
 		fileManager = new MindMapFileManager();	
 	}
 
-	
 	/**
-	 * remove the certain node which has given Id.
-	 * @param nodeID
-	 * 		id of the node which is target to be deleted in the tree.
+	 * Modifier Method
+	 * 
+	 * this will build new MindMapTree given the Text from
+	 * MindMapTextAreaController.
+	 *
+	 * it will notify observers with NEW command.
+	 * 
+	 * @param text
+	 * 		the given text from MindMapTextAreaController
 	 */
-	
 	public void buildTree(String text) {
 		tree.buildTree(text);
 		setChanged();
 		notifyObservers("NEW");
 	}
 	
+	/**
+	 * Modifier Method.
+	 * 
+	 * remove the certain node which has given Id.
+	 * 
+	 * @param nodeID
+	 * 		id of the node which is target to be deleted in the tree.
+	 */
 	public void remove(int nodeID) {
 		tree.removeNode(nodeID);
-	}
-	
-	public int getTreeSize() {
-		return tree.size();
 	}
 	
 	public void backward() {
@@ -54,16 +65,38 @@ public class MindMapModel extends Observable{
 		tree = stateTracker.getForwardState();
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * performs the saving functions with fileManager object.
+	 * 
+	 * @param path
+	 * 		the given path from MindMapMenuController
+	 */
 	public void save(String path) {
 		fileManager.setPath(path);
-		fileManager.save(this);
+		fileManager.save(tree);
 	}
 	
+	/**
+	 * Modifier method
+	 * 
+	 * performs the saving functions with fileManager object.
+	 * 
+	 */
 	public void save() {
 		if(fileManager.getPath() != "")
-			fileManager.save(this);
+			fileManager.save(tree);
 	}
 	
+	/**
+	 * Accessor Method.
+	 * 
+	 * performs the loading functions with fileManager object.
+	 * 
+	 * @param path
+	 * 		the given path from the MindMapMenuController
+	 */
 	public void load(String path) {
 		// TODO: load data for Joon
 		fileManager.setPath(path);
@@ -72,61 +105,89 @@ public class MindMapModel extends Observable{
 		notifyObservers("NEW");
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * set new Location to the selected node.
+	 * 
+	 * @param nodeID
+	 * 		the id which represents selected node from view.
+	 * @param x
+	 * 		new X position.
+	 * @param y
+	 * 		new Y position.
+	 */
 	public void setNodeLocation(int nodeID, double x, double y) {
 		try {
 			MindMapNode node = tree.getNode(nodeID);
 			node.setX(x);
 			node.setY(y);
+			
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeLocation NullPointerException");
 		}
 
 	}
 
+	/** 
+	 * Modifier method
+	 * 
+	 * set new size to the selected node.
+	 * 
+	 * @param nodeID
+	 * 		the id which represents selected node from view.
+	 * @param width
+	 * 		new width value
+	 * @param height
+	 * 		new height value
+	 */
 	public void setNodeSize(int nodeID, double width, double height) {
 		try {
 			MindMapNode node = tree.getNode(nodeID);
 			node.setWidth(width);
 			node.setHeight(height);
+			
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeSize NullPointerException");
 		}
 	}
 
-	public void setNodeColor(int nodeID, int red, int green, int blue, int alpha) {
+	/** 
+	 * Modifier method
+	 * 
+	 * set new color to the selected node.
+	 * 
+	 * @param nodeID
+	 * 		the id which represents selected node from view.
+	 * @param red
+	 * 		new Red Value of the color 0 to 255
+	 * @param green
+	 * 		new Green value of the color 0 to 255
+	 * @param blue
+	 * 		new Blue value of the color 0 to 255
+	 */
+	public void setNodeColor(int nodeID, int red, int green, int blue) {
 		try {
 			MindMapNode node = tree.getNode(nodeID);
 			node.setRed(red);
 			node.setGreen(green);
 			node.setBlue(blue);
-			node.setAlpha(alpha);
 
 		} catch (NullPointerException e) {
 			System.out.println(e.getClass() + "setNodeColor NullPointerException");
 		}
 	}
-	
-	public void setNodeColor(int nodeID, int red, int green, int blue) {
-		setNodeColor(nodeID, red, green, blue, 255);
-	}
-	
-	public String toString() {
-		return tree.toString();
-	}
-	
-	public boolean isSaved() {
-		return fileManager.getFileName() != "" && fileManager.getPath() != "";
-	}
-	
-	public void reset() {
-		tree.removeAllNodes();
-		stateTracker = new MindMapStateTracker();
-		fileManager = new MindMapFileManager();	
-		setChanged();
-		notifyObservers("RESET");
-	}
-
-
+		
+	/** 
+	 * Modifier method
+	 * 
+	 * set new note to the selected node.
+	 * 
+	 * @param nodeID
+	 * 		the id which represents selected node from view.
+	 * @param note
+	 * 		new note text.
+	 */
 	public void setNodeNote(int nodeID, String note) {
 		try {
 			MindMapNode node = tree.getNode(nodeID);
@@ -135,6 +196,33 @@ public class MindMapModel extends Observable{
 			System.out.println(e.getClass() + "setNodeNote NullPointerException");
 		}
 	}
+	
+	/**
+	 * Accessor method
+	 * 
+	 * see if the editing mindmap has been saved before.
+	 * 
+	 * @return
+	 * 		true if the mindmap has been saved before
+	 */
+	public boolean isSaved() {
+		return fileManager.getFileName() != "" && fileManager.getPath() != "";
+	}
+	
+	/**
+	 * Modifier method
+	 * 
+	 * reset all the modules. and notify RESET command to 
+	 * all Controllers to reset other Views.
+	 */
+	public void reset() {
+		tree.removeAllNodes();
+		stateTracker = new MindMapStateTracker();
+		fileManager = new MindMapFileManager();	
+		setChanged();
+		notifyObservers("RESET");
+	}
+
 }
 
 

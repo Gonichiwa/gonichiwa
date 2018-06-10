@@ -48,7 +48,6 @@ public class MindMapTextAreaViewTest extends JFrame {
 			} catch(IllegalArgumentException modelerr) {
 				System.out.println(modelerr.getMessage());
 			}
-			System.out.println(model.getTreeSize());
 		}
 		
 	}

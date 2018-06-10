@@ -91,12 +91,11 @@ public class MindMapAttributeController implements Observer {
 				int red = color.getRed();
 				int green = color.getGreen();
 				int blue = color.getBlue();
-				int alpha = color.getAlpha();
 				String note = view.getValue("NOTE");
 				// update model
 				model.setNodeLocation(view.getNode().getID(), x, y);
 				model.setNodeSize(view.getNode().getID(), width, height);
-				model.setNodeColor(view.getNode().getID(), red, green, blue, alpha);
+				model.setNodeColor(view.getNode().getID(), red, green, blue);
 				model.setNodeNote(view.getNode().getID(), note);
 			} catch (Exception err) {
 				JOptionPane.showMessageDialog(view, err.getMessage(), "invalid format", 2);
@@ -193,6 +192,13 @@ public class MindMapAttributeController implements Observer {
 		return Integer.parseInt(colorValue, 16);
 	}
 
+	/**
+	 * Observer update method.
+	 * 
+	 * when MindMapModel calls notifyObservers() methods this will be
+	 * executed. no matter what command, it will reset the MindMapAttributeView.
+	 * 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		view.reset();
