@@ -14,6 +14,21 @@ import javax.swing.JPanel;
 
 import com.gonichiwa.model.MindMapNode;
 
+/**
+ * MindMapNodeView
+ * 
+ * this is connected with MindMapNode as Observer relationship.
+ * 
+ * NodeView can be resizable when got focus from user. Since this 
+ * view using custom Border class which is ResizableBorder, it will 
+ * drawing the special Border while focusing.
+ * 
+ * this view can be zoomed and moving on GraphView which is JPanel. Hence
+ * this class keeps track on all offsets generated from GraphView
+ * 
+ * @author YONG_JOON_KIM
+ *
+ */
 public class MindMapNodeView extends JPanel implements Observer {
 	public static final int MIN_DISTANCE = 60;
 	public static final int MIN_WIDTH = 60;
@@ -31,6 +46,19 @@ public class MindMapNodeView extends JPanel implements Observer {
 	private final double LABEL_SIZE_RATIO = 0.5;
 	private final int INITIAL_FONT_SIZE = 30;
 	
+	/**
+	 * constructor
+	 * 
+	 * Using GridBagLayout, the label can be placed at center of this JPanel
+	 * 
+	 * @param node
+	 * 		MindMapNode object which includes essential data to be drawn
+	 * @param centerX
+	 * 		Center x position
+	 * @param centerY
+	 * 		Center y position
+	 * @param color
+	 */
 	public MindMapNodeView(MindMapNode node, double centerX, double centerY, Color color) {
 		if(node == null)
 			throw new IllegalArgumentException("NodeViewConstructor -> can not make mull node View");
@@ -61,6 +89,7 @@ public class MindMapNodeView extends JPanel implements Observer {
 		this.color = color;
 		setPreferredSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		setLocation((int) (centerX-(this.getPreferredSize().width/2)), (int) (centerY-(this.getPreferredSize().height/2)));
+		// update Label font depends on current size of the JPanel
 		updateLabelFont();
 		// add observer.
 		node.addObserver(this);
@@ -72,12 +101,28 @@ public class MindMapNodeView extends JPanel implements Observer {
 		setSize((int) node.getWidth(), (int) node.getHeight());
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * move node view with the given offset
+	 * @param dx
+	 * @param dy
+	 */
 	public void moveNode(double dx, double dy) {
 		offsetX += dx;
 		offsetY += dy;
 		setLocation((int) (node.getX() + offsetX), (int) (node.getY() + offsetY));
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * zoom node view with the given factor and offsets
+	 * update font of the label after reset all position and size.
+	 * @param zoomFactor
+	 * @param mouseX
+	 * @param mouseY
+	 */
 	public void zoomNode(double zoomFactor, int mouseX, int mouseY) {
 		offsetX = ((node.getX() + offsetX - mouseX) * (zoomFactor / this.zoomFactor) + mouseX ) - node.getX();
 		offsetY = ((node.getY() + offsetY - mouseY) * (zoomFactor / this.zoomFactor) + mouseY ) - node.getY();
@@ -89,7 +134,17 @@ public class MindMapNodeView extends JPanel implements Observer {
 		repaint();
 	}
 	
-	public void updateLabelFont() {
+	/**
+	 * Helper method
+	 * 
+	 * revalidate font size of the JLabel which indicates
+	 * name of the node view by current node view width and height
+	 * 
+	 * if newly calculated font size is zero, then set to 1 and 
+	 * set JLabel invisible as if disappear from the screen.
+	 * 
+	 */
+	private void updateLabelFont() {
 		label.setSize((int) (getWidth() * LABEL_SIZE_RATIO), (int) (getHeight() * LABEL_SIZE_RATIO));
 		Font labelFont = label.getFont();
 		String labelText = label.getText();
@@ -115,6 +170,14 @@ public class MindMapNodeView extends JPanel implements Observer {
 		}
 	}
 
+	/**
+	 * Drawing method
+	 * 
+	 * drawing background oval.
+	 * note we call paintChildren(Graphics g) to put
+	 * node label on top of this background.
+	 */
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setColor(color);
@@ -122,6 +185,13 @@ public class MindMapNodeView extends JPanel implements Observer {
 		paintChildren(g);
 	}
 	
+	/**
+	 * Observer update method
+	 * 
+	 * when MindMapNode information changes, it will update
+	 * all information upon the connected node data.
+	 * 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		label.setText(node.getName());
@@ -132,6 +202,42 @@ public class MindMapNodeView extends JPanel implements Observer {
 		updateLabelFont();
 		revalidate();
 	}
+	
+	/**
+	 * Modifier method
+	 * 
+	 * set new zoom factor
+	 * 
+	 * @param factor
+	 */
+	public void setZoomFactor(double factor) {
+		zoomFactor = factor;
+	}
+	
+	/**
+	 * Modifier method
+	 * 
+	 * reset all offsets
+	 */
+	public void resetOffset() {
+		setOffset(0, 0);
+		zoomFactor = 1;
+	}
+	
+	/**
+	 * Modifier method
+	 * 
+	 * set position offsets by the given value
+	 * 
+	 * @param newOffsetX
+	 * @param newOffsetY
+	 */
+	public void setOffset(int newOffsetX, int newOffsetY) {
+		offsetX = newOffsetX;
+		offsetY = newOffsetY;
+	}
+	
+	// getters
 	
 	public int getID() {
 		return id;
@@ -181,17 +287,5 @@ public class MindMapNodeView extends JPanel implements Observer {
 		return zoomFactor;
 	}
 	
-	public void setZoomFactor(double factor) {
-		zoomFactor = factor;
-	}
 	
-	public void resetOffset() {
-		setOffset(0, 0);
-		zoomFactor = 1;
-	}
-	
-	public void setOffset(int dx, int dy) {
-		offsetX = dx;
-		offsetY = dy;
-	}
 }

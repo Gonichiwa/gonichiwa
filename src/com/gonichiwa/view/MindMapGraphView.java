@@ -20,6 +20,20 @@ import com.gonichiwa.model.MindMapModel;
 import com.gonichiwa.model.MindMapNode;
 import com.gonichiwa.util.MindMapVector;
 
+/**
+ * MindMapGraphView
+ * 
+ * this is connected with MindMapNode and MindMapTree class as Observer.
+ * 
+ * using List of nodes and edges it will draw MindMapNodeView and 
+ * MindMapEdge on JPanel
+ * 
+ * it keeps track of dx, dy and zoomFactor of this JPanel so that
+ * user can zoom and moving this JPanel
+ * 
+ * @author YONG_JOON_KIM
+ *
+ */
 public class MindMapGraphView extends JPanel implements Observer {
 
 	private MindMapModel model;
@@ -37,6 +51,19 @@ public class MindMapGraphView extends JPanel implements Observer {
 	public static final double MIN_ZOOM_FACTOR = 0.5;
 	private static final double NODE_COLOR_FREQUENCY = 0.6;
 
+	/**
+	 * constructor
+	 * 
+	 * initialize JPanel of this view with given width and height
+	 * set Observer relationship with MindMapTree
+	 * 
+	 * @param model
+	 * 		MindMapModel object
+	 * @param width
+	 * 		initial width of JPanel
+	 * @param height
+	 * 		initial height of JPanel
+	 */
 	public MindMapGraphView(MindMapModel model, int width, int height) {
 		this.model = model;
 		this.model.tree.addObserver(this);
@@ -46,49 +73,78 @@ public class MindMapGraphView extends JPanel implements Observer {
 		nodes = new ArrayList<>();
 		edges = new ArrayList<>();
 		setFocusable(true);
-		setRequestFocusEnabled(true); 		// now we can request this panel for focus.
+		setRequestFocusEnabled(true); 		
 	}
-	//color
+	
+	public MindMapGraphView(MindMapModel model) {
+		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
+	}
+
+	//  JU_YEONG_JEONG
 	public int makeR(int i) {
 		int check = i%7;
 		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check)*63+192);
 	}
+	
+	//  JU_YEONG_JEONG
 	public int makeG(int i) {
 		int check = i%7;
 		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+2)*63+192);
 	}
+	
+	//  JU_YEONG_JEONG
 	public int makeB(int i) {
 		int check = i%7;
 		return (int) (Math.sin(NODE_COLOR_FREQUENCY*check+4)*63+192);
 	}
 
-	public MindMapGraphView(MindMapModel model) {
-		this(model, INITIAL_GRAPH_VIEW_WIDTH, INITIAL_GRAPH_VIEW_HEIGHT);
-	}
-
+	/**
+	 * Accessor method
+	 * 
+	 * @return
+	 * 		return maximum zoomFactor as integer value
+	 */
 	public static int getMaxZoomPercentage() {
 		return (int) (MAX_ZOOM_FACTOR * 100);
 	}
 
+	/**
+	 * Accessor method
+	 * 
+	 * @return
+	 * 		return minimum zoomFactor as integer value
+	 */
 	public static int getMinZoomPercentage() {
 		return (int) (MIN_ZOOM_FACTOR * 100);
 	}
 
+	/**
+	 * Accessor method
+	 * 
+	 * @return
+	 * 		return zoomFactor
+	 */
 	public double getZoomFactor() {
 		return zoomFactor;
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * set new zoomFactor
+	 * 
+	 * @param zoomFactor
+	 */
 	public void setZoomFactor(double zoomFactor) {
 		this.zoomFactor = zoomFactor;
 	}
 
 
-	public void reset() {
-		resetGraphViewOffset();
-		clearNodes();
-		repaint();
-	}
-
+	/**
+	 * Modifier method
+	 * 
+	 * reset offsets to 0 and zoom factor to 1
+	 */
 	public void resetGraphViewOffset() {
 		movePanel(-dx, -dy);
 		dx = 0;
@@ -96,7 +152,16 @@ public class MindMapGraphView extends JPanel implements Observer {
 		zoomFactor = 1;
 		zoom((int) dx, (int) dy, 1);
 	}
-
+	
+	/**
+	 * Modifier method
+	 * 
+	 * reset all the offsets to center of the JPanel
+	 * if there is graph which is drawn with nodes, then
+	 * calculate center offset of current JPanel and set 
+	 * all offsets to that new center offset. zoom factor
+	 * goes to 1
+	 */
 	public void resetOffsetsToCenter() {
 
 		resetGraphViewOffset();
@@ -135,17 +200,37 @@ public class MindMapGraphView extends JPanel implements Observer {
 		nodeKeyListener = l;
 	}
 
-	public void addNode(MindMapNodeView node) {
+	/**
+	 * Helper method
+	 * 
+	 * add new NodeView to nodes List
+	 * 
+	 * @param node
+	 */
+	private void addNode(MindMapNodeView node) {
 		nodes.add(node);
 		add(node);
 		repaint();
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * remove the given NodeView on the JPanel
+	 * 
+	 * @param node
+	 * 		node view to be removed
+	 */
 	public void removeNode(MindMapNodeView node) {
 		nodes.remove(node);
 		remove(node);
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * clear all nodes on the JPanel
+	 */
 	public void clearNodes() {
 		nodes.clear();
 		edges.clear();
@@ -162,28 +247,9 @@ public class MindMapGraphView extends JPanel implements Observer {
 			node.addMouseMotionListener(l);
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		if(o instanceof MindMapNode) {
-			repaint();
-			return;
-		}
-
-		switch(String.valueOf(arg)) {
-		case "NEW":
-			drawGraph();
-			break;
-		case "LOAD":
-			loadGraph();
-			break;
-		default:
-			break;
-		}
-	}
-
-
 	/**
+	 * Modifier method
+	 * 
 	 * load Graph from already built tree.
 	 */
 	public void loadGraph() {
@@ -196,6 +262,15 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
+	/**
+	 * Helper method
+	 * 
+	 * load the given node data and make new MindMapNodeView
+	 * recursively
+	 * 
+	 * @param node
+	 * 		the node data to be drawn on JPanel
+	 */
 	private void recLoadNode(MindMapNode node) {
 
 		MindMapNodeView nodeView = new MindMapNodeView(node);
@@ -212,18 +287,50 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * Firstly, reset this GraphView so that this canvas
+	 * could be empty 
+	 * Secondly, draw new Graph recursively using recMakeNodeView()
+	 * 
+	 */
 	public void drawGraph() {
 		reset();
-		int colorOffset = 255 / model.tree.size();
 		recMakeNodeView(model.tree.getRoot(),
 						getWidth()/2,
 						getHeight()/2,
 						Math.PI*2, new MindMapVector(0, -1),
-						1, colorOffset);
+						1);
 		revalidate();
 	}
 
-	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel, int colorOffset) {
+	/**
+	 * Helper method
+	 * 
+	 * calculate position of the node to be drawn on JPanel and 
+	 * connect that node with this graphView
+	 * 
+	 * 1. make NodeView on centerX, centerY
+	 * 2. calculate theta value with availableAngle and numberOfChildren
+	 * 3. calculate distance for children nodes with theta and MIN_DISTANCE
+	 * 4. make children views recursively
+	 * 
+	 * @param node
+	 * 		the node model to be initialize as NodeView
+	 * @param centerX
+	 * 		center x position
+	 * @param centerY
+	 * 		center y position
+	 * @param availableAngle
+	 * 		available angle that this node can use to make children nodes
+	 * @param direction
+	 * 		vector objects indicates heading for this nodes and uses
+	 * 		to make decisions for child's heading
+	 * @param colorLevel
+	 * 		color level of this nodes
+	 */
+	private void recMakeNodeView(MindMapNode node, int centerX, int centerY, double availableAngle, MindMapVector direction, int colorLevel) {
 		// make node first
 		// TODO: using node size not constant.
 
@@ -279,28 +386,54 @@ public class MindMapGraphView extends JPanel implements Observer {
 							centerY+(int)direction.getY(),
 							theta,
 							direction.copy().normalize().rotate(-theta/2),
-							colorLevel + 1, colorOffset);
+							colorLevel + 1);
 
 			edges.add(new MindMapEdge(node, child));
 			direction.rotate(theta);
 		}
 	}
 
-
-	public void zoom(int x, int y, double factor) {
-		dx = (int) ((dx - x) * (factor / zoomFactor) + x);
-		dy = (int) ((dy - y) * (factor / zoomFactor) + y);
+	/**
+	 * Modifier method
+	 * 
+	 * zoom GraphView by the given x, y and factor value
+	 * 
+	 * update dx, dy which indicates offset of the JPanel
+	 * and zoom nodes with new factor and x, y
+	 * 
+	 * @param mouseX
+	 * 		mouse x position which zoom action happened
+	 * @param mouseY
+	 * 		mouse y position which zoom action happened
+	 * @param factor
+	 * 		new zoom factor to be applied
+	 */
+	public void zoom(int mouseX, int mouseY, double factor) {
+		dx = ((dx - mouseX) * (factor / zoomFactor) + mouseX);
+		dy = ((dy - mouseY) * (factor / zoomFactor) + mouseY);
 
 		setZoomFactor(factor);
 
 		for(MindMapNodeView node : nodes) {
-			node.zoomNode(factor, x, y);
+			node.zoomNode(factor, mouseX, mouseY);
 		}
 		
 		repaint();
 		revalidate();
 	}
 
+	/**
+	 * Modifier method
+	 * 
+	 * move pane by the given dx and dy value.
+	 * first of all change offset values, and move all nodes
+	 * int the node List
+	 * 
+	 * @param dx
+	 * 		how much mouse moved to x direction
+	 * @param dy
+	 * 		how much mouse moved to y direction
+	 */
 	public void movePanel(double dx, double dy) {
 		this.dx += dx;
 		this.dy += dy;
@@ -311,15 +444,12 @@ public class MindMapGraphView extends JPanel implements Observer {
 
 		repaint();
 	}
-
-	public double getDX() {
-		return dx;
-	}
-
-	public double getDY() {
-		return dy;
-	}
-
+	
+	/**
+	 * Drawing method
+	 * 
+	 * draw edge in the List<>
+	 */
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -337,6 +467,14 @@ public class MindMapGraphView extends JPanel implements Observer {
 		paintChildren(g2d);
 	}
 
+	/**
+	 * Helper method
+	 * 
+	 * return MindMapNodeView which has given id
+	 * 
+	 * @param nodeID
+	 * @return
+	 */
 	private MindMapNodeView getNodeView(int nodeID) {
 		for(MindMapNodeView node : nodes) {
 			if(node.getID() == nodeID) {
@@ -345,7 +483,57 @@ public class MindMapGraphView extends JPanel implements Observer {
 		}
 		return null;
 	}
+	
+	/**
+	 * Observer update method
+	 * 
+	 * if MindMapNode notified, then just repaint JPanel
+	 * else if MindMapTree notified, then weather drawGraph
+	 * or loadGraph depend on command from tree.
+	 * 
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		if(o instanceof MindMapNode) {
+			repaint();
+			return;
+		}
 
+		switch(String.valueOf(arg)) {
+		case "NEW":
+			drawGraph();
+			break;
+		case "LOAD":
+			loadGraph();
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * Modifier method
+	 * 
+	 * reset all subViews and offsets on GraphView
+	 */
+	public void reset() {
+		resetGraphViewOffset();
+		clearNodes();
+		repaint();
+	}
+
+	/**
+	 * MindMapEdge
+	 * 
+	 * this class has from and to node for drawing 
+	 * edge on GraphView in the paint() method.
+	 * referencing MindMapNodeView, it can always return 
+	 * up to date value of the NodeView
+	 * 
+	 * @author YONG_JOON_KIM
+	 *
+	 */
 	private class MindMapEdge {
 
 		private MindMapNodeView from;

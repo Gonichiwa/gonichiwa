@@ -1,12 +1,9 @@
 package com.gonichiwa.view;
 
-import javax.swing.JPanel;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -15,7 +12,6 @@ import javax.swing.JTextField;
  *
  * It is component view of the MindMapAttributeContainer.
  * It contains JLabel, which is the name of the attribute, and JTextField, which indicates the value.
- *
  *
  * @author YONG_JOON_KIM
  *
@@ -38,7 +34,7 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
 	/**
 	 * Constructor
 	 *
-	 * Initailize attributeName and attributeValueTextField.
+	 * Initialize attributeName and attributeValueTextField.
 	 *
 	 * @param name
 	 * 		the given name of attribute.
@@ -58,7 +54,7 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
     }
 
 	/**
-	 * Accessor
+	 * Accessor method
 	 *
 	 * Return the value of the attribute.
 	 *
@@ -72,7 +68,7 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
 
 
     /**
-     * Modifier
+     * Modifier method
      *
      * Set the given attribute value.
      *
@@ -85,7 +81,7 @@ class MindMapAttributeTextField extends MindMapAttributeComponent {
     }
 
     /**
-     * Modifier
+     * Modifier method
      *
      * Set the TextField, which indicates attribute value, to weather editable or not.
      * After set TextField ineditable, it changes the background of it.
