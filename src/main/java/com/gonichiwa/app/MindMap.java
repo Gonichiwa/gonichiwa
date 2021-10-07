@@ -33,15 +33,15 @@ import com.gonichiwa.model.MindMapModel;
  */
 public class MindMap extends JFrame {
 	
-	MindMapModel model;
+	private MindMapModel model;
 
-	MindMapTextAreaController textAreaController;
-	MindMapAttributeController attributeController;
-	MindMapGraphController graphController;
-	MindMapMenuController menuController;
-	
-	JSplitPane mainSplitPane;
-	JSplitPane graphSplitPane;
+	private MindMapTextAreaController textAreaController;
+	private MindMapAttributeController attributeController;
+	private MindMapGraphController graphController;
+	private MindMapMenuController menuController;
+
+	private JSplitPane mainSplitPane;
+	private JSplitPane graphSplitPane;
 
 	public MindMap() {
 		
